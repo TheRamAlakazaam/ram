@@ -1,9 +1,12 @@
 {
-  "name": "R. Martinez",
-  "defaultTitle": "R. Martinez | Photographs and writing",
-  "description": "Recent photographs and writing from R. Martinez.",
-  "location": "Chicago, Illinois",
-  "roles": ["Developer", "Photographer", "Writer"],
+  "name": "TheRamAlakazaam",
+  "defaultTitle": "Raul Martinez",
+  "location": "Houston, Texas",
+  "roles": [
+    "Developer",
+    "Photographer",
+    "Writer"
+  ],
   "tools": [
     "Astro",
     "TypeScript",
@@ -20,12 +23,21 @@
     "notes",
     "Astro",
     "TypeScript",
-    "Chicago"
+    "Houston"
   ],
   "social": {
-    "instagram": "https://instagram.com/your-handle",
-    "linkedin": "https://www.linkedin.com/in/your-handle"
+    "instagram": "https://www.instagram.com/theramalakazaam/",
+    "linkedin": "https://www.linkedin.com/in/theramalakazaam/"
   },
-  "projects": [],
-  "artCv": []
+  "projects": [
+    {
+      "title": "DUALSTREETS LLC",
+      "description": "Studio Manager",
+      "href": "https://dualstreets.com/",
+      "status": "Present"
+    }
+  ],
+  "artCv": [
+    {}
+  ]
 }
