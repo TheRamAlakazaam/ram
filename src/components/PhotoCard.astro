@@ -9,24 +9,15 @@ interface Props {
   publishDate: Date;
   location: string;
   alt: string;
-  tone?: "midnight" | "sunrise" | "moss" | "rust";
   image?: string;
 }
 
-const {
-  href,
-  title,
-  description,
-  publishDate,
-  location,
-  alt,
-  tone = "midnight",
-  image,
-} = Astro.props;
+const { href, title, description, publishDate, location, alt, image } =
+  Astro.props;
 ---
 
 <a class="card photo-card reveal" href={href}>
-  <div class="photo-card__media" data-tone={tone}>
+  <div class="photo-card__media">
     {
       image ? (
         <OptimizedImage

@@ -33,8 +33,6 @@ const { Content } = await render(photo);
       <div class="article-meta">
         <span class="meta">{photo.data.location}</span>
         <span class="meta">{formatDate(photo.data.publishDate)}</span>
-        {photo.data.camera && <span class="pill">{photo.data.camera}</span>}
-        {photo.data.lens && <span class="pill">{photo.data.lens}</span>}
       </div>
     </header>
 
@@ -49,7 +47,7 @@ const { Content } = await render(photo);
             widths={[720, 960, 1200, 1600]}
           />
         ) : (
-          <div class="photo-hero__placeholder" data-tone={photo.data.tone}>
+          <div class="photo-hero__placeholder">
             <span>{photo.data.alt}</span>
           </div>
         )

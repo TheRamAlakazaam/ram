@@ -34,7 +34,6 @@ const photos = sortByDateDesc(await getCollection("photos"));
                 location={photo.data.location}
                 alt={photo.data.alt}
                 image={photo.data.image}
-                tone={photo.data.tone}
               />
             ))}
           </div>

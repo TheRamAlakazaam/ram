@@ -175,22 +175,6 @@ content:
           path: photos
           rename: safe
           extensions: [avif, jpg, jpeg, png, webp]
-      - name: camera
-        label: Camera
-        type: string
-      - name: lens
-        label: Lens
-        type: string
-      - name: tone
-        label: Placeholder tone
-        type: select
-        default: midnight
-        options:
-          values:
-            - midnight
-            - sunrise
-            - moss
-            - rust
       - name: tags
         label: Tags
         type: string
