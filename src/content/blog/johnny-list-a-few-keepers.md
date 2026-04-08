@@ -1,13 +1,13 @@
 ---
-title: Johnny List, A Few Keepers
-description: Tiny notes, no hierarchy, just enough context to remember why they mattered.
+title: Confession
+description: |
+  This website was made by AI, but don't worry I wrote this blog.
 publishDate: 2026-04-03
 tags:
-  - johnny list
-  - fragments
+  - AI
+  - Codex
+  - Web Dev
+featured: true
 ---
+I didn't write a single line of code for this website. It was all made by Open AI's codex! It's not something I'm proud of, but I am happy to have been able to use it. It pretty much completed all the tasks I would've done in 10x less the time it would've taken me. Now I am able to have a much faster workflow for tasks that require my undivided attention. 
 
-- A sentence can be a whole post if it lands cleanly.
-- A portfolio should feel like a room, not a filing cabinet.
-- Some photographs are really location notes with better lighting.
-- Clear navigation is a creative decision too.
