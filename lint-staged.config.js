@@ -1,17 +1,20 @@
+const quoteFilenames = (filenames) =>
+  filenames.map((filename) => JSON.stringify(filename)).join(" ");
+
 export default {
-  "**/*.{ts,tsx,astro}": () => "pnpm run type-check",
+  "**/*.{ts,tsx,astro}": () => "npm run type-check",
 
   "**/*.astro": (filenames) => [
-    `pnpm exec eslint --fix ${filenames.join(" ")}`,
-    `pnpm exec prettier --write ${filenames.join(" ")}`,
+    `eslint --fix ${quoteFilenames(filenames)}`,
+    `prettier --write --ignore-unknown ${quoteFilenames(filenames)}`,
   ],
 
   "**/*.{ts,tsx,js,jsx}": (filenames) => [
-    `pnpm exec eslint --fix ${filenames.join(" ")}`,
-    `pnpm exec prettier --write ${filenames.join(" ")}`,
+    `eslint --fix ${quoteFilenames(filenames)}`,
+    `prettier --write --ignore-unknown ${quoteFilenames(filenames)}`,
   ],
 
   "**/*.{md,json,yaml,yml,css,scss,sass}": (filenames) => [
-    `pnpm exec prettier --write ${filenames.join(" ")}`,
+    `prettier --write --ignore-unknown ${quoteFilenames(filenames)}`,
   ],
 };

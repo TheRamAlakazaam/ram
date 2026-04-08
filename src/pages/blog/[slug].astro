@@ -1,0 +1,43 @@
+---
+import { getCollection, render } from "astro:content";
+
+import Layout from "@/layouts/Layout.astro";
+import { formatDate } from "@/utils/content";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<Layout
+  title={post.data.title}
+  description={post.data.description}
+  keywords={post.data.tags}
+  pageType="article"
+  publishDate={post.data.publishDate}
+  updatedDate={post.data.updatedDate}
+>
+  <article class="article-shell">
+    <header class="article-header article-header--center panel reveal">
+      <p class="eyebrow">Writing</p>
+      <h1>{post.data.title}</h1>
+      <p class="lede">{post.data.description}</p>
+      <div class="article-meta">
+        <span class="meta">{formatDate(post.data.publishDate)}</span>
+        {post.data.tags.map((tag: string) => <span class="pill">{tag}</span>)}
+      </div>
+    </header>
+
+    <div class="article-content panel reveal prose">
+      <Content />
+    </div>
+  </article>
+</Layout>

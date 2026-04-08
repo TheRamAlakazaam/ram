@@ -1,0 +1,43 @@
+---
+import { formatDate } from "@/utils/content";
+
+interface Props {
+  href: string;
+  title: string;
+  description: string;
+  publishDate: Date;
+  tags?: string[];
+  eyebrow?: string;
+}
+
+const {
+  href,
+  title,
+  description,
+  publishDate,
+  tags = [],
+  eyebrow,
+} = Astro.props;
+---
+
+<a class="card entry-card reveal" href={href}>
+  <div class="entry-card__body">
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    <h2>{title}</h2>
+    <p>{description}</p>
+  </div>
+
+  <div class="entry-card__footer">
+    <span class="meta">{formatDate(publishDate)}</span>
+
+    {
+      tags.length > 0 && (
+        <div class="pill-row" aria-label="Tags">
+          {tags.slice(0, 3).map((tag) => (
+            <span class="pill">{tag}</span>
+          ))}
+        </div>
+      )
+    }
+  </div>
+</a>

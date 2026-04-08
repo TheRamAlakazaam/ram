@@ -1,0 +1,26 @@
+---
+interface Props {
+  eyebrow?: string;
+  title: string;
+  lede: string;
+}
+
+const { eyebrow, title, lede } = Astro.props;
+const hasAside = Astro.slots.has("default");
+---
+
+<section class="page-intro panel reveal">
+  <div>
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    <h1>{title}</h1>
+    <p class="lede">{lede}</p>
+  </div>
+
+  {
+    hasAside && (
+      <div class="page-intro__aside">
+        <slot />
+      </div>
+    )
+  }
+</section>

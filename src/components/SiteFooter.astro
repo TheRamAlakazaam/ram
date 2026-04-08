@@ -1,0 +1,61 @@
+---
+import { siteConfig } from "@/data/site";
+import { safeHref } from "@/utils/url";
+
+const year = new Date().getFullYear();
+const instagramHref = safeHref(siteConfig.social.instagram);
+const linkedinHref = safeHref(siteConfig.social.linkedin);
+---
+
+<footer class="site-footer">
+  <div class="frame site-footer__inner">
+    <p>{year} {siteConfig.name}</p>
+
+    <div class="footer-social" aria-label="Social links">
+      <a href={instagramHref} aria-label="Instagram" rel="me">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="5"></rect>
+          <circle cx="12" cy="12" r="4"></circle>
+          <circle cx="17.5" cy="6.5" r="1"></circle>
+        </svg>
+      </a>
+
+      <a href={linkedinHref} aria-label="LinkedIn" rel="me">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6.5 10v8"></path>
+          <path d="M6.5 7v.01"></path>
+          <path d="M11 18v-8"></path>
+          <path d="M11 13.5c0-2 1.2-3.5 3.4-3.5 2 0 3.1 1.3 3.1 3.7V18"></path>
+          <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+        </svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer-social {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  .footer-social a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    color: var(--ink);
+  }
+
+  .footer-social svg {
+    width: 1.35rem;
+    height: 1.35rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.8;
+  }
+</style>

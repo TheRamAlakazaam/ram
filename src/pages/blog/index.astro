@@ -1,0 +1,46 @@
+---
+import { getCollection } from "astro:content";
+
+import EntryCard from "@/components/EntryCard.astro";
+import PageIntro from "@/components/PageIntro.astro";
+import Layout from "@/layouts/Layout.astro";
+import { sortByDateDesc } from "@/utils/content";
+
+const posts = sortByDateDesc(await getCollection("blog"));
+---
+
+<Layout
+  title="Writing"
+  description="Writing, dev notes, lists, and other entries from R. Martinez."
+>
+  <div class="frame">
+    <PageIntro
+      eyebrow="Journal"
+      title="Writing"
+      lede="Blog posts, dev notes, lists, and whatever else I want to write about that week."
+    />
+
+    <section class="section-block">
+      {
+        posts.length > 0 ? (
+          <div class="section-grid">
+            {posts.map((post) => (
+              <EntryCard
+                href={`/blog/${post.slug}`}
+                title={post.data.title}
+                description={post.data.description}
+                publishDate={post.data.publishDate}
+                tags={post.data.tags}
+                eyebrow="Writing"
+              />
+            ))}
+          </div>
+        ) : (
+          <div class="empty-state">
+            Add your first entry in `src/content/blog` and it will appear here.
+          </div>
+        )
+      }
+    </section>
+  </div>
+</Layout>

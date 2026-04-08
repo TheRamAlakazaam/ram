@@ -1,0 +1,63 @@
+---
+import { getCollection, render } from "astro:content";
+
+import OptimizedImage from "@/components/OptimizedImage.astro";
+import Layout from "@/layouts/Layout.astro";
+import { formatDate } from "@/utils/content";
+
+export async function getStaticPaths() {
+  const photos = await getCollection("photos");
+
+  return photos.map((photo) => ({
+    params: { slug: photo.slug },
+    props: { photo },
+  }));
+}
+
+const { photo } = Astro.props;
+const { Content } = await render(photo);
+---
+
+<Layout
+  title={photo.data.title}
+  description={photo.data.description}
+  keywords={photo.data.tags}
+  pageType="article"
+  publishDate={photo.data.publishDate}
+>
+  <article class="article-shell">
+    <header class="article-header article-header--center panel reveal">
+      <p class="eyebrow">Photography</p>
+      <h1>{photo.data.title}</h1>
+      <p class="lede">{photo.data.description}</p>
+      <div class="article-meta">
+        <span class="meta">{photo.data.location}</span>
+        <span class="meta">{formatDate(photo.data.publishDate)}</span>
+        {photo.data.camera && <span class="pill">{photo.data.camera}</span>}
+        {photo.data.lens && <span class="pill">{photo.data.lens}</span>}
+      </div>
+    </header>
+
+    <div class="photo-hero reveal">
+      {
+        photo.data.image ? (
+          <OptimizedImage
+            src={photo.data.image}
+            alt={photo.data.alt}
+            loading="eager"
+            sizes="(min-width: 900px) 860px, 100vw"
+            widths={[720, 960, 1200, 1600]}
+          />
+        ) : (
+          <div class="photo-hero__placeholder" data-tone={photo.data.tone}>
+            <span>{photo.data.alt}</span>
+          </div>
+        )
+      }
+    </div>
+
+    <div class="article-content panel reveal prose">
+      <Content />
+    </div>
+  </article>
+</Layout>

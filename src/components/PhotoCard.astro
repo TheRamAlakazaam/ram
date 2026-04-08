@@ -1,0 +1,56 @@
+---
+import OptimizedImage from "@/components/OptimizedImage.astro";
+import { formatDate } from "@/utils/content";
+
+interface Props {
+  href: string;
+  title: string;
+  description: string;
+  publishDate: Date;
+  location: string;
+  alt: string;
+  tone?: "midnight" | "sunrise" | "moss" | "rust";
+  image?: string;
+}
+
+const {
+  href,
+  title,
+  description,
+  publishDate,
+  location,
+  alt,
+  tone = "midnight",
+  image,
+} = Astro.props;
+---
+
+<a class="card photo-card reveal" href={href}>
+  <div class="photo-card__media" data-tone={tone}>
+    {
+      image ? (
+        <OptimizedImage
+          src={image}
+          alt={alt}
+          sizes="(min-width: 900px) 33vw, 100vw"
+        />
+      ) : (
+        <div class="photo-card__placeholder">
+          <span>{location}</span>
+        </div>
+      )
+    }
+  </div>
+
+  <div class="photo-card__body">
+    <div class="photo-card__head">
+      <h2>{title}</h2>
+      <div class="photo-card__meta">
+        <span class="meta">{location}</span>
+        <span class="meta">{formatDate(publishDate)}</span>
+      </div>
+    </div>
+
+    <p>{description}</p>
+  </div>
+</a>

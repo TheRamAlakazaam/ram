@@ -1,0 +1,50 @@
+---
+import { getCollection } from "astro:content";
+
+import PageIntro from "@/components/PageIntro.astro";
+import PhotoCard from "@/components/PhotoCard.astro";
+import { sectionDescriptions } from "@/data/site";
+import Layout from "@/layouts/Layout.astro";
+import { sortByDateDesc } from "@/utils/content";
+
+const photos = sortByDateDesc(await getCollection("photos"));
+---
+
+<Layout
+  title="Photography"
+  description="Photography portfolio, visual notes, and quiet studies of light, texture, and motion."
+>
+  <div class="frame">
+    <PageIntro
+      eyebrow="Visual Archive"
+      title="Photography"
+      lede={sectionDescriptions.photography}
+    />
+
+    <section class="section-block">
+      {
+        photos.length > 0 ? (
+          <div class="section-grid section-grid--thirds">
+            {photos.map((photo) => (
+              <PhotoCard
+                href={`/photography/${photo.slug}`}
+                title={photo.data.title}
+                description={photo.data.description}
+                publishDate={photo.data.publishDate}
+                location={photo.data.location}
+                alt={photo.data.alt}
+                image={photo.data.image}
+                tone={photo.data.tone}
+              />
+            ))}
+          </div>
+        ) : (
+          <div class="empty-state">
+            Add your first photo entry in `src/content/photos` and it will
+            appear here.
+          </div>
+        )
+      }
+    </section>
+  </div>
+</Layout>

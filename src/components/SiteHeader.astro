@@ -1,0 +1,40 @@
+---
+import { siteConfig } from "@/data/site";
+
+const pathname = Astro.url.pathname;
+---
+
+<header class="site-header">
+  <div class="frame site-header__inner">
+    <a class="brand" href="/">
+      <span class="brand__copy">
+        <strong>{siteConfig.name}</strong>
+      </span>
+    </a>
+
+    <nav aria-label="Primary">
+      <ul class="nav-list">
+        {
+          siteConfig.navigation.map((item) => {
+            const isActive =
+              item.href === "/"
+                ? pathname === "/"
+                : pathname.startsWith(item.href);
+
+            return (
+              <li>
+                <a
+                  class:list={["nav-link", { "is-active": isActive }]}
+                  href={item.href}
+                  aria-current={isActive ? "page" : undefined}
+                >
+                  {item.label}
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </nav>
+  </div>
+</header>

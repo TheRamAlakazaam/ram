@@ -1,11 +1,160 @@
 ---
-import Welcome from "@/components/Welcome.astro";
-import Layout from "@/layouts/Layout.astro";
+import { getCollection } from "astro:content";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import PhotoCard from "@/components/PhotoCard.astro";
+import Layout from "@/layouts/Layout.astro";
+import { formatDate, sortByDateDesc } from "@/utils/content";
+
+const writing = sortByDateDesc(await getCollection("blog"));
+const photos = sortByDateDesc(await getCollection("photos"));
+
+const latestPhotos = photos.slice(0, 3);
+const latestWriting = writing.slice(0, 4);
 ---
 
-<Layout title="Home">
-  <Welcome />
+<Layout description="R. Martinez shares recent photographs and writing.">
+  <div class="frame">
+    <section class="home-hero reveal">
+      <h1>Recent photos and writing.</h1>
+    </section>
+
+    <section class="section-block">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Photos</p>
+          <h2>Latest photos.</h2>
+        </div>
+        <a class="button secondary" href="/photography">All photos</a>
+      </div>
+
+      <div class="section-grid section-grid--thirds">
+        {
+          latestPhotos.map((photo) => (
+            <PhotoCard
+              href={`/photography/${photo.slug}`}
+              title={photo.data.title}
+              description={photo.data.description}
+              publishDate={photo.data.publishDate}
+              location={photo.data.location}
+              alt={photo.data.alt}
+              image={photo.data.image}
+              tone={photo.data.tone}
+            />
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="section-block">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Writing</p>
+          <h2>Latest writing.</h2>
+        </div>
+        <a class="button secondary" href="/blog">All writing</a>
+      </div>
+
+      <div class="home-blog-list">
+        {
+          latestWriting.map((post) => (
+            <a class="home-blog-card reveal" href={`/blog/${post.slug}`}>
+              <span class="meta">{formatDate(post.data.publishDate)}</span>
+              <div>
+                <h3>{post.data.title}</h3>
+                <p>{post.data.description}</p>
+                {post.data.tags.length > 0 && (
+                  <div class="pill-row" aria-label="Tags">
+                    {post.data.tags.slice(0, 3).map((tag) => (
+                      <span class="pill">{tag}</span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="section-block">
+      <div class="contact-cta reveal">
+        <p class="eyebrow">Contact</p>
+        <h2>Say hello.</h2>
+        <a class="button" href="/contact">Contact</a>
+      </div>
+    </section>
+  </div>
 </Layout>
+
+<style>
+  .home-hero {
+    padding: 0.6rem 0 0.9rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .home-hero h1 {
+    max-width: 100%;
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 4rem);
+    line-height: 1.05;
+    letter-spacing: 0;
+  }
+
+  .home-blog-list {
+    display: grid;
+    border-top: 1px solid var(--line);
+  }
+
+  .home-blog-card {
+    display: grid;
+    grid-template-columns: minmax(8rem, 0.28fr) minmax(0, 1fr);
+    gap: 1.25rem;
+    align-items: start;
+    padding: 1rem 0;
+    text-decoration: none;
+    border-bottom: 1px solid var(--line);
+    transition:
+      color 180ms ease,
+      padding-left 180ms ease;
+  }
+
+  .home-blog-card:hover {
+    color: var(--accent);
+    padding-left: 0.8rem;
+  }
+
+  .home-blog-card h3 {
+    max-width: 100%;
+    font-size: clamp(1.25rem, 2.2vw, 1.75rem);
+  }
+
+  .home-blog-card p {
+    max-width: 72ch;
+    margin-top: 0.55rem;
+    color: var(--muted);
+  }
+
+  .home-blog-card .pill-row {
+    margin-top: 0.7rem;
+  }
+
+  .contact-cta {
+    display: grid;
+    gap: 0.6rem;
+    justify-items: center;
+    align-content: center;
+    padding: 1.1rem 1rem 0.75rem;
+    border-top: 1px solid var(--line);
+    text-align: center;
+  }
+
+  .contact-cta h2 {
+    font-size: clamp(1.45rem, 2.7vw, 2.1rem);
+  }
+
+  @media (max-width: 900px) {
+    .home-blog-card {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

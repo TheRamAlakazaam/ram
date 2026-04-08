@@ -1,0 +1,17 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#F6F1E8"/>
+  <rect x="34" y="34" width="1132" height="562" rx="28" fill="#FFFDF8" stroke="#D9CFC1"/>
+  <circle cx="188" cy="152" r="70" fill="#D3A046" fill-opacity="0.28"/>
+  <circle cx="1006" cy="472" r="132" fill="#35594A" fill-opacity="0.15"/>
+  <circle cx="940" cy="132" r="42" fill="#B24C2A" fill-opacity="0.22"/>
+  <path d="M0 140H1200" stroke="#E8DED0"/>
+  <path d="M0 490H1200" stroke="#E8DED0"/>
+  <path d="M250 0V630" stroke="#E8DED0"/>
+  <path d="M950 0V630" stroke="#E8DED0"/>
+  <rect x="94" y="94" width="112" height="112" rx="28" fill="#171717"/>
+  <text x="150" y="166" text-anchor="middle" fill="#FFFDF8" font-family="Avenir Next, Segoe UI, sans-serif" font-size="42" font-weight="700" letter-spacing="6">RM</text>
+  <text x="94" y="312" fill="#B24C2A" font-family="Avenir Next, Segoe UI, sans-serif" font-size="18" font-weight="700" letter-spacing="5">PORTFOLIO / BLOG / PHOTOGRAPHY</text>
+  <text x="94" y="392" fill="#171717" font-family="Iowan Old Style, Palatino Linotype, serif" font-size="68" font-weight="600">Photography, code, and</text>
+  <text x="94" y="470" fill="#171717" font-family="Iowan Old Style, Palatino Linotype, serif" font-size="68" font-weight="600">the little things worth keeping.</text>
+  <text x="94" y="542" fill="#5A564F" font-family="Avenir Next, Segoe UI, sans-serif" font-size="26">A personal site for photo work, essays, dev logs, notes, and lists.</text>
+</svg>

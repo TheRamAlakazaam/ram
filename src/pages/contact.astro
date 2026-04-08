@@ -1,0 +1,191 @@
+---
+import Layout from "@/layouts/Layout.astro";
+
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
+const hasTurnstileSiteKey =
+  typeof turnstileSiteKey === "string" && turnstileSiteKey.length > 0;
+---
+
+<Layout title="Contact" description="Contact R. Martinez.">
+  <div class="frame">
+    <section class="contact-page reveal">
+      <header>
+        <p class="eyebrow">Contact</p>
+        <h1>Send a note.</h1>
+        <p class="meta">Short is fine.</p>
+      </header>
+
+      <form
+        class="contact-form panel"
+        action="/api/contact"
+        data-contact-form
+        data-is-ready={hasTurnstileSiteKey ? "true" : "false"}
+        name="contact"
+        method="post"
+      >
+        <label class="form-hidden">
+          Leave this empty
+          <input name="bot-field" autocomplete="off" tabindex="-1" />
+        </label>
+
+        <label>
+          Name
+          <input name="name" autocomplete="name" required />
+        </label>
+
+        <label>
+          Email
+          <input name="email" type="email" autocomplete="email" required />
+        </label>
+
+        <label>
+          Message
+          <textarea name="message" rows="4" required></textarea>
+        </label>
+
+        {
+          hasTurnstileSiteKey ? (
+            <div
+              class="cf-turnstile captcha-slot"
+              data-sitekey={turnstileSiteKey}
+            />
+          ) : (
+            <p class="form-status meta">
+              Contact is waiting on Cloudflare Turnstile setup.
+            </p>
+          )
+        }
+
+        <button class="button" type="submit" disabled={!hasTurnstileSiteKey}>
+          Send
+        </button>
+        <p class="form-status meta" data-form-status aria-live="polite"></p>
+      </form>
+    </section>
+  </div>
+</Layout>
+
+{
+  hasTurnstileSiteKey && (
+    <script
+      is:inline
+      src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+      async
+      defer
+    />
+  )
+}
+
+<script>
+  const form = document.querySelector("[data-contact-form]");
+  const status = document.querySelector("[data-form-status]");
+
+  form?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const submitButton = form.querySelector("button[type='submit']");
+
+    if (
+      !(form instanceof HTMLFormElement) ||
+      !(submitButton instanceof HTMLButtonElement)
+    ) {
+      return;
+    }
+
+    submitButton.disabled = true;
+    if (status) {
+      status.textContent = "Sending.";
+    }
+
+    try {
+      const response = await fetch(form.action, {
+        body: new FormData(form),
+        headers: { accept: "application/json" },
+        method: "POST",
+      });
+      const result = await response
+        .json()
+        .catch(() => ({ message: "Could not send that message." }));
+
+      if (!response.ok) {
+        throw new Error(result.message || "Could not send that message.");
+      }
+
+      form.reset();
+      window.turnstile?.reset();
+      if (status) {
+        status.textContent = result.message || "Sent.";
+      }
+    } catch (error) {
+      window.turnstile?.reset();
+      if (status) {
+        status.textContent =
+          error instanceof Error
+            ? error.message
+            : "Could not send that message.";
+      }
+    } finally {
+      submitButton.disabled = form.dataset.isReady !== "true";
+    }
+  });
+</script>
+
+<style>
+  .contact-page {
+    display: grid;
+    gap: 1rem;
+    width: min(560px, 100%);
+    margin: 0 auto;
+  }
+
+  .contact-page h1 {
+    font-size: clamp(1.9rem, 4vw, 3.25rem);
+  }
+
+  .contact-form {
+    display: grid;
+    gap: 0.75rem;
+    padding: 1rem;
+  }
+
+  .contact-form label {
+    display: grid;
+    gap: 0.35rem;
+    color: var(--muted);
+    font-size: 0.92rem;
+    font-weight: 700;
+  }
+
+  .contact-form input,
+  .contact-form textarea {
+    width: 100%;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--surface);
+    color: var(--ink);
+    font: inherit;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    padding: 0.7rem 0.8rem;
+  }
+
+  .contact-form textarea {
+    resize: vertical;
+  }
+
+  .form-hidden {
+    position: absolute;
+    left: -100vw;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .captcha-slot {
+    min-height: 78px;
+  }
+
+  .form-status {
+    min-height: 1.5rem;
+  }
+</style>

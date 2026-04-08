@@ -1,0 +1,31 @@
+{
+  "name": "R. Martinez",
+  "defaultTitle": "R. Martinez | Photographs and writing",
+  "description": "Recent photographs and writing from R. Martinez.",
+  "location": "Chicago, Illinois",
+  "roles": ["Developer", "Photographer", "Writer"],
+  "tools": [
+    "Astro",
+    "TypeScript",
+    "Content collections",
+    "Semantic HTML",
+    "CSS systems",
+    "Performance and accessibility reviews"
+  ],
+  "keywords": [
+    "portfolio",
+    "photography",
+    "developer blog",
+    "personal blog",
+    "notes",
+    "Astro",
+    "TypeScript",
+    "Chicago"
+  ],
+  "social": {
+    "instagram": "https://instagram.com/your-handle",
+    "linkedin": "https://www.linkedin.com/in/your-handle"
+  },
+  "projects": [],
+  "artCv": []
+}

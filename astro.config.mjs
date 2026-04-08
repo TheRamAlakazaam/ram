@@ -14,7 +14,7 @@ const { SITE_URL, APP_ENV } = loadEnv(
 
 // https://astro.build/config
 export default defineConfig({
-  site: SITE_URL || "https://astro-starter.piry.dev",
+  site: SITE_URL || "https://theramalakazaam.com",
   integrations: [
     sitemap({
       changefreq: "monthly",
