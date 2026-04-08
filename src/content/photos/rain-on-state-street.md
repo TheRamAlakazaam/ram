@@ -1,14 +1,16 @@
 ---
 title: "Loopin' "
-description: "Chicago CTA Train - Brown Line "
+description: Chicago CTA Train - Brown Line  Loop 'L'
 publishDate: 2026-04-08
 location: Chicago
-alt: Reflected storefront light on wet pavement after rain.
+alt: Chicago CTA Train - Brown Line  Loop 'L'
 image: /src/assets/images/chicago-1.webp
 camera: Canon EOS RP
+lens: 50 mm
+tone: midnight
 tags:
-  - rain
-  - night
-  - street
+  - train
+  - chicago
+  - urban
 featured: true
 ---
