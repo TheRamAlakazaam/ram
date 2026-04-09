@@ -7,6 +7,7 @@ coverAlt: Chicago CTA Train - Brown Line Loop 'L'
 coverImage: /src/assets/images/chicago-1.webp
 gallery:
   - /src/assets/images/chicago-1.webp
+  - /src/assets/images/chicago-2.jpg
 tags:
   - train
   - chicago
