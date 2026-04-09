@@ -1,9 +1,9 @@
 ---
 title: "Loopin' "
-description: Chicago CTA Train - Brown Line  Loop 'L'
+description: Chicago
 publishDate: 2026-04-08
 location: Chicago
-coverAlt: Chicago CTA Train - Brown Line Loop 'L'
+coverAlt: Chicago Photo Album
 coverImage: /src/assets/images/chicago-1.webp
 gallery:
   - /src/assets/images/chicago-1.webp
