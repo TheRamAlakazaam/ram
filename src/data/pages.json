@@ -1,0 +1,114 @@
+{
+  "navigation": [
+    {
+      "href": "/",
+      "label": "Home"
+    },
+    {
+      "href": "/photography",
+      "label": "Photography"
+    },
+    {
+      "href": "/blog",
+      "label": "Writing"
+    },
+    {
+      "href": "/about",
+      "label": "About"
+    },
+    {
+      "href": "/contact",
+      "label": "Contact"
+    }
+  ],
+  "header": {
+    "navigationAriaLabel": "Primary",
+    "themeToggle": {
+      "darkLabel": "Dark",
+      "lightLabel": "Light",
+      "switchToDarkAriaLabel": "Switch to dark mode",
+      "switchToLightAriaLabel": "Switch to light mode"
+    }
+  },
+  "footer": {
+    "socialAriaLabel": "Social links",
+    "instagramAriaLabel": "Instagram",
+    "linkedinAriaLabel": "LinkedIn",
+    "githubAriaLabel": "GitHub"
+  },
+  "shared": {
+    "tagsAriaLabel": "Tags"
+  },
+  "home": {
+    "seoDescription": "R. Martinez shares recent photographs and writing.",
+    "heroTitle": "Recent photos and writing.",
+    "photosEyebrow": "Photography",
+    "photosTitle": "Latest albums.",
+    "photosCtaLabel": "All albums",
+    "writingEyebrow": "Writing",
+    "writingTitle": "Latest writing.",
+    "writingCtaLabel": "All writing",
+    "contactEyebrow": "Contact",
+    "contactTitle": "Say hello.",
+    "contactCtaLabel": "Contact"
+  },
+  "writing": {
+    "seoTitle": "Writing",
+    "seoDescription": "Writing, dev notes, lists, and other entries from R. Martinez.",
+    "indexEyebrow": "Journal",
+    "indexTitle": "Writing",
+    "cardEyebrow": "Writing",
+    "articleEyebrow": "Writing",
+    "emptyState": "Add your first entry in src/content/blog and it will appear here.",
+    "filters": {
+      "searchPlaceholder": "Search writing",
+      "searchAriaLabel": "Search writing entries",
+      "sortNewestAriaLabel": "Sort writing by newest first",
+      "sortOldestAriaLabel": "Sort writing by oldest first",
+      "noResultsMessage": "No writing matches that search."
+    }
+  },
+  "photography": {
+    "seoTitle": "Photography",
+    "seoDescription": "Photography portfolio, visual notes, and quiet studies of light, texture, and motion.",
+    "indexEyebrow": "Visual Archive",
+    "indexTitle": "Photography",
+    "articleEyebrow": "Photography",
+    "emptyState": "Add your first album entry in src/content/photos and it will appear here.",
+    "filters": {
+      "searchPlaceholder": "Search albums",
+      "searchAriaLabel": "Search photography albums",
+      "sortNewestAriaLabel": "Sort albums by newest first",
+      "sortOldestAriaLabel": "Sort albums by oldest first",
+      "noResultsMessage": "No albums match that search."
+    }
+  },
+  "about": {
+    "seoTitle": "About",
+    "seoDescription": "About R. Martinez, selected projects, and photography CV.",
+    "heroEyebrow": "About",
+    "heroTitle": "About.",
+    "summaryTitle": "Summary",
+    "summaryEmptyState": "Add an about summary in Pages CMS when you're ready.",
+    "projectsTitle": "Projects",
+    "projectsMeta": "Current and recent things.",
+    "projectsEmptyState": "Add project links in Pages CMS when you want to share them.",
+    "cvTitle": "Selected CV",
+    "cvMeta": "Photography, art, and public showings.",
+    "cvEmptyState": "Add exhibitions, screenings, markets, or other showings in Pages CMS."
+  },
+  "contact": {
+    "seoTitle": "Contact",
+    "seoDescription": "Contact R. Martinez.",
+    "eyebrow": "Contact",
+    "title": "Send a note.",
+    "honeypotLabel": "Leave this empty",
+    "nameLabel": "Name",
+    "emailLabel": "Email",
+    "messageLabel": "Message",
+    "submitLabel": "Send",
+    "sendingMessage": "Sending.",
+    "successMessage": "Thanks, your note was sent.",
+    "errorMessage": "Could not send that message."
+  }
+}

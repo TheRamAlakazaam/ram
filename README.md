@@ -18,6 +18,7 @@ Use tags in frontmatter to describe what kind of writing it is.
 
 - `.pages.yml`: Pages CMS configuration for site settings, writing, photos, and image uploads
 - `src/data/profile.json`: editable site settings, project links, and selected CV entries
+- `src/data/pages.json`: editable navigation and page copy used by Pages CMS
 - `src/data/site.ts`: route navigation and typed site settings bridge
 - `src/layouts/Layout.astro`: global SEO and design shell
 - `src/content.config.ts`: content collection schemas
@@ -30,23 +31,29 @@ Pages CMS uploads images to `src/assets/images`. Use image paths like
 `src/components/OptimizedImage.astro` can pass them through Astro's image
 pipeline.
 
+## Photography Albums
+
+Photography entries are album-first. Each item in `src/content/photos` can
+include:
+
+- one `coverImage`
+- optional `coverAlt`
+- a `gallery` array for the full collection
+- optional body copy for notes, context, or captions
+
+The `/photography` page lists albums, and each album page renders the gallery.
+
 ## Contact Form
 
-The contact form is built for Cloudflare Pages Functions. It posts to
-`/api/contact`, verifies Cloudflare Turnstile server-side, and sends email
-through Resend.
+The contact form posts directly to Web3Forms from the browser.
 
-Set these variables in Cloudflare Pages:
+The current access key is wired into the contact page, and you can override it
+at build time with:
 
-- `PUBLIC_TURNSTILE_SITE_KEY`
-- `TURNSTILE_SECRET_KEY`
-- `RESEND_API_KEY`
-- `CONTACT_TO_EMAIL`
-- `CONTACT_FROM_EMAIL`
-- `CONTACT_SUBJECT_PREFIX`
+- `PUBLIC_WEB3FORMS_ACCESS_KEY`
 
-Use `.env.example` for Astro build variables and copy `.dev.vars.example` to
-`.dev.vars` for local Pages Functions testing. Do not commit `.dev.vars`.
+Use `.env.example` for Astro build variables. No Cloudflare Pages Function
+secrets are required for the current contact setup.
 
 ## Cloudflare Pages
 
@@ -54,7 +61,7 @@ Cloudflare Pages build settings:
 
 - Build command: `npm run build`
 - Build output directory: `dist`
-- Functions directory: `functions`
+- Functions directory: not required for the current site
 - Package manager: npm, using `package-lock.json`
 
 Local Cloudflare preview:

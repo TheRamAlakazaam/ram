@@ -1,5 +1,1 @@
-TURNSTILE_SECRET_KEY=
-RESEND_API_KEY=
-CONTACT_TO_EMAIL=
-CONTACT_FROM_EMAIL="Portfolio <contact@your-domain.com>"
-CONTACT_SUBJECT_PREFIX="Website contact"
+# No Cloudflare Pages Function secrets are required for the current contact form.

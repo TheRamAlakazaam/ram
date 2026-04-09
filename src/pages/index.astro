@@ -2,29 +2,38 @@
 import { getCollection } from "astro:content";
 
 import PhotoCard from "@/components/PhotoCard.astro";
+import { pageCopy } from "@/data/site";
 import Layout from "@/layouts/Layout.astro";
 import { formatDate, sortByDateDesc } from "@/utils/content";
+import {
+  getAlbumCoverAlt,
+  getAlbumCoverImage,
+  getAlbumImageCount,
+} from "@/utils/photography";
 
 const writing = sortByDateDesc(await getCollection("blog"));
 const photos = sortByDateDesc(await getCollection("photos"));
 
 const latestPhotos = photos.slice(0, 3);
 const latestWriting = writing.slice(0, 4);
+const homeCopy = pageCopy.home;
 ---
 
-<Layout description="R. Martinez shares recent photographs and writing.">
+<Layout description={homeCopy.seoDescription}>
   <div class="frame">
     <section class="home-hero reveal">
-      <h1>Recent photos and writing.</h1>
+      <h1>{homeCopy.heroTitle}</h1>
     </section>
 
     <section class="section-block">
       <div class="section-head">
         <div>
-          <p class="eyebrow">Photos</p>
-          <h2>Latest photos.</h2>
+          <p class="eyebrow">{homeCopy.photosEyebrow}</p>
+          <h2>{homeCopy.photosTitle}</h2>
         </div>
-        <a class="button secondary" href="/photography">All photos</a>
+        <a class="button secondary" href="/photography">
+          {homeCopy.photosCtaLabel}
+        </a>
       </div>
 
       <div class="section-grid section-grid--thirds">
@@ -36,8 +45,9 @@ const latestWriting = writing.slice(0, 4);
               description={photo.data.description}
               publishDate={photo.data.publishDate}
               location={photo.data.location}
-              alt={photo.data.alt}
-              image={photo.data.image}
+              alt={getAlbumCoverAlt(photo.data)}
+              image={getAlbumCoverImage(photo.data)}
+              imageCount={getAlbumImageCount(photo.data)}
             />
           ))
         }
@@ -47,10 +57,12 @@ const latestWriting = writing.slice(0, 4);
     <section class="section-block">
       <div class="section-head">
         <div>
-          <p class="eyebrow">Writing</p>
-          <h2>Latest writing.</h2>
+          <p class="eyebrow">{homeCopy.writingEyebrow}</p>
+          <h2>{homeCopy.writingTitle}</h2>
         </div>
-        <a class="button secondary" href="/blog">All writing</a>
+        <a class="button secondary" href="/blog">
+          {homeCopy.writingCtaLabel}
+        </a>
       </div>
 
       <div class="home-blog-list">
@@ -62,7 +74,10 @@ const latestWriting = writing.slice(0, 4);
                 <h3>{post.data.title}</h3>
                 <p>{post.data.description}</p>
                 {post.data.tags.length > 0 && (
-                  <div class="pill-row" aria-label="Tags">
+                  <div
+                    class="pill-row"
+                    aria-label={pageCopy.shared.tagsAriaLabel}
+                  >
                     {post.data.tags.slice(0, 3).map((tag) => (
                       <span class="pill">{tag}</span>
                     ))}
@@ -77,9 +92,9 @@ const latestWriting = writing.slice(0, 4);
 
     <section class="section-block">
       <div class="contact-cta reveal">
-        <p class="eyebrow">Contact</p>
-        <h2>Say hello.</h2>
-        <a class="button" href="/contact">Contact</a>
+        <p class="eyebrow">{homeCopy.contactEyebrow}</p>
+        <h2>{homeCopy.contactTitle}</h2>
+        <a class="button" href="/contact">{homeCopy.contactCtaLabel}</a>
       </div>
     </section>
   </div>

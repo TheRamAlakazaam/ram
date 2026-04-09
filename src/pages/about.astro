@@ -1,0 +1,219 @@
+---
+import { pageCopy, siteConfig } from "@/data/site";
+import Layout from "@/layouts/Layout.astro";
+import { safeHref } from "@/utils/url";
+
+const projects = siteConfig.projects.map((project) => ({
+  ...project,
+  href: safeHref(project.href),
+}));
+const aboutCopy = pageCopy.about;
+const hasSummary = siteConfig.summary.trim().length > 0;
+---
+
+<Layout
+  title={aboutCopy.seoTitle}
+  description={aboutCopy.seoDescription}
+  pageType="profile"
+>
+  <div class="frame">
+    <section class="about-page reveal">
+      <header class="about-hero">
+        <p class="eyebrow">{aboutCopy.heroEyebrow}</p>
+        <h1>{aboutCopy.heroTitle}</h1>
+      </header>
+
+      <section class="about-section panel">
+        <div class="about-section__head">
+          <h2>{aboutCopy.summaryTitle}</h2>
+        </div>
+
+        {
+          hasSummary ? (
+            <div class="about-section__body about-summary">
+              <p class="lede">{siteConfig.summary}</p>
+            </div>
+          ) : (
+            <p class="meta about-section__body">
+              {aboutCopy.summaryEmptyState}
+            </p>
+          )
+        }
+      </section>
+
+      <section class="about-section panel">
+        <div class="about-section__head">
+          <h2>{aboutCopy.projectsTitle}</h2>
+          <p class="meta">{aboutCopy.projectsMeta}</p>
+        </div>
+
+        {
+          projects.length > 0 ? (
+            <div class="about-section__body about-list">
+              {projects.map((project) => (
+                <a class="about-item" href={project.href}>
+                  <div>
+                    <h3>{project.title}</h3>
+                    <p>{project.description}</p>
+                  </div>
+                  {project.status && <span class="meta">{project.status}</span>}
+                </a>
+              ))}
+            </div>
+          ) : (
+            <p class="meta about-section__body">
+              {aboutCopy.projectsEmptyState}
+            </p>
+          )
+        }
+      </section>
+
+      <section class="about-section panel">
+        <div class="about-section__head">
+          <h2>{aboutCopy.cvTitle}</h2>
+          <p class="meta">{aboutCopy.cvMeta}</p>
+        </div>
+
+        {
+          siteConfig.artCv.length > 0 ? (
+            <div class="about-section__body cv-list">
+              {siteConfig.artCv.map((item) => (
+                <article class="cv-item">
+                  <p class="cv-item__year">{item.year}</p>
+                  <div>
+                    <h3>{item.title}</h3>
+                    <p>
+                      {item.venue}, {item.location}
+                    </p>
+                    {item.notes && <p>{item.notes}</p>}
+                  </div>
+                </article>
+              ))}
+            </div>
+          ) : (
+            <p class="meta about-section__body">{aboutCopy.cvEmptyState}</p>
+          )
+        }
+      </section>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  .about-page {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .about-hero {
+    display: grid;
+    gap: 0.6rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .about-hero h1 {
+    font-size: clamp(1.9rem, 4vw, 3.25rem);
+  }
+
+  .about-section {
+    display: grid;
+    gap: 1.15rem;
+  }
+
+  .about-section__head {
+    display: grid;
+    gap: 0.45rem;
+  }
+
+  .about-section__head::before {
+    content: "";
+    display: block;
+    width: 3rem;
+    height: 1px;
+    background: var(--line-strong);
+  }
+
+  .about-section__head h2 {
+    font-size: 1.02rem;
+    letter-spacing: 0.03em;
+  }
+
+  .about-section__body {
+    padding-top: 0.95rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .about-summary {
+    max-width: 68ch;
+  }
+
+  .about-summary .lede,
+  .about-section .meta,
+  .about-item p,
+  .cv-item p {
+    font-family: var(--font-heading);
+    font-size: 0.98rem;
+    line-height: 1.7;
+    letter-spacing: 0.01em;
+  }
+
+  .about-list,
+  .cv-list {
+    display: grid;
+    gap: 0;
+  }
+
+  .about-item,
+  .cv-item {
+    display: grid;
+    gap: 1rem;
+    padding: 1.1rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .about-item {
+    grid-template-columns: minmax(0, 1fr) auto;
+    text-decoration: none;
+  }
+
+  .cv-item {
+    grid-template-columns: minmax(5rem, 0.2fr) minmax(0, 1fr);
+  }
+
+  .about-item:first-child,
+  .cv-item:first-child {
+    padding-top: 0;
+  }
+
+  .about-item:last-child,
+  .cv-item:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+
+  .about-item h3,
+  .cv-item h3 {
+    font-size: 1rem;
+    letter-spacing: 0.03em;
+  }
+
+  .about-item p,
+  .cv-item p {
+    color: var(--muted);
+  }
+
+  .cv-item__year {
+    color: var(--ink);
+    font-family: var(--font-heading);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  @media (max-width: 640px) {
+    .about-item,
+    .cv-item {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

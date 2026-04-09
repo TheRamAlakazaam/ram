@@ -1,4 +1,5 @@
 ---
+import { pageCopy } from "@/data/site";
 import { formatDate } from "@/utils/content";
 
 interface Props {
@@ -32,7 +33,7 @@ const {
 
     {
       tags.length > 0 && (
-        <div class="pill-row" aria-label="Tags">
+        <div class="pill-row" aria-label={pageCopy.shared.tagsAriaLabel}>
           {tags.slice(0, 3).map((tag) => (
             <span class="pill">{tag}</span>
           ))}

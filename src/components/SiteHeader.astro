@@ -1,7 +1,8 @@
 ---
-import { siteConfig } from "@/data/site";
+import { pageCopy, siteConfig } from "@/data/site";
 
 const pathname = Astro.url.pathname;
+const themeToggleCopy = pageCopy.header.themeToggle;
 ---
 
 <header class="site-header">
@@ -12,7 +13,7 @@ const pathname = Astro.url.pathname;
       </span>
     </a>
 
-    <nav aria-label="Primary">
+    <nav aria-label={pageCopy.header.navigationAriaLabel}>
       <ul class="nav-list">
         {
           siteConfig.navigation.map((item) => {
@@ -41,10 +42,14 @@ const pathname = Astro.url.pathname;
       class="theme-toggle"
       type="button"
       data-theme-toggle
-      aria-label="Switch to dark mode"
+      data-dark-label={themeToggleCopy.darkLabel}
+      data-light-label={themeToggleCopy.lightLabel}
+      data-switch-to-dark-aria-label={themeToggleCopy.switchToDarkAriaLabel}
+      data-switch-to-light-aria-label={themeToggleCopy.switchToLightAriaLabel}
+      aria-label={themeToggleCopy.switchToDarkAriaLabel}
       aria-pressed="false"
     >
-      <span data-theme-toggle-label>Dark</span>
+      <span data-theme-toggle-label>{themeToggleCopy.darkLabel}</span>
     </button>
   </div>
 </header>
@@ -57,15 +62,21 @@ const pathname = Astro.url.pathname;
     const label = button?.querySelector("[data-theme-toggle-label]");
 
     const applyTheme = (theme) => {
+      const darkLabel = button?.dataset.darkLabel || "Dark";
+      const lightLabel = button?.dataset.lightLabel || "Light";
+      const switchToDarkAriaLabel =
+        button?.dataset.switchToDarkAriaLabel || "Switch to dark mode";
+      const switchToLightAriaLabel =
+        button?.dataset.switchToLightAriaLabel || "Switch to light mode";
       root.dataset.theme = theme;
       const isDark = theme === "dark";
       button?.setAttribute(
         "aria-label",
-        `Switch to ${isDark ? "light" : "dark"} mode`,
+        isDark ? switchToLightAriaLabel : switchToDarkAriaLabel,
       );
       button?.setAttribute("aria-pressed", String(isDark));
       if (label) {
-        label.textContent = isDark ? "Light" : "Dark";
+        label.textContent = isDark ? lightLabel : darkLabel;
       }
     };
 

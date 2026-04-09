@@ -1,89 +1,83 @@
 ---
+import { pageCopy, siteConfig } from "@/data/site";
 import Layout from "@/layouts/Layout.astro";
 
-const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
-const hasTurnstileSiteKey =
-  typeof turnstileSiteKey === "string" && turnstileSiteKey.length > 0;
+const web3FormsAccessKey =
+  import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY ||
+  "8bb517fb-676d-4f01-9abf-e78ede972044";
+const contactCopy = pageCopy.contact;
 ---
 
-<Layout title="Contact" description="Contact R. Martinez.">
+<Layout title={contactCopy.seoTitle} description={contactCopy.seoDescription}>
   <div class="frame">
     <section class="contact-page reveal">
       <header>
-        <p class="eyebrow">Contact</p>
-        <h1>Send a note.</h1>
-        <p class="meta">Short is fine.</p>
+        <p class="eyebrow">{contactCopy.eyebrow}</p>
+        <h1>{contactCopy.title}</h1>
       </header>
 
       <form
         class="contact-form panel"
-        action="/api/contact"
+        action="https://api.web3forms.com/submit"
         data-contact-form
-        data-is-ready={hasTurnstileSiteKey ? "true" : "false"}
+        data-sending-message={contactCopy.sendingMessage}
+        data-success-message={contactCopy.successMessage}
+        data-error-message={contactCopy.errorMessage}
         name="contact"
         method="post"
       >
+        <input type="hidden" name="access_key" value={web3FormsAccessKey} />
+        <input
+          type="hidden"
+          name="subject"
+          value={`New contact form submission from ${siteConfig.name}`}
+        />
+
         <label class="form-hidden">
-          Leave this empty
-          <input name="bot-field" autocomplete="off" tabindex="-1" />
+          {contactCopy.honeypotLabel}
+          <input
+            name="botcheck"
+            type="checkbox"
+            autocomplete="off"
+            tabindex="-1"
+          />
         </label>
 
         <label>
-          Name
+          {contactCopy.nameLabel}
           <input name="name" autocomplete="name" required />
         </label>
 
         <label>
-          Email
+          {contactCopy.emailLabel}
           <input name="email" type="email" autocomplete="email" required />
         </label>
 
         <label>
-          Message
+          {contactCopy.messageLabel}
           <textarea name="message" rows="4" required></textarea>
         </label>
 
-        {
-          hasTurnstileSiteKey ? (
-            <div
-              class="cf-turnstile captcha-slot"
-              data-sitekey={turnstileSiteKey}
-            />
-          ) : (
-            <p class="form-status meta">
-              Contact is waiting on Cloudflare Turnstile setup.
-            </p>
-          )
-        }
-
-        <button class="button" type="submit" disabled={!hasTurnstileSiteKey}>
-          Send
-        </button>
+        <button class="button" type="submit">{contactCopy.submitLabel}</button>
         <p class="form-status meta" data-form-status aria-live="polite"></p>
       </form>
     </section>
   </div>
 </Layout>
 
-{
-  hasTurnstileSiteKey && (
-    <script
-      is:inline
-      src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-      async
-      defer
-    />
-  )
-}
-
 <script>
-  const form = document.querySelector("[data-contact-form]");
-  const status = document.querySelector("[data-form-status]");
+  const form = document.querySelector<HTMLFormElement>("[data-contact-form]");
+  const status = document.querySelector<HTMLElement>("[data-form-status]");
 
   form?.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     const submitButton = form.querySelector("button[type='submit']");
+    const sendingMessage = form.dataset.sendingMessage || "Sending.";
+    const successMessage =
+      form.dataset.successMessage || "Thanks, your note was sent.";
+    const errorMessage =
+      form.dataset.errorMessage || "Could not send that message.";
 
     if (
       !(form instanceof HTMLFormElement) ||
@@ -93,39 +87,35 @@ const hasTurnstileSiteKey =
     }
 
     submitButton.disabled = true;
-    if (status) {
-      status.textContent = "Sending.";
+    if (status instanceof HTMLElement) {
+      status.textContent = sendingMessage;
     }
 
     try {
       const response = await fetch(form.action, {
         body: new FormData(form),
-        headers: { accept: "application/json" },
+        headers: { Accept: "application/json" },
         method: "POST",
       });
       const result = await response
         .json()
-        .catch(() => ({ message: "Could not send that message." }));
+        .catch(() => ({ message: errorMessage }));
 
-      if (!response.ok) {
-        throw new Error(result.message || "Could not send that message.");
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || errorMessage);
       }
 
       form.reset();
-      window.turnstile?.reset();
-      if (status) {
-        status.textContent = result.message || "Sent.";
+      if (status instanceof HTMLElement) {
+        status.textContent = successMessage;
       }
     } catch (error) {
-      window.turnstile?.reset();
-      if (status) {
+      if (status instanceof HTMLElement) {
         status.textContent =
-          error instanceof Error
-            ? error.message
-            : "Could not send that message.";
+          error instanceof Error ? error.message : errorMessage;
       }
     } finally {
-      submitButton.disabled = form.dataset.isReady !== "true";
+      submitButton.disabled = false;
     }
   });
 </script>
@@ -179,10 +169,6 @@ const hasTurnstileSiteKey =
     width: 1px;
     height: 1px;
     overflow: hidden;
-  }
-
-  .captcha-slot {
-    min-height: 78px;
   }
 
   .form-status {

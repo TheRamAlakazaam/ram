@@ -3,47 +3,192 @@ import { getCollection } from "astro:content";
 
 import PageIntro from "@/components/PageIntro.astro";
 import PhotoCard from "@/components/PhotoCard.astro";
-import { sectionDescriptions } from "@/data/site";
+import { pageCopy } from "@/data/site";
 import Layout from "@/layouts/Layout.astro";
 import { sortByDateDesc } from "@/utils/content";
+import {
+  getAlbumCoverAlt,
+  getAlbumCoverImage,
+  getAlbumImageCount,
+} from "@/utils/photography";
 
 const photos = sortByDateDesc(await getCollection("photos"));
+const photographyCopy = pageCopy.photography;
+const photographyFilters = photographyCopy.filters;
 ---
 
 <Layout
-  title="Photography"
-  description="Photography portfolio, visual notes, and quiet studies of light, texture, and motion."
+  title={photographyCopy.seoTitle}
+  description={photographyCopy.seoDescription}
 >
   <div class="frame">
     <PageIntro
-      eyebrow="Visual Archive"
-      title="Photography"
-      lede={sectionDescriptions.photography}
+      eyebrow={photographyCopy.indexEyebrow}
+      title={photographyCopy.indexTitle}
     />
 
     <section class="section-block">
       {
         photos.length > 0 ? (
-          <div class="section-grid section-grid--thirds">
-            {photos.map((photo) => (
-              <PhotoCard
-                href={`/photography/${photo.slug}`}
-                title={photo.data.title}
-                description={photo.data.description}
-                publishDate={photo.data.publishDate}
-                location={photo.data.location}
-                alt={photo.data.alt}
-                image={photo.data.image}
-              />
-            ))}
+          <div class="collection-root reveal" data-collection-root>
+            <div class="collection-toolbar panel">
+              <label class="collection-search">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="11" cy="11" r="6" />
+                  <path d="M20 20l-4.2-4.2" />
+                </svg>
+                <input
+                  type="search"
+                  data-filter-search
+                  aria-label={photographyFilters.searchAriaLabel}
+                  placeholder={photographyFilters.searchPlaceholder}
+                />
+              </label>
+
+              <button
+                class="collection-sort"
+                type="button"
+                data-sort-toggle
+                data-sort-newest-aria-label={
+                  photographyFilters.sortNewestAriaLabel
+                }
+                data-sort-oldest-aria-label={
+                  photographyFilters.sortOldestAriaLabel
+                }
+                aria-label={photographyFilters.sortOldestAriaLabel}
+                title={photographyFilters.sortOldestAriaLabel}
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M7 6h10" />
+                  <path d="M7 12h7" />
+                  <path d="M7 18h4" />
+                  <path d="M17 8l3-3 3 3" />
+                  <path d="M20 5v14" />
+                </svg>
+              </button>
+            </div>
+
+            <div class="section-grid" data-filter-list>
+              {photos.map((photo) => (
+                <div
+                  data-filter-item
+                  data-filter-text={[
+                    photo.data.title,
+                    photo.data.description,
+                    photo.data.location,
+                    ...photo.data.tags,
+                  ]
+                    .join(" ")
+                    .toLowerCase()}
+                  data-sort-key={photo.data.publishDate.getTime()}
+                >
+                  <PhotoCard
+                    href={`/photography/${photo.slug}`}
+                    title={photo.data.title}
+                    description={photo.data.description}
+                    publishDate={photo.data.publishDate}
+                    location={photo.data.location}
+                    alt={getAlbumCoverAlt(photo.data)}
+                    image={getAlbumCoverImage(photo.data)}
+                    imageCount={getAlbumImageCount(photo.data)}
+                  />
+                </div>
+              ))}
+            </div>
+
+            <div
+              class="empty-state collection-empty-state"
+              data-filter-empty
+              hidden
+            >
+              {photographyFilters.noResultsMessage}
+            </div>
           </div>
         ) : (
-          <div class="empty-state">
-            Add your first photo entry in `src/content/photos` and it will
-            appear here.
-          </div>
+          <div class="empty-state">{photographyCopy.emptyState}</div>
         )
       }
     </section>
   </div>
 </Layout>
+
+<script>
+  const collectionRoots = document.querySelectorAll("[data-collection-root]");
+
+  collectionRoots.forEach((root) => {
+    if (!(root instanceof HTMLElement)) {
+      return;
+    }
+
+    const searchInput = root.querySelector("[data-filter-search]");
+    const sortButton = root.querySelector("[data-sort-toggle]");
+    const list = root.querySelector("[data-filter-list]");
+    const emptyState = root.querySelector("[data-filter-empty]");
+
+    if (
+      !(searchInput instanceof HTMLInputElement) ||
+      !(sortButton instanceof HTMLButtonElement) ||
+      !(list instanceof HTMLElement) ||
+      !(emptyState instanceof HTMLElement)
+    ) {
+      return;
+    }
+
+    const items = Array.from(
+      list.querySelectorAll("[data-filter-item]"),
+    ).filter((item) => item instanceof HTMLElement);
+    let sortOrder = "desc";
+
+    const updateSortButton = () => {
+      const nextLabel =
+        sortOrder === "desc"
+          ? sortButton.dataset.sortOldestAriaLabel
+          : sortButton.dataset.sortNewestAriaLabel;
+
+      sortButton.dataset.sortOrder = sortOrder;
+      sortButton.setAttribute(
+        "aria-label",
+        nextLabel || "Toggle sort direction",
+      );
+      sortButton.title = nextLabel || "Toggle sort direction";
+    };
+
+    const applyFilters = () => {
+      const query = searchInput.value.trim().toLowerCase();
+      const sortedItems = [...items].sort((a, b) => {
+        const aKey = Number(a.dataset.sortKey || 0);
+        const bKey = Number(b.dataset.sortKey || 0);
+
+        return sortOrder === "desc" ? bKey - aKey : aKey - bKey;
+      });
+
+      let visibleCount = 0;
+
+      sortedItems.forEach((item) => {
+        const text = item.dataset.filterText || "";
+        const matches = query.length === 0 || text.includes(query);
+
+        item.hidden = !matches;
+        list.append(item);
+
+        if (matches) {
+          visibleCount += 1;
+        }
+      });
+
+      const hasVisibleItems = visibleCount > 0;
+      list.hidden = !hasVisibleItems;
+      emptyState.hidden = hasVisibleItems;
+    };
+
+    searchInput.addEventListener("input", applyFilters);
+    sortButton.addEventListener("click", () => {
+      sortOrder = sortOrder === "desc" ? "asc" : "desc";
+      updateSortButton();
+      applyFilters();
+    });
+
+    updateSortButton();
+    applyFilters();
+  });
+</script>

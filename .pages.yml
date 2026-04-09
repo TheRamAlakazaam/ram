@@ -23,6 +23,9 @@ content:
       - name: description
         label: Site description
         type: text
+      - name: summary
+        label: About summary
+        type: text
       - name: location
         label: Location
         type: string
@@ -47,6 +50,9 @@ content:
             type: string
           - name: linkedin
             label: LinkedIn URL
+            type: string
+          - name: github
+            label: GitHub URL
             type: string
       - name: projects
         label: Project links
@@ -87,6 +93,272 @@ content:
             label: Notes
             type: text
             required: false
+
+  - name: pageCopy
+    label: Pages And Navigation
+    type: file
+    path: src/data/pages.json
+    format: json
+    fields:
+      - name: navigation
+        label: Navigation
+        type: object
+        list: true
+        fields:
+          - name: href
+            label: Path
+            type: string
+          - name: label
+            label: Label
+            type: string
+      - name: header
+        label: Header
+        type: object
+        fields:
+          - name: navigationAriaLabel
+            label: Navigation aria label
+            type: string
+          - name: themeToggle
+            label: Theme Toggle
+            type: object
+            fields:
+              - name: darkLabel
+                label: Dark label
+                type: string
+              - name: lightLabel
+                label: Light label
+                type: string
+              - name: switchToDarkAriaLabel
+                label: Switch to dark aria label
+                type: string
+              - name: switchToLightAriaLabel
+                label: Switch to light aria label
+                type: string
+      - name: footer
+        label: Footer
+        type: object
+        fields:
+          - name: socialAriaLabel
+            label: Social links aria label
+            type: string
+          - name: instagramAriaLabel
+            label: Instagram aria label
+            type: string
+          - name: linkedinAriaLabel
+            label: LinkedIn aria label
+            type: string
+          - name: githubAriaLabel
+            label: GitHub aria label
+            type: string
+      - name: shared
+        label: Shared Labels
+        type: object
+        fields:
+          - name: tagsAriaLabel
+            label: Tags aria label
+            type: string
+      - name: home
+        label: Home Page
+        type: object
+        fields:
+          - name: seoDescription
+            label: SEO description
+            type: text
+          - name: heroTitle
+            label: Hero title
+            type: string
+          - name: photosEyebrow
+            label: Photos eyebrow
+            type: string
+          - name: photosTitle
+            label: Photos section title
+            type: string
+          - name: photosCtaLabel
+            label: Photos button label
+            type: string
+          - name: writingEyebrow
+            label: Writing eyebrow
+            type: string
+          - name: writingTitle
+            label: Writing section title
+            type: string
+          - name: writingCtaLabel
+            label: Writing button label
+            type: string
+          - name: contactEyebrow
+            label: Contact eyebrow
+            type: string
+          - name: contactTitle
+            label: Contact section title
+            type: string
+          - name: contactCtaLabel
+            label: Contact button label
+            type: string
+      - name: writing
+        label: Writing Page
+        type: object
+        fields:
+          - name: seoTitle
+            label: SEO title
+            type: string
+          - name: seoDescription
+            label: SEO description
+            type: text
+          - name: indexEyebrow
+            label: Index eyebrow
+            type: string
+          - name: indexTitle
+            label: Index title
+            type: string
+          - name: cardEyebrow
+            label: Card eyebrow
+            type: string
+          - name: articleEyebrow
+            label: Article eyebrow
+            type: string
+          - name: emptyState
+            label: Empty state
+            type: text
+          - name: filters
+            label: Filters
+            type: object
+            fields:
+              - name: searchPlaceholder
+                label: Search placeholder
+                type: string
+              - name: searchAriaLabel
+                label: Search aria label
+                type: string
+              - name: sortNewestAriaLabel
+                label: Sort newest aria label
+                type: string
+              - name: sortOldestAriaLabel
+                label: Sort oldest aria label
+                type: string
+              - name: noResultsMessage
+                label: No results message
+                type: text
+      - name: photography
+        label: Photography Page
+        type: object
+        fields:
+          - name: seoTitle
+            label: SEO title
+            type: string
+          - name: seoDescription
+            label: SEO description
+            type: text
+          - name: indexEyebrow
+            label: Index eyebrow
+            type: string
+          - name: indexTitle
+            label: Index title
+            type: string
+          - name: articleEyebrow
+            label: Article eyebrow
+            type: string
+          - name: emptyState
+            label: Empty state
+            type: text
+          - name: filters
+            label: Filters
+            type: object
+            fields:
+              - name: searchPlaceholder
+                label: Search placeholder
+                type: string
+              - name: searchAriaLabel
+                label: Search aria label
+                type: string
+              - name: sortNewestAriaLabel
+                label: Sort newest aria label
+                type: string
+              - name: sortOldestAriaLabel
+                label: Sort oldest aria label
+                type: string
+              - name: noResultsMessage
+                label: No results message
+                type: text
+      - name: about
+        label: About Page
+        type: object
+        fields:
+          - name: seoTitle
+            label: SEO title
+            type: string
+          - name: seoDescription
+            label: SEO description
+            type: text
+          - name: heroEyebrow
+            label: Hero eyebrow
+            type: string
+          - name: heroTitle
+            label: Hero title
+            type: string
+          - name: summaryTitle
+            label: Summary title
+            type: string
+          - name: summaryEmptyState
+            label: Summary empty state
+            type: text
+          - name: projectsTitle
+            label: Projects title
+            type: string
+          - name: projectsMeta
+            label: Projects meta copy
+            type: string
+          - name: projectsEmptyState
+            label: Projects empty state
+            type: text
+          - name: cvTitle
+            label: CV title
+            type: string
+          - name: cvMeta
+            label: CV meta copy
+            type: string
+          - name: cvEmptyState
+            label: CV empty state
+            type: text
+      - name: contact
+        label: Contact Page
+        type: object
+        fields:
+          - name: seoTitle
+            label: SEO title
+            type: string
+          - name: seoDescription
+            label: SEO description
+            type: text
+          - name: eyebrow
+            label: Eyebrow
+            type: string
+          - name: title
+            label: Title
+            type: string
+          - name: honeypotLabel
+            label: Honeypot label
+            type: string
+          - name: nameLabel
+            label: Name field label
+            type: string
+          - name: emailLabel
+            label: Email field label
+            type: string
+          - name: messageLabel
+            label: Message field label
+            type: string
+          - name: submitLabel
+            label: Submit button label
+            type: string
+          - name: sendingMessage
+            label: Sending message
+            type: string
+          - name: successMessage
+            label: Success message
+            type: string
+          - name: errorMessage
+            label: Error message
+            type: string
 
   - name: writing
     label: Writing
@@ -137,7 +409,7 @@ content:
           rename: safe
 
   - name: photos
-    label: Photos
+    label: Photography Albums
     type: collection
     path: src/content/photos
     format: yaml-frontmatter
@@ -164,14 +436,24 @@ content:
       - name: location
         label: Location
         type: string
-      - name: alt
-        label: Alt text
+      - name: coverAlt
+        label: Cover alt text
         type: text
-      - name: image
-        label: Image
+        required: false
+      - name: coverImage
+        label: Cover image
         type: image
         options:
           media: images
+          path: photos
+          rename: safe
+          extensions: [avif, jpg, jpeg, png, webp]
+      - name: gallery
+        label: Album gallery
+        type: image
+        options:
+          media: images
+          multiple: true
           path: photos
           rename: safe
           extensions: [avif, jpg, jpeg, png, webp]

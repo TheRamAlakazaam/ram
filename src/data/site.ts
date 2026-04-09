@@ -1,9 +1,11 @@
+import editablePageCopy from "./pages.json";
 import editableProfile from "./profile.json";
 
 type SiteProfile = {
   name: string;
   defaultTitle: string;
   description: string;
+  summary: string;
   location: string;
   roles: string[];
   tools: string[];
@@ -11,6 +13,7 @@ type SiteProfile = {
   social: {
     instagram: string;
     linkedin: string;
+    github: string;
   };
   projects: Array<{
     title: string;
@@ -27,23 +30,169 @@ type SiteProfile = {
   }>;
 };
 
-const profile = editableProfile as SiteProfile;
+type NavigationItem = {
+  href: string;
+  label: string;
+};
 
-const navigation = [
-  { href: "/", label: "Home" },
-  { href: "/photography", label: "Photography" },
-  { href: "/blog", label: "Writing" },
-  { href: "/work", label: "Work" },
-  { href: "/contact", label: "Contact" },
-] as const;
+type PageCopy = {
+  navigation: NavigationItem[];
+  header: {
+    navigationAriaLabel: string;
+    themeToggle: {
+      darkLabel: string;
+      lightLabel: string;
+      switchToDarkAriaLabel: string;
+      switchToLightAriaLabel: string;
+    };
+  };
+  footer: {
+    socialAriaLabel: string;
+    instagramAriaLabel: string;
+    linkedinAriaLabel: string;
+    githubAriaLabel: string;
+  };
+  shared: {
+    tagsAriaLabel: string;
+  };
+  home: {
+    seoDescription: string;
+    heroTitle: string;
+    photosEyebrow: string;
+    photosTitle: string;
+    photosCtaLabel: string;
+    writingEyebrow: string;
+    writingTitle: string;
+    writingCtaLabel: string;
+    contactEyebrow: string;
+    contactTitle: string;
+    contactCtaLabel: string;
+  };
+  writing: {
+    seoTitle: string;
+    seoDescription: string;
+    indexEyebrow: string;
+    indexTitle: string;
+    cardEyebrow: string;
+    articleEyebrow: string;
+    emptyState: string;
+    filters: {
+      searchPlaceholder: string;
+      searchAriaLabel: string;
+      sortNewestAriaLabel: string;
+      sortOldestAriaLabel: string;
+      noResultsMessage: string;
+    };
+  };
+  photography: {
+    seoTitle: string;
+    seoDescription: string;
+    indexEyebrow: string;
+    indexTitle: string;
+    articleEyebrow: string;
+    emptyState: string;
+    filters: {
+      searchPlaceholder: string;
+      searchAriaLabel: string;
+      sortNewestAriaLabel: string;
+      sortOldestAriaLabel: string;
+      noResultsMessage: string;
+    };
+  };
+  about: {
+    seoTitle: string;
+    seoDescription: string;
+    heroEyebrow: string;
+    heroTitle: string;
+    summaryTitle: string;
+    summaryEmptyState: string;
+    projectsTitle: string;
+    projectsMeta: string;
+    projectsEmptyState: string;
+    cvTitle: string;
+    cvMeta: string;
+    cvEmptyState: string;
+  };
+  contact: {
+    seoTitle: string;
+    seoDescription: string;
+    eyebrow: string;
+    title: string;
+    honeypotLabel: string;
+    nameLabel: string;
+    emailLabel: string;
+    messageLabel: string;
+    submitLabel: string;
+    sendingMessage: string;
+    successMessage: string;
+    errorMessage: string;
+  };
+};
+
+function hasText(value: unknown): value is string {
+  return typeof value === "string" && value.trim().length > 0;
+}
+
+const profile = editableProfile as Partial<SiteProfile>;
+const pageCopy = editablePageCopy as PageCopy;
+
+const navigation = pageCopy.navigation.filter(
+  (item): item is NavigationItem => hasText(item?.href) && hasText(item?.label),
+);
+
+const normalizedProfile: SiteProfile = {
+  name: profile.name || "R. Martinez",
+  defaultTitle: profile.defaultTitle || "R. Martinez",
+  description:
+    profile.description || "R. Martinez shares recent photographs and writing.",
+  summary: profile.summary || "",
+  location: profile.location || "",
+  roles: Array.isArray(profile.roles) ? profile.roles.filter(hasText) : [],
+  tools: Array.isArray(profile.tools) ? profile.tools.filter(hasText) : [],
+  keywords: Array.isArray(profile.keywords)
+    ? profile.keywords.filter(hasText)
+    : [],
+  social: {
+    instagram: profile.social?.instagram || "",
+    linkedin: profile.social?.linkedin || "",
+    github: profile.social?.github || "",
+  },
+  projects: Array.isArray(profile.projects)
+    ? profile.projects
+        .filter(
+          (project): project is SiteProfile["projects"][number] =>
+            Boolean(project) &&
+            hasText(project.title) &&
+            hasText(project.description) &&
+            hasText(project.href),
+        )
+        .map((project) => ({
+          ...project,
+          status: hasText(project.status) ? project.status : undefined,
+        }))
+    : [],
+  artCv: Array.isArray(profile.artCv)
+    ? profile.artCv
+        .filter(
+          (item): item is SiteProfile["artCv"][number] =>
+            Boolean(item) &&
+            [item.year, item.title, item.venue, item.location, item.notes].some(
+              hasText,
+            ),
+        )
+        .map((item) => ({
+          year: item.year || "",
+          title: item.title || "",
+          venue: item.venue || "",
+          location: item.location || "",
+          notes: hasText(item.notes) ? item.notes : undefined,
+        }))
+    : [],
+};
 
 export const siteConfig = {
-  ...profile,
+  ...normalizedProfile,
   navigation,
 };
 
-export const sectionDescriptions = {
-  photography:
-    "Photo work, visual notes, and quiet studies of light, texture, and motion.",
-  blog: "Blog posts, dev notes, lists, and whatever else I want to write about that week.",
-};
+export { pageCopy };

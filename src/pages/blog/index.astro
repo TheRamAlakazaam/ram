@@ -3,44 +3,177 @@ import { getCollection } from "astro:content";
 
 import EntryCard from "@/components/EntryCard.astro";
 import PageIntro from "@/components/PageIntro.astro";
+import { pageCopy } from "@/data/site";
 import Layout from "@/layouts/Layout.astro";
 import { sortByDateDesc } from "@/utils/content";
 
 const posts = sortByDateDesc(await getCollection("blog"));
+const writingCopy = pageCopy.writing;
+const writingFilters = writingCopy.filters;
 ---
 
-<Layout
-  title="Writing"
-  description="Writing, dev notes, lists, and other entries from R. Martinez."
->
+<Layout title={writingCopy.seoTitle} description={writingCopy.seoDescription}>
   <div class="frame">
     <PageIntro
-      eyebrow="Journal"
-      title="Writing"
-      lede="Blog posts, dev notes, lists, and whatever else I want to write about that week."
+      eyebrow={writingCopy.indexEyebrow}
+      title={writingCopy.indexTitle}
     />
 
     <section class="section-block">
       {
         posts.length > 0 ? (
-          <div class="section-grid">
-            {posts.map((post) => (
-              <EntryCard
-                href={`/blog/${post.slug}`}
-                title={post.data.title}
-                description={post.data.description}
-                publishDate={post.data.publishDate}
-                tags={post.data.tags}
-                eyebrow="Writing"
-              />
-            ))}
+          <div class="collection-root reveal" data-collection-root>
+            <div class="collection-toolbar panel">
+              <label class="collection-search">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="11" cy="11" r="6" />
+                  <path d="M20 20l-4.2-4.2" />
+                </svg>
+                <input
+                  type="search"
+                  data-filter-search
+                  aria-label={writingFilters.searchAriaLabel}
+                  placeholder={writingFilters.searchPlaceholder}
+                />
+              </label>
+
+              <button
+                class="collection-sort"
+                type="button"
+                data-sort-toggle
+                data-sort-newest-aria-label={writingFilters.sortNewestAriaLabel}
+                data-sort-oldest-aria-label={writingFilters.sortOldestAriaLabel}
+                aria-label={writingFilters.sortOldestAriaLabel}
+                title={writingFilters.sortOldestAriaLabel}
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M7 6h10" />
+                  <path d="M7 12h7" />
+                  <path d="M7 18h4" />
+                  <path d="M17 8l3-3 3 3" />
+                  <path d="M20 5v14" />
+                </svg>
+              </button>
+            </div>
+
+            <div class="section-grid" data-filter-list>
+              {posts.map((post) => (
+                <div
+                  data-filter-item
+                  data-filter-text={[
+                    post.data.title,
+                    post.data.description,
+                    ...post.data.tags,
+                  ]
+                    .join(" ")
+                    .toLowerCase()}
+                  data-sort-key={post.data.publishDate.getTime()}
+                >
+                  <EntryCard
+                    href={`/blog/${post.slug}`}
+                    title={post.data.title}
+                    description={post.data.description}
+                    publishDate={post.data.publishDate}
+                    tags={post.data.tags}
+                    eyebrow={writingCopy.cardEyebrow}
+                  />
+                </div>
+              ))}
+            </div>
+
+            <div
+              class="empty-state collection-empty-state"
+              data-filter-empty
+              hidden
+            >
+              {writingFilters.noResultsMessage}
+            </div>
           </div>
         ) : (
-          <div class="empty-state">
-            Add your first entry in `src/content/blog` and it will appear here.
-          </div>
+          <div class="empty-state">{writingCopy.emptyState}</div>
         )
       }
     </section>
   </div>
 </Layout>
+
+<script>
+  const collectionRoots = document.querySelectorAll("[data-collection-root]");
+
+  collectionRoots.forEach((root) => {
+    if (!(root instanceof HTMLElement)) {
+      return;
+    }
+
+    const searchInput = root.querySelector("[data-filter-search]");
+    const sortButton = root.querySelector("[data-sort-toggle]");
+    const list = root.querySelector("[data-filter-list]");
+    const emptyState = root.querySelector("[data-filter-empty]");
+
+    if (
+      !(searchInput instanceof HTMLInputElement) ||
+      !(sortButton instanceof HTMLButtonElement) ||
+      !(list instanceof HTMLElement) ||
+      !(emptyState instanceof HTMLElement)
+    ) {
+      return;
+    }
+
+    const items = Array.from(
+      list.querySelectorAll("[data-filter-item]"),
+    ).filter((item) => item instanceof HTMLElement);
+    let sortOrder = "desc";
+
+    const updateSortButton = () => {
+      const nextLabel =
+        sortOrder === "desc"
+          ? sortButton.dataset.sortOldestAriaLabel
+          : sortButton.dataset.sortNewestAriaLabel;
+
+      sortButton.dataset.sortOrder = sortOrder;
+      sortButton.setAttribute(
+        "aria-label",
+        nextLabel || "Toggle sort direction",
+      );
+      sortButton.title = nextLabel || "Toggle sort direction";
+    };
+
+    const applyFilters = () => {
+      const query = searchInput.value.trim().toLowerCase();
+      const sortedItems = [...items].sort((a, b) => {
+        const aKey = Number(a.dataset.sortKey || 0);
+        const bKey = Number(b.dataset.sortKey || 0);
+
+        return sortOrder === "desc" ? bKey - aKey : aKey - bKey;
+      });
+
+      let visibleCount = 0;
+
+      sortedItems.forEach((item) => {
+        const text = item.dataset.filterText || "";
+        const matches = query.length === 0 || text.includes(query);
+
+        item.hidden = !matches;
+        list.append(item);
+
+        if (matches) {
+          visibleCount += 1;
+        }
+      });
+
+      const hasVisibleItems = visibleCount > 0;
+      list.hidden = !hasVisibleItems;
+      emptyState.hidden = hasVisibleItems;
+    };
+
+    searchInput.addEventListener("input", applyFilters);
+    sortButton.addEventListener("click", () => {
+      sortOrder = sortOrder === "desc" ? "asc" : "desc";
+      updateSortButton();
+      applyFilters();
+    });
+
+    updateSortButton();
+    applyFilters();
+  });
+</script>

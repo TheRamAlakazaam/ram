@@ -2,8 +2,15 @@
 import { getCollection, render } from "astro:content";
 
 import OptimizedImage from "@/components/OptimizedImage.astro";
+import { pageCopy } from "@/data/site";
 import Layout from "@/layouts/Layout.astro";
 import { formatDate } from "@/utils/content";
+import {
+  formatAlbumImageCount,
+  getAlbumCoverAlt,
+  getAlbumCoverImage,
+  getAlbumGallery,
+} from "@/utils/photography";
 
 export async function getStaticPaths() {
   const photos = await getCollection("photos");
@@ -16,6 +23,12 @@ export async function getStaticPaths() {
 
 const { photo } = Astro.props;
 const { Content } = await render(photo);
+const photographyCopy = pageCopy.photography;
+const coverImage = getAlbumCoverImage(photo.data);
+const coverAlt = getAlbumCoverAlt(photo.data);
+const gallery = getAlbumGallery(photo.data);
+const hasBody = (photo.body || "").trim().length > 0;
+const showHero = gallery.length <= 1;
 ---
 
 <Layout
@@ -27,35 +40,99 @@ const { Content } = await render(photo);
 >
   <article class="article-shell">
     <header class="article-header article-header--center panel reveal">
-      <p class="eyebrow">Photography</p>
+      <p class="eyebrow">{photographyCopy.articleEyebrow}</p>
       <h1>{photo.data.title}</h1>
       <p class="lede">{photo.data.description}</p>
       <div class="article-meta">
         <span class="meta">{photo.data.location}</span>
         <span class="meta">{formatDate(photo.data.publishDate)}</span>
+        <span class="meta">{formatAlbumImageCount(gallery.length)}</span>
       </div>
     </header>
 
-    <div class="photo-hero reveal">
-      {
-        photo.data.image ? (
-          <OptimizedImage
-            src={photo.data.image}
-            alt={photo.data.alt}
-            loading="eager"
-            sizes="(min-width: 900px) 860px, 100vw"
-            widths={[720, 960, 1200, 1600]}
-          />
-        ) : (
-          <div class="photo-hero__placeholder">
-            <span>{photo.data.alt}</span>
-          </div>
-        )
-      }
-    </div>
+    {
+      showHero && (
+        <div class="photo-hero reveal">
+          {coverImage ? (
+            <OptimizedImage
+              src={coverImage}
+              alt={coverAlt}
+              loading="eager"
+              sizes="(min-width: 900px) 860px, 100vw"
+              widths={[720, 960, 1200, 1600]}
+            />
+          ) : (
+            <div class="photo-hero__placeholder">
+              <span>{coverAlt}</span>
+            </div>
+          )}
+        </div>
+      )
+    }
 
-    <div class="article-content panel reveal prose">
-      <Content />
-    </div>
+    {
+      gallery.length > 1 && (
+        <section class="album-gallery panel reveal">
+          <div class="album-gallery__grid">
+            {gallery.map((image, index) => (
+              <figure class="album-gallery__item">
+                <OptimizedImage
+                  src={image}
+                  alt={`${photo.data.title} photo ${index + 1}`}
+                  sizes="(min-width: 1200px) 280px, (min-width: 900px) 33vw, (min-width: 640px) 50vw, 100vw"
+                  widths={[720, 960, 1200]}
+                />
+              </figure>
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    {
+      hasBody && (
+        <div class="article-content panel reveal prose">
+          <Content />
+        </div>
+      )
+    }
   </article>
 </Layout>
+
+<style>
+  .album-gallery {
+    padding: clamp(0.8rem, 1.5vw, 1rem);
+  }
+
+  .album-gallery__grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 0.85rem;
+  }
+
+  .album-gallery__item {
+    grid-column: span 4;
+    margin: 0;
+    overflow: hidden;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: var(--surface-strong);
+  }
+
+  .album-gallery__item img {
+    width: 100%;
+    height: auto;
+  }
+
+  @media (max-width: 900px) {
+    .album-gallery__item {
+      grid-column: span 6;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .album-gallery__item {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

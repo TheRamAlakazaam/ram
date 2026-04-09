@@ -286,7 +286,10 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
   }
 
   .site-shell {
+    display: flex;
     min-height: 100vh;
+    min-height: 100dvh;
+    flex-direction: column;
   }
 
   .frame {
@@ -375,6 +378,7 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
   }
 
   .site-main {
+    flex: 1 0 auto;
     padding: 1.2rem 0 1.5rem;
   }
 
@@ -516,6 +520,88 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
     justify-content: space-between;
   }
 
+  .collection-root {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .collection-toolbar {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.7rem 0.8rem;
+  }
+
+  .collection-search {
+    position: relative;
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+  }
+
+  .collection-search svg,
+  .collection-sort svg {
+    width: 1rem;
+    height: 1rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.8;
+  }
+
+  .collection-search svg {
+    position: absolute;
+    left: 0.8rem;
+    color: var(--muted);
+    pointer-events: none;
+  }
+
+  .collection-search input {
+    width: 100%;
+    min-height: 2.6rem;
+    padding: 0.65rem 0.8rem 0.65rem 2.4rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--surface);
+    color: var(--ink);
+    font: inherit;
+  }
+
+  .collection-search input::placeholder {
+    color: var(--muted);
+  }
+
+  .collection-sort {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+    transition:
+      border-color 180ms ease,
+      transform 180ms ease;
+  }
+
+  .collection-sort[data-sort-order="asc"] svg {
+    transform: rotate(180deg);
+  }
+
+  .collection-sort:hover {
+    border-color: var(--line-strong);
+  }
+
+  .collection-empty-state[hidden] {
+    display: none;
+  }
+
   .section-head h2 {
     font-size: clamp(1.45rem, 2.7vw, 2.1rem);
   }
@@ -605,6 +691,10 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
     border-top: 1px solid var(--line);
   }
 
+  .photo-card__meta {
+    justify-content: flex-start;
+  }
+
   .photo-card__media {
     overflow: hidden;
     border-radius: 0;
@@ -680,6 +770,11 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
     font-size: 1rem;
   }
 
+  .prose > * {
+    width: min(100%, 68ch);
+    margin-inline: auto;
+  }
+
   .prose h2,
   .prose h3 {
     margin-top: 0.75rem;
@@ -688,7 +783,7 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
 
   .prose p,
   .prose li {
-    max-width: 68ch;
+    max-width: none;
   }
 
   .prose a {
@@ -771,7 +866,8 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
     .site-header__inner,
     .site-footer__inner,
     .section-head,
-    .article-meta {
+    .article-meta,
+    .collection-toolbar {
       align-items: start;
       flex-direction: column;
     }

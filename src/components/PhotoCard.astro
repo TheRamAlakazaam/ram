@@ -1,6 +1,7 @@
 ---
 import OptimizedImage from "@/components/OptimizedImage.astro";
 import { formatDate } from "@/utils/content";
+import { formatAlbumImageCount } from "@/utils/photography";
 
 interface Props {
   href: string;
@@ -10,10 +11,19 @@ interface Props {
   location: string;
   alt: string;
   image?: string;
+  imageCount?: number;
 }
 
-const { href, title, description, publishDate, location, alt, image } =
-  Astro.props;
+const {
+  href,
+  title,
+  description,
+  publishDate,
+  location,
+  alt,
+  image,
+  imageCount,
+} = Astro.props;
 ---
 
 <a class="card photo-card reveal" href={href}>
@@ -39,6 +49,11 @@ const { href, title, description, publishDate, location, alt, image } =
       <div class="photo-card__meta">
         <span class="meta">{location}</span>
         <span class="meta">{formatDate(publishDate)}</span>
+        {
+          typeof imageCount === "number" && imageCount > 0 && (
+            <span class="meta">{formatAlbumImageCount(imageCount)}</span>
+          )
+        }
       </div>
     </div>
 
