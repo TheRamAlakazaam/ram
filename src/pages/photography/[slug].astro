@@ -38,7 +38,9 @@ const showHero = gallery.length <= 1;
   pageType="article"
   publishDate={photo.data.publishDate}
 >
-  <article class="article-shell">
+  <article
+    class:list={["article-shell", { "article-shell--gallery": !showHero }]}
+  >
     <header class="article-header article-header--center panel reveal">
       <p class="eyebrow">{photographyCopy.articleEyebrow}</p>
       <h1>{photo.data.title}</h1>
@@ -100,39 +102,76 @@ const showHero = gallery.length <= 1;
 </Layout>
 
 <style>
+  .article-shell--gallery {
+    width: min(1220px, calc(100% - 2rem));
+  }
+
+  .photo-hero {
+    display: grid;
+    place-items: center;
+    min-height: 0;
+    padding: 0;
+  }
+
+  .photo-hero :global(picture),
+  .photo-hero :global(img) {
+    display: block;
+    width: 100%;
+  }
+
+  .photo-hero :global(img) {
+    height: auto;
+    max-height: min(82svh, 1100px);
+    object-fit: contain;
+  }
+
   .album-gallery {
     padding: clamp(0.8rem, 1.5vw, 1rem);
   }
 
   .album-gallery__grid {
-    display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: 0.85rem;
+    column-count: 3;
+    column-gap: 0.85rem;
   }
 
   .album-gallery__item {
-    grid-column: span 4;
+    break-inside: avoid;
+    display: block;
     margin: 0;
+    margin-bottom: 0.85rem;
     overflow: hidden;
     border-radius: 8px;
     border: 1px solid var(--line);
     background: var(--surface-strong);
   }
 
-  .album-gallery__item img {
+  .album-gallery__item :global(picture),
+  .album-gallery__item :global(img) {
+    display: block;
     width: 100%;
+  }
+
+  .album-gallery__item :global(img) {
     height: auto;
   }
 
   @media (max-width: 900px) {
-    .album-gallery__item {
-      grid-column: span 6;
+    .article-shell--gallery {
+      width: min(1000px, calc(100% - 1.5rem));
+    }
+
+    .album-gallery__grid {
+      column-count: 2;
     }
   }
 
   @media (max-width: 640px) {
-    .album-gallery__item {
-      grid-column: 1 / -1;
+    .article-shell--gallery {
+      width: min(100% - 1rem, 1220px);
+    }
+
+    .album-gallery__grid {
+      column-count: 1;
     }
   }
 </style>
