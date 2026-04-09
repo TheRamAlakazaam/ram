@@ -2,9 +2,12 @@
   "name": "TheRamAlakazaam",
   "defaultTitle": "Raul Martinez",
   "description": "R. Martinez shares recent photographs and writing.",
-  "summary": "",
   "location": "Houston, Texas",
-  "roles": ["Developer", "Photographer", "Writer"],
+  "roles": [
+    "Developer",
+    "Photographer",
+    "Writer"
+  ],
   "tools": [
     "Astro",
     "TypeScript",
@@ -26,7 +29,7 @@
   "social": {
     "instagram": "https://www.instagram.com/theramalakazaam/",
     "linkedin": "https://www.linkedin.com/in/theramalakazaam/",
-    "github": ""
+    "github": "https://github.com/TheRamAlakazaam"
   },
   "projects": [
     {
@@ -35,6 +38,5 @@
       "href": "https://dualstreets.com/",
       "status": "Present"
     }
-  ],
-  "artCv": []
+  ]
 }
