@@ -1,18 +1,24 @@
 ---
 interface Props {
   eyebrow?: string;
-  title: string;
+  title?: string;
   lede?: string;
 }
 
 const { eyebrow, title, lede } = Astro.props;
 const hasAside = Astro.slots.has("default");
+const isMinimal = !title && !lede && !hasAside;
+const classes = [
+  "page-intro",
+  "reveal",
+  isMinimal ? "page-intro--minimal" : "panel",
+].join(" ");
 ---
 
-<section class="page-intro panel reveal">
+<section class={classes}>
   <div>
     {eyebrow && <p class="eyebrow">{eyebrow}</p>}
-    <h1>{title}</h1>
+    {title && <h1>{title}</h1>}
     {lede && <p class="lede">{lede}</p>}
   </div>
 

@@ -34,6 +34,7 @@ const showHero = gallery.length <= 1;
 <Layout
   title={photo.data.title}
   description={photo.data.description}
+  image={coverImage}
   keywords={photo.data.tags}
   pageType="article"
   publishDate={photo.data.publishDate}
@@ -60,8 +61,9 @@ const showHero = gallery.length <= 1;
               src={coverImage}
               alt={coverAlt}
               loading="eager"
+              fetchpriority="high"
               sizes="(min-width: 900px) 860px, 100vw"
-              widths={[720, 960, 1200, 1600]}
+              widths={[720, 960, 1200]}
             />
           ) : (
             <div class="photo-hero__placeholder">
@@ -82,7 +84,7 @@ const showHero = gallery.length <= 1;
                   src={image}
                   alt={`${photo.data.title} photo ${index + 1}`}
                   sizes="(min-width: 1200px) 280px, (min-width: 900px) 33vw, (min-width: 640px) 50vw, 100vw"
-                  widths={[720, 960, 1200]}
+                  widths={[360, 520, 720, 960]}
                 />
               </figure>
             ))}
@@ -103,7 +105,7 @@ const showHero = gallery.length <= 1;
 
 <style>
   .article-shell--gallery {
-    width: min(1220px, calc(100% - 2rem));
+    width: min(1220px, calc(100% - var(--page-gutter) - var(--page-gutter)));
   }
 
   .photo-hero {
@@ -157,7 +159,7 @@ const showHero = gallery.length <= 1;
 
   @media (max-width: 900px) {
     .article-shell--gallery {
-      width: min(1000px, calc(100% - 1.5rem));
+      width: min(1000px, calc(100% - var(--page-gutter) - var(--page-gutter)));
     }
 
     .album-gallery__grid {
@@ -167,7 +169,7 @@ const showHero = gallery.length <= 1;
 
   @media (max-width: 640px) {
     .article-shell--gallery {
-      width: min(100% - 1rem, 1220px);
+      width: min(1220px, calc(100% - var(--page-gutter) - var(--page-gutter)));
     }
 
     .album-gallery__grid {

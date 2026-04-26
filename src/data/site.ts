@@ -24,6 +24,7 @@ type SiteProfile = {
   artCv: Array<{
     year: string;
     title: string;
+    titleStyle?: "italic";
     venue: string;
     location: string;
     notes?: string;
@@ -183,6 +184,7 @@ const normalizedProfile: SiteProfile = {
         .map((item) => ({
           year: item.year || "",
           title: item.title || "",
+          titleStyle: item.titleStyle === "italic" ? "italic" : undefined,
           venue: item.venue || "",
           location: item.location || "",
           notes: hasText(item.notes) ? item.notes : undefined,

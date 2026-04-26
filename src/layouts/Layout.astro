@@ -19,7 +19,9 @@ const resolvedSiteUrl =
   "https://theramalakazaam.com";
 const appEnv = import.meta.env.APP_ENV || "development";
 const allowIndexing = appEnv === "production";
-const robotsContent = allowIndexing ? "index, follow" : "noindex, nofollow";
+const robotsContent = allowIndexing
+  ? "index, follow, max-image-preview:large"
+  : "noindex, nofollow";
 
 const {
   title,
@@ -38,12 +40,19 @@ const canonical = new URL(Astro.url.pathname, resolvedSiteUrl).toString();
 const socialImage = image.startsWith("http")
   ? image
   : new URL(image, resolvedSiteUrl).toString();
+const socialImageAlt = `${pageTitle} social preview`;
+const sameAs = [
+  siteConfig.social.instagram,
+  siteConfig.social.linkedin,
+  siteConfig.social.github,
+].filter(Boolean);
 
 const structuredData = {
   "@context": "https://schema.org",
   "@graph": [
     {
       "@type": "WebSite",
+      "@id": new URL("#website", resolvedSiteUrl).toString(),
       name: siteConfig.name,
       url: resolvedSiteUrl,
       description: siteConfig.description,
@@ -51,25 +60,43 @@ const structuredData = {
     },
     {
       "@type": "Person",
+      "@id": new URL("#person", resolvedSiteUrl).toString(),
       name: siteConfig.name,
       description: siteConfig.description,
       url: resolvedSiteUrl,
       homeLocation: siteConfig.location,
       knowsAbout: [...siteConfig.roles, ...siteConfig.tools],
+      sameAs,
+    },
+    {
+      "@type": "WebPage",
+      "@id": canonical,
+      url: canonical,
+      name: pageTitle,
+      description,
+      isPartOf: {
+        "@id": new URL("#website", resolvedSiteUrl).toString(),
+      },
+      about: {
+        "@id": new URL("#person", resolvedSiteUrl).toString(),
+      },
+      inLanguage: "en-US",
     },
     ...(pageType === "article" && title
       ? [
           {
             "@type": "BlogPosting",
+            "@id": `${canonical}#article`,
             headline: title,
             description,
             image: socialImage,
             mainEntityOfPage: canonical,
             datePublished: publishDate?.toISOString(),
             dateModified: (updatedDate || publishDate)?.toISOString(),
+            keywords: keywords.join(", "),
             author: {
               "@type": "Person",
-              name: siteConfig.name,
+              "@id": new URL("#person", resolvedSiteUrl).toString(),
             },
           },
         ]
@@ -104,11 +131,13 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
     />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={socialImage} />
+    <meta property="og:image:alt" content={socialImageAlt} />
     <meta property="og:locale" content="en_US" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={socialImage} />
+    <meta name="twitter:image:alt" content={socialImageAlt} />
     {
       publishDate && (
         <meta
@@ -124,6 +153,12 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
           content={updatedDate.toISOString()}
         />
       )
+    }
+    {
+      pageType === "article" &&
+        keywords.map((keyword) => (
+          <meta property="article:tag" content={keyword} />
+        ))
     }
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -190,6 +225,11 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
     --placeholder-ink: rgba(255, 255, 255, 0.92);
     --blockquote-line: rgba(178, 76, 42, 0.35);
     --shadow: none;
+    --page-max: 1120px;
+    --article-max: 860px;
+    --page-gutter: clamp(1rem, 3.5vw, 2.5rem);
+    --section-gap: clamp(1.4rem, 3vw, 2.35rem);
+    --panel-padding: clamp(1rem, 2vw, 1.5rem);
     --font-heading:
       "Inter", "Avenir Next", "Segoe UI", "Helvetica Neue", "Nimbus Sans",
       sans-serif;
@@ -240,8 +280,20 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
     background: var(--bg);
   }
 
+  body[data-nav-open="true"] {
+    overflow: hidden;
+  }
+
   a {
     color: inherit;
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 3px;
   }
 
   img {
@@ -258,10 +310,12 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
     font-weight: 600;
     line-height: 1.08;
     letter-spacing: 0;
+    text-wrap: balance;
   }
 
   p {
     margin: 0;
+    text-wrap: pretty;
   }
 
   ul {
@@ -293,22 +347,45 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
   }
 
   .frame {
-    width: min(1120px, calc(100% - 2rem));
+    width: min(
+      var(--page-max),
+      calc(100% - var(--page-gutter) - var(--page-gutter))
+    );
     margin: 0 auto;
   }
 
   .site-header {
+    position: relative;
+    z-index: 20;
     border-bottom: 1px solid var(--line);
     background: var(--header-bg);
   }
 
-  .site-header__inner,
-  .site-footer__inner {
+  .site-header__inner {
     display: flex;
     gap: 1.5rem;
     align-items: center;
     justify-content: space-between;
     padding: 1rem 0;
+  }
+
+  .site-header nav {
+    min-width: 0;
+  }
+
+  .site-header__actions {
+    display: inline-flex;
+    gap: 0.45rem;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .site-footer__inner {
+    display: grid;
+    gap: 0.65rem;
+    justify-items: center;
+    padding: 1rem 0;
+    text-align: center;
   }
 
   .brand {
@@ -358,28 +435,169 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
   }
 
   .theme-toggle {
-    min-height: 2.25rem;
-    padding: 0.25rem 0;
-    border: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.35rem;
+    height: 2.35rem;
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: 8px;
     background: transparent;
     color: var(--muted);
     cursor: pointer;
     font: inherit;
-    font-size: 0.95rem;
+  }
+
+  .mobile-nav-toggle {
+    display: none;
+    position: relative;
+    width: 2.35rem;
+    height: 2.35rem;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+  }
+
+  .mobile-nav-toggle span,
+  .mobile-nav-toggle span::before,
+  .mobile-nav-toggle span::after {
+    position: absolute;
+    left: 50%;
+    width: 1.05rem;
+    height: 1px;
+    background: currentColor;
+    content: "";
+    transform: translateX(-50%);
+    transition:
+      top 180ms ease,
+      transform 180ms ease,
+      opacity 180ms ease;
+  }
+
+  .mobile-nav-toggle span {
+    top: 50%;
+  }
+
+  .mobile-nav-toggle span::before {
+    top: -0.38rem;
+  }
+
+  .mobile-nav-toggle span::after {
+    top: 0.38rem;
+  }
+
+  .site-header[data-nav-open="true"] .mobile-nav-toggle span {
+    transform: translateX(-50%) rotate(45deg);
+  }
+
+  .site-header[data-nav-open="true"] .mobile-nav-toggle span::before {
+    top: 0;
+    opacity: 0;
+  }
+
+  .site-header[data-nav-open="true"] .mobile-nav-toggle span::after {
+    top: 0;
+    transform: translateX(-50%) rotate(-90deg);
+  }
+
+  .mobile-drawer[hidden] {
+    display: none;
+  }
+
+  .mobile-drawer {
+    position: fixed;
+    inset: 0;
+    z-index: 19;
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: 5.75rem var(--page-gutter) 2.5rem;
+    background: var(--bg);
+    text-align: center;
+  }
+
+  .mobile-drawer nav {
+    display: grid;
+    gap: 1.25rem;
+    width: min(100%, 24rem);
+  }
+
+  .mobile-drawer__title {
+    color: var(--ink);
+    font-family: var(--font-main);
+    font-size: clamp(1.25rem, 6vw, 1.75rem);
+    font-weight: 600;
     letter-spacing: 0.03em;
+  }
+
+  .mobile-drawer__list {
+    display: grid;
+    list-style: none;
+    padding: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .mobile-drawer__link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 4.2rem;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink);
+    font-family: var(--font-main);
+    font-size: clamp(1.05rem, 5vw, 1.35rem);
+    letter-spacing: 0.03em;
+    text-decoration: none;
+  }
+
+  .theme-toggle__icon {
+    width: 1.1rem;
+    height: 1.1rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.8;
+  }
+
+  .theme-toggle__icon--sun {
+    display: none;
+  }
+
+  :root[data-theme="dark"] .theme-toggle__icon--sun {
+    display: block;
+  }
+
+  :root[data-theme="dark"] .theme-toggle__icon--moon {
+    display: none;
   }
 
   .nav-link:hover,
   .nav-link.is-active,
-  .theme-toggle:hover {
+  .theme-toggle:hover,
+  .mobile-nav-toggle:hover,
+  .mobile-drawer__link:hover,
+  .mobile-drawer__link.is-active {
     color: var(--ink);
     background: transparent;
     transform: none;
   }
 
+  .theme-toggle:hover,
+  .theme-toggle:focus-visible,
+  .mobile-nav-toggle:hover,
+  .mobile-nav-toggle:focus-visible {
+    border-color: var(--line-strong);
+  }
+
   .site-main {
     flex: 1 0 auto;
-    padding: 1.2rem 0 1.5rem;
+    padding: clamp(1.1rem, 3vw, 2.35rem) 0 clamp(2rem, 4vw, 3.25rem);
   }
 
   .panel,
@@ -392,12 +610,12 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
 
   .panel {
     border-radius: 8px;
-    padding: clamp(1rem, 1.6vw, 1.45rem);
+    padding: var(--panel-padding);
   }
 
   .card {
     border-radius: 8px;
-    padding: 0.9rem;
+    padding: clamp(0.85rem, 1.5vw, 1rem);
     text-decoration: none;
     color: inherit;
     transition:
@@ -406,8 +624,9 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
       box-shadow 180ms ease;
   }
 
-  .card:hover {
-    transform: translateY(-1px);
+  .card:hover,
+  .card:focus-visible {
+    transform: translateY(-2px);
     border-color: var(--line-strong);
     box-shadow: none;
   }
@@ -424,7 +643,7 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
   .lede {
     max-width: 60ch;
     color: var(--muted);
-    font-size: clamp(1rem, 1.4vw, 1.12rem);
+    font-size: 1.08rem;
   }
 
   .button-row,
@@ -447,6 +666,10 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
     color: var(--ink-inverse);
     text-decoration: none;
     font-weight: 600;
+    transition:
+      border-color 180ms ease,
+      background-color 180ms ease,
+      color 180ms ease;
   }
 
   .button.secondary {
@@ -481,8 +704,17 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
   .hero h1,
   .page-intro h1,
   .article-header h1 {
-    font-size: clamp(1.9rem, 4vw, 3.25rem);
+    font-size: 3.15rem;
     max-width: 16ch;
+  }
+
+  .page-intro--minimal {
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .page-intro--minimal .eyebrow {
+    margin-bottom: 0;
   }
 
   .hero__copy {
@@ -509,15 +741,19 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
 
   .section-block {
     display: grid;
-    gap: 1rem;
-    margin-top: 2rem;
+    gap: clamp(0.85rem, 1.5vw, 1.1rem);
+    margin-top: var(--section-gap);
   }
 
   .section-head {
     display: flex;
     gap: 1rem;
-    align-items: end;
+    align-items: center;
     justify-content: space-between;
+  }
+
+  .section-head .eyebrow {
+    margin-bottom: 0;
   }
 
   .collection-root {
@@ -526,16 +762,17 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
   }
 
   .collection-toolbar {
-    display: flex;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
     gap: 0.75rem;
     align-items: center;
-    justify-content: space-between;
     padding: 0.7rem 0.8rem;
   }
 
   .collection-search {
     position: relative;
     flex: 1 1 auto;
+    min-width: 0;
     display: flex;
     align-items: center;
   }
@@ -603,13 +840,13 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
   }
 
   .section-head h2 {
-    font-size: clamp(1.45rem, 2.7vw, 2.1rem);
+    font-size: 2rem;
   }
 
   .section-grid {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: 1rem;
+    gap: clamp(0.85rem, 1.6vw, 1.1rem);
   }
 
   .section-grid > * {
@@ -618,6 +855,10 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
 
   .section-grid--thirds > * {
     grid-column: span 4;
+  }
+
+  .section-grid--quarters > * {
+    grid-column: span 3;
   }
 
   .feature-card {
@@ -629,6 +870,11 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
   .entry-card h2,
   .photo-card h2 {
     font-size: 1.12rem;
+  }
+
+  .photo-card--compact h2 {
+    font-size: 1rem;
+    line-height: 1.15;
   }
 
   .feature-card p,
@@ -671,9 +917,13 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
     padding: 0.85rem 0.9rem 0.95rem;
   }
 
+  .photo-card--compact .photo-card__body {
+    padding: 0.75rem 0.8rem 0.85rem;
+  }
+
   .photo-card__head {
     display: grid;
-    gap: 0.35rem;
+    gap: 0.4rem;
   }
 
   .entry-card__footer,
@@ -693,6 +943,11 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
 
   .photo-card__meta {
     justify-content: flex-start;
+    gap: 0.35rem 0.65rem;
+  }
+
+  .photo-card--compact .photo-card__meta .meta {
+    font-size: 0.84rem;
   }
 
   .photo-card__media {
@@ -703,6 +958,10 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
     border: 0;
     border-bottom: 1px solid var(--line);
     background: var(--photo-media-bg);
+  }
+
+  .photo-card--compact .photo-card__media {
+    aspect-ratio: 1 / 1;
   }
 
   .photo-card__media img,
@@ -729,7 +988,10 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
   }
 
   .article-shell {
-    width: min(860px, calc(100% - 2rem));
+    width: min(
+      var(--article-max),
+      calc(100% - var(--page-gutter) - var(--page-gutter))
+    );
     margin: 0 auto;
     display: grid;
     gap: 0.85rem;
@@ -839,6 +1101,21 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
     animation: rise-in 700ms ease both;
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
   @keyframes rise-in {
     from {
       opacity: 0;
@@ -858,22 +1135,28 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
       grid-template-columns: 1fr;
     }
 
-    .section-grid > *,
-    .section-grid--thirds > * {
+    .hero h1,
+    .page-intro h1,
+    .article-header h1 {
+      font-size: 2.65rem;
+    }
+
+    .section-grid > * {
       grid-column: 1 / -1;
     }
 
-    .site-header__inner,
-    .site-footer__inner,
-    .section-head,
-    .article-meta,
-    .collection-toolbar {
-      align-items: start;
-      flex-direction: column;
+    .section-grid--thirds > * {
+      grid-column: span 6;
     }
 
-    .nav-list {
-      justify-content: flex-start;
+    .section-grid--quarters > * {
+      grid-column: span 6;
+    }
+
+    .section-head,
+    .article-meta {
+      align-items: start;
+      flex-direction: column;
     }
 
     .hero h1,
@@ -887,14 +1170,16 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
     }
   }
 
-  @media (max-width: 640px) {
+  @media (min-width: 721px) {
+    .mobile-drawer,
+    .mobile-nav-toggle {
+      display: none !important;
+    }
+  }
+
+  @media (max-width: 720px) {
     .site-main {
       padding-top: 1rem;
-    }
-
-    .frame,
-    .article-shell {
-      width: min(100% - 1rem, 1120px);
     }
 
     .panel,
@@ -902,19 +1187,59 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
       border-radius: 8px;
     }
 
-    .site-header__inner,
+    .hero h1,
+    .page-intro h1,
+    .article-header h1 {
+      font-size: 2.15rem;
+    }
+
+    .lede {
+      font-size: 1rem;
+    }
+
+    .section-grid--thirds > * {
+      grid-column: 1 / -1;
+    }
+
+    .section-grid--quarters > * {
+      grid-column: 1 / -1;
+    }
+
     .site-footer__inner {
+      gap: 0.65rem;
+    }
+
+    .site-header__inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
       gap: 0.85rem;
+      align-items: center;
     }
 
-    .nav-list {
-      column-gap: 0.85rem;
-      row-gap: 0.15rem;
+    .site-header__nav {
+      display: none;
     }
 
-    .nav-link {
-      min-height: 1.8rem;
-      font-size: 0.9rem;
+    .mobile-nav-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .collection-toolbar {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .collection-toolbar {
+      gap: 0.5rem;
+      padding: 0.55rem;
+    }
+
+    .collection-search input {
+      min-height: 2.45rem;
+      padding-right: 0.65rem;
     }
   }
 </style>

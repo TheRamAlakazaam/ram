@@ -13,7 +13,11 @@ const themeToggleCopy = pageCopy.header.themeToggle;
       </span>
     </a>
 
-    <nav aria-label={pageCopy.header.navigationAriaLabel}>
+    <nav
+      id="site-navigation"
+      class="site-header__nav"
+      aria-label={pageCopy.header.navigationAriaLabel}
+    >
       <ul class="nav-list">
         {
           siteConfig.navigation.map((item) => {
@@ -38,19 +42,83 @@ const themeToggleCopy = pageCopy.header.themeToggle;
       </ul>
     </nav>
 
-    <button
-      class="theme-toggle"
-      type="button"
-      data-theme-toggle
-      data-dark-label={themeToggleCopy.darkLabel}
-      data-light-label={themeToggleCopy.lightLabel}
-      data-switch-to-dark-aria-label={themeToggleCopy.switchToDarkAriaLabel}
-      data-switch-to-light-aria-label={themeToggleCopy.switchToLightAriaLabel}
-      aria-label={themeToggleCopy.switchToDarkAriaLabel}
-      aria-pressed="false"
-    >
-      <span data-theme-toggle-label>{themeToggleCopy.darkLabel}</span>
-    </button>
+    <div class="site-header__actions">
+      <button
+        class="theme-toggle"
+        type="button"
+        data-theme-toggle
+        data-switch-to-dark-aria-label={themeToggleCopy.switchToDarkAriaLabel}
+        data-switch-to-light-aria-label={themeToggleCopy.switchToLightAriaLabel}
+        aria-label={themeToggleCopy.switchToDarkAriaLabel}
+        aria-pressed="false"
+      >
+        <svg
+          class="theme-toggle__icon theme-toggle__icon--sun"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 3v2"></path>
+          <path d="M12 19v2"></path>
+          <path d="M3 12h2"></path>
+          <path d="M19 12h2"></path>
+          <path d="m5.6 5.6 1.4 1.4"></path>
+          <path d="m17 17 1.4 1.4"></path>
+          <path d="m18.4 5.6-1.4 1.4"></path>
+          <path d="m7 17-1.4 1.4"></path>
+        </svg>
+        <svg
+          class="theme-toggle__icon theme-toggle__icon--moon"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path d="M20 14.6A7.4 7.4 0 0 1 9.4 4 8 8 0 1 0 20 14.6Z"></path>
+        </svg>
+      </button>
+
+      <button
+        class="mobile-nav-toggle"
+        type="button"
+        data-nav-toggle
+        aria-label="Open navigation"
+        aria-expanded="false"
+        aria-controls="mobile-navigation"
+      >
+        <span aria-hidden="true"></span>
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-navigation" class="mobile-drawer" data-mobile-drawer hidden>
+    <nav aria-label={`${pageCopy.header.navigationAriaLabel} mobile`}>
+      <p class="mobile-drawer__title">{siteConfig.name}</p>
+      <ul class="mobile-drawer__list">
+        {
+          siteConfig.navigation.map((item) => {
+            const isActive =
+              item.href === "/"
+                ? pathname === "/"
+                : pathname.startsWith(item.href);
+
+            return (
+              <li>
+                <a
+                  class:list={[
+                    "mobile-drawer__link",
+                    { "is-active": isActive },
+                  ]}
+                  href={item.href}
+                  aria-current={isActive ? "page" : undefined}
+                  data-mobile-nav-link
+                >
+                  {item.label}
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </nav>
   </div>
 </header>
 
@@ -59,11 +127,12 @@ const themeToggleCopy = pageCopy.header.themeToggle;
     const storageKey = "ram-theme";
     const root = document.documentElement;
     const button = document.querySelector("[data-theme-toggle]");
-    const label = button?.querySelector("[data-theme-toggle-label]");
+    const header = document.querySelector(".site-header");
+    const navToggle = document.querySelector("[data-nav-toggle]");
+    const mobileDrawer = document.querySelector("[data-mobile-drawer]");
+    const mobileLinks = document.querySelectorAll("[data-mobile-nav-link]");
 
     const applyTheme = (theme) => {
-      const darkLabel = button?.dataset.darkLabel || "Dark";
-      const lightLabel = button?.dataset.lightLabel || "Light";
       const switchToDarkAriaLabel =
         button?.dataset.switchToDarkAriaLabel || "Switch to dark mode";
       const switchToLightAriaLabel =
@@ -75,9 +144,6 @@ const themeToggleCopy = pageCopy.header.themeToggle;
         isDark ? switchToLightAriaLabel : switchToDarkAriaLabel,
       );
       button?.setAttribute("aria-pressed", String(isDark));
-      if (label) {
-        label.textContent = isDark ? lightLabel : darkLabel;
-      }
     };
 
     const getInitialTheme = () => {
@@ -102,5 +168,38 @@ const themeToggleCopy = pageCopy.header.themeToggle;
       }
       applyTheme(nextTheme);
     });
+
+    if (
+      header instanceof HTMLElement &&
+      navToggle instanceof HTMLButtonElement &&
+      mobileDrawer instanceof HTMLElement
+    ) {
+      const setNavOpen = (isOpen) => {
+        header.dataset.navOpen = String(isOpen);
+        document.body.dataset.navOpen = String(isOpen);
+        navToggle.setAttribute("aria-expanded", String(isOpen));
+        navToggle.setAttribute(
+          "aria-label",
+          isOpen ? "Close navigation" : "Open navigation",
+        );
+        mobileDrawer.hidden = !isOpen;
+      };
+
+      setNavOpen(false);
+
+      navToggle.addEventListener("click", () => {
+        setNavOpen(navToggle.getAttribute("aria-expanded") !== "true");
+      });
+
+      mobileLinks.forEach((link) => {
+        link.addEventListener("click", () => setNavOpen(false));
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          setNavOpen(false);
+        }
+      });
+    }
   })();
 </script>

@@ -12,6 +12,9 @@ interface Props {
   alt: string;
   image?: string;
   imageCount?: number;
+  showDescription?: boolean;
+  showImageCount?: boolean;
+  sizes?: string;
 }
 
 const {
@@ -23,18 +26,27 @@ const {
   alt,
   image,
   imageCount,
+  showDescription = true,
+  showImageCount = true,
+  sizes = "(min-width: 900px) 33vw, 100vw",
 } = Astro.props;
+
+const shouldShowDescription = showDescription && description.trim().length > 0;
 ---
 
-<a class="card photo-card reveal" href={href}>
+<a
+  class:list={[
+    "card",
+    "photo-card",
+    "reveal",
+    { "photo-card--compact": !shouldShowDescription },
+  ]}
+  href={href}
+>
   <div class="photo-card__media">
     {
       image ? (
-        <OptimizedImage
-          src={image}
-          alt={alt}
-          sizes="(min-width: 900px) 33vw, 100vw"
-        />
+        <OptimizedImage src={image} alt={alt} sizes={sizes} />
       ) : (
         <div class="photo-card__placeholder">
           <span>{location}</span>
@@ -50,13 +62,15 @@ const {
         <span class="meta">{location}</span>
         <span class="meta">{formatDate(publishDate)}</span>
         {
-          typeof imageCount === "number" && imageCount > 0 && (
-            <span class="meta">{formatAlbumImageCount(imageCount)}</span>
-          )
+          showImageCount &&
+            typeof imageCount === "number" &&
+            imageCount > 0 && (
+              <span class="meta">{formatAlbumImageCount(imageCount)}</span>
+            )
         }
       </div>
     </div>
 
-    <p>{description}</p>
+    {shouldShowDescription && <p>{description}</p>}
   </div>
 </a>

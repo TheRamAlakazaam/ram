@@ -29,11 +29,14 @@ const {
   </div>
 
   <div class="entry-card__footer">
-    <span class="meta">{formatDate(publishDate)}</span>
+    <span class="entry-card__date">{formatDate(publishDate)}</span>
 
     {
       tags.length > 0 && (
-        <div class="pill-row" aria-label={pageCopy.shared.tagsAriaLabel}>
+        <div
+          class="entry-card__tags pill-row"
+          aria-label={pageCopy.shared.tagsAriaLabel}
+        >
           {tags.slice(0, 3).map((tag) => (
             <span class="pill">{tag}</span>
           ))}

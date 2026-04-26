@@ -1,11 +1,10 @@
 ---
 import { getCollection } from "astro:content";
 
-import EntryCard from "@/components/EntryCard.astro";
 import PageIntro from "@/components/PageIntro.astro";
 import { pageCopy } from "@/data/site";
 import Layout from "@/layouts/Layout.astro";
-import { sortByDateDesc } from "@/utils/content";
+import { formatDate, sortByDateDesc } from "@/utils/content";
 
 const posts = sortByDateDesc(await getCollection("blog"));
 const writingCopy = pageCopy.writing;
@@ -14,10 +13,7 @@ const writingFilters = writingCopy.filters;
 
 <Layout title={writingCopy.seoTitle} description={writingCopy.seoDescription}>
   <div class="frame">
-    <PageIntro
-      eyebrow={writingCopy.indexEyebrow}
-      title={writingCopy.indexTitle}
-    />
+    <PageIntro eyebrow={writingCopy.indexEyebrow} />
 
     <section class="section-block">
       {
@@ -56,9 +52,11 @@ const writingFilters = writingCopy.filters;
               </button>
             </div>
 
-            <div class="section-grid" data-filter-list>
+            <div class="blog-list" data-filter-list>
               {posts.map((post) => (
-                <div
+                <a
+                  class="blog-list-card reveal"
+                  href={`/blog/${post.slug}`}
                   data-filter-item
                   data-filter-text={[
                     post.data.title,
@@ -69,15 +67,24 @@ const writingFilters = writingCopy.filters;
                     .toLowerCase()}
                   data-sort-key={post.data.publishDate.getTime()}
                 >
-                  <EntryCard
-                    href={`/blog/${post.slug}`}
-                    title={post.data.title}
-                    description={post.data.description}
-                    publishDate={post.data.publishDate}
-                    tags={post.data.tags}
-                    eyebrow={writingCopy.cardEyebrow}
-                  />
-                </div>
+                  <span class="blog-list-card__date meta">
+                    {formatDate(post.data.publishDate)}
+                  </span>
+                  <div>
+                    <h2>{post.data.title}</h2>
+                    <p>{post.data.description}</p>
+                    {post.data.tags.length > 0 && (
+                      <div
+                        class="pill-row"
+                        aria-label={pageCopy.shared.tagsAriaLabel}
+                      >
+                        {post.data.tags.slice(0, 3).map((tag) => (
+                          <span class="pill">{tag}</span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </a>
               ))}
             </div>
 
@@ -177,3 +184,56 @@ const writingFilters = writingCopy.filters;
     applyFilters();
   });
 </script>
+
+<style>
+  .blog-list {
+    display: grid;
+    border-top: 1px solid var(--line);
+  }
+
+  .blog-list-card {
+    display: grid;
+    grid-template-columns: minmax(8rem, 0.24fr) minmax(0, 1fr);
+    gap: 1.25rem;
+    align-items: start;
+    padding: 1rem 0;
+    text-decoration: none;
+    border-bottom: 1px solid var(--line);
+    transition:
+      color 180ms ease,
+      border-color 180ms ease;
+  }
+
+  .blog-list-card:hover,
+  .blog-list-card:focus-visible {
+    color: var(--accent);
+    border-color: var(--line-strong);
+  }
+
+  .blog-list-card h2 {
+    max-width: 100%;
+    font-size: 1.2rem;
+  }
+
+  .blog-list-card p {
+    max-width: 72ch;
+    margin-top: 0.55rem;
+    color: var(--muted);
+  }
+
+  .blog-list-card .pill-row {
+    margin-top: 0.7rem;
+  }
+
+  @media (max-width: 900px) {
+    .blog-list-card {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .blog-list-card h2 {
+      font-size: 1.08rem;
+    }
+  }
+</style>

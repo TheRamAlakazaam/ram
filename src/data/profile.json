@@ -2,12 +2,9 @@
   "name": "TheRamAlakazaam",
   "defaultTitle": "Raul Martinez",
   "description": "R. Martinez shares recent photographs and writing.",
+  "summary": "Raul Martinez is a Houston-based web developer, creative strategist, and photographer working across digital experiences, public art, and community storytelling. His photographic practice is rooted in observation and presence, moving through environments intuitively without staging or direction while attending to candid gestures, architecture, and landscapes where time feels expansive. Through subtle, minimally edited images, Martinez preserves quiet encounters with place and invites viewers to share in the experience of being present.",
   "location": "Houston, Texas",
-  "roles": [
-    "Developer",
-    "Photographer",
-    "Writer"
-  ],
+  "roles": ["Web Developer", "Creative Strategist", "Photographer"],
   "tools": [
     "Astro",
     "TypeScript",
@@ -34,15 +31,24 @@
   "projects": [
     {
       "title": "DUALSTREETS LLC",
-      "description": "Studio Manager",
+      "description": "Houston-based artist DUAL creating murals that elevate spaces and brand identities.",
       "href": "https://dualstreets.com/",
       "status": "2023 - Present"
     },
     {
       "title": "Array Studio",
-      "description": "Creative Director/ Owner",
+      "description": "Public art and impact program marketing agency growing public programs through storytelling.",
       "href": "https://www.instagram.com/wearearraystudio/",
       "status": "2026 - Present"
+    }
+  ],
+  "artCv": [
+    {
+      "year": "2025",
+      "title": "Crossroads",
+      "titleStyle": "italic",
+      "venue": "Big Medium",
+      "location": "Austin, Texas"
     }
   ]
 }

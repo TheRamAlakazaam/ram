@@ -22,10 +22,7 @@ const photographyFilters = photographyCopy.filters;
   description={photographyCopy.seoDescription}
 >
   <div class="frame">
-    <PageIntro
-      eyebrow={photographyCopy.indexEyebrow}
-      title={photographyCopy.indexTitle}
-    />
+    <PageIntro eyebrow={photographyCopy.indexEyebrow} />
 
     <section class="section-block">
       {
@@ -68,7 +65,7 @@ const photographyFilters = photographyCopy.filters;
               </button>
             </div>
 
-            <div class="section-grid" data-filter-list>
+            <div class="section-grid section-grid--quarters" data-filter-list>
               {photos.map((photo) => (
                 <div
                   data-filter-item
@@ -91,6 +88,9 @@ const photographyFilters = photographyCopy.filters;
                     alt={getAlbumCoverAlt(photo.data)}
                     image={getAlbumCoverImage(photo.data)}
                     imageCount={getAlbumImageCount(photo.data)}
+                    showDescription={false}
+                    showImageCount={false}
+                    sizes="(min-width: 1120px) 260px, (min-width: 900px) 25vw, (min-width: 640px) 50vw, 100vw"
                   />
                 </div>
               ))}

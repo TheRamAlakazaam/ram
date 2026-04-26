@@ -10,7 +10,7 @@
     },
     {
       "href": "/blog",
-      "label": "Writing"
+      "label": "Blog"
     },
     {
       "href": "/about",
@@ -40,38 +40,38 @@
     "tagsAriaLabel": "Tags"
   },
   "home": {
-    "seoDescription": "R. Martinez shares recent photographs and writing.",
-    "heroTitle": "Recent photos and writing.",
+    "seoDescription": "Houston-based web developer, creative strategist, and photographer Raul Martinez shares recent photography and blog posts.",
+    "heroTitle": "Raul Martinez",
     "photosEyebrow": "Photography",
     "photosTitle": "Latest albums.",
     "photosCtaLabel": "All albums",
-    "writingEyebrow": "Writing",
-    "writingTitle": "Latest writing.",
-    "writingCtaLabel": "All writing",
+    "writingEyebrow": "Blog",
+    "writingTitle": "Latest blogs.",
+    "writingCtaLabel": "All blog posts",
     "contactEyebrow": "Contact",
     "contactTitle": "Say hello.",
     "contactCtaLabel": "Contact"
   },
   "writing": {
-    "seoTitle": "Writing",
-    "seoDescription": "Writing, dev notes, lists, and other entries from R. Martinez.",
-    "indexEyebrow": "Journal",
-    "indexTitle": "Writing",
-    "cardEyebrow": "Writing",
-    "articleEyebrow": "Writing",
+    "seoTitle": "Blog",
+    "seoDescription": "Blog posts, dev notes, lists, and other entries from R. Martinez.",
+    "indexEyebrow": "Blog",
+    "indexTitle": "Blog",
+    "cardEyebrow": "Blog",
+    "articleEyebrow": "Blog",
     "emptyState": "Add your first entry in src/content/blog and it will appear here.",
     "filters": {
-      "searchPlaceholder": "Search writing",
-      "searchAriaLabel": "Search writing entries",
-      "sortNewestAriaLabel": "Sort writing by newest first",
-      "sortOldestAriaLabel": "Sort writing by oldest first",
-      "noResultsMessage": "No writing matches that search."
+      "searchPlaceholder": "Search blog",
+      "searchAriaLabel": "Search blog entries",
+      "sortNewestAriaLabel": "Sort blog posts by newest first",
+      "sortOldestAriaLabel": "Sort blog posts by oldest first",
+      "noResultsMessage": "No blog posts match that search."
     }
   },
   "photography": {
     "seoTitle": "Photography",
     "seoDescription": "Photography portfolio, visual notes, and quiet studies of light, texture, and motion.",
-    "indexEyebrow": "Visual Archive",
+    "indexEyebrow": "Photography",
     "indexTitle": "Photography",
     "articleEyebrow": "Photography",
     "emptyState": "Add your first album entry in src/content/photos and it will appear here.",
@@ -93,7 +93,7 @@
     "projectsTitle": "Projects",
     "projectsMeta": "Current and recent things.",
     "projectsEmptyState": "Add project links in Pages CMS when you want to share them.",
-    "cvTitle": "Selected CV",
+    "cvTitle": "Exhibitions",
     "cvMeta": "Photography, art, and public showings.",
     "cvEmptyState": "Add exhibitions, screenings, markets, or other showings in Pages CMS."
   },

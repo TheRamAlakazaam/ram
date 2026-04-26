@@ -177,13 +177,13 @@ content:
             label: Photos button label
             type: string
           - name: writingEyebrow
-            label: Writing eyebrow
+            label: Blog eyebrow
             type: string
           - name: writingTitle
-            label: Writing section title
+            label: Blog section title
             type: string
           - name: writingCtaLabel
-            label: Writing button label
+            label: Blog button label
             type: string
           - name: contactEyebrow
             label: Contact eyebrow
@@ -195,7 +195,7 @@ content:
             label: Contact button label
             type: string
       - name: writing
-        label: Writing Page
+        label: Blog Page
         type: object
         fields:
           - name: seoTitle
@@ -361,7 +361,7 @@ content:
             type: string
 
   - name: writing
-    label: Writing
+    label: Blog
     type: collection
     path: src/content/blog
     format: yaml-frontmatter
@@ -378,7 +378,7 @@ content:
         label: Title
         type: string
       - name: description
-        label: Description
+        label: SEO description
         type: text
       - name: publishDate
         label: Publish date
@@ -389,6 +389,7 @@ content:
         label: Updated date
         type: date
         default: ""
+        required: false
         options:
           format: yyyy-MM-dd
       - name: tags
@@ -426,7 +427,7 @@ content:
         label: Title
         type: string
       - name: description
-        label: Description
+        label: SEO description
         type: text
       - name: publishDate
         label: Publish date
@@ -443,6 +444,7 @@ content:
       - name: coverImage
         label: Cover image
         type: image
+        required: false
         options:
           media: images
           path: photos
@@ -451,6 +453,7 @@ content:
       - name: gallery
         label: Album gallery
         type: image
+        required: false
         options:
           media: images
           multiple: true

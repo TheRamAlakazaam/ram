@@ -1,173 +1,258 @@
 ---
 import { getCollection } from "astro:content";
 
-import PhotoCard from "@/components/PhotoCard.astro";
-import { pageCopy } from "@/data/site";
+import OptimizedImage from "@/components/OptimizedImage.astro";
+import { pageCopy, siteConfig } from "@/data/site";
 import Layout from "@/layouts/Layout.astro";
 import { formatDate, sortByDateDesc } from "@/utils/content";
-import {
-  getAlbumCoverAlt,
-  getAlbumCoverImage,
-  getAlbumImageCount,
-} from "@/utils/photography";
+import { getAlbumCoverAlt, getAlbumGallery } from "@/utils/photography";
 
 const writing = sortByDateDesc(await getCollection("blog"));
 const photos = sortByDateDesc(await getCollection("photos"));
 
-const latestPhotos = photos.slice(0, 3);
+const latestPictures = photos
+  .flatMap((photo) =>
+    getAlbumGallery(photo.data).map((image, index) => ({
+      image,
+      href: `/photography/${photo.slug}`,
+      alt:
+        index === 0
+          ? getAlbumCoverAlt(photo.data)
+          : `${photo.data.title} photograph ${index + 1}`,
+      title: photo.data.title,
+      location: photo.data.location,
+    })),
+  )
+  .slice(0, 4);
 const latestWriting = writing.slice(0, 4);
 const homeCopy = pageCopy.home;
+const heroSummary =
+  siteConfig.summary
+    .replace(/^Raul Martinez is a\s+/i, "A ")
+    .split(". ")
+    .filter(Boolean)[0] || siteConfig.description;
+const homeDescription = `${heroSummary}. ${homeCopy.seoDescription}`;
 ---
 
-<Layout description={homeCopy.seoDescription}>
-  <div class="frame">
-    <section class="home-hero reveal">
-      <h1>{homeCopy.heroTitle}</h1>
+<Layout description={homeDescription} keywords={siteConfig.keywords}>
+  <div class="frame home-frame">
+    <section class="home-hero">
+      <div class="home-hero__copy reveal">
+        <p class="eyebrow">{siteConfig.location}</p>
+        <h1>{homeCopy.heroTitle}</h1>
+        <p class="home-deck">{heroSummary}</p>
+      </div>
     </section>
 
-    <section class="section-block">
-      <div class="section-head">
-        <div>
-          <p class="eyebrow">{homeCopy.photosEyebrow}</p>
-          <h2>{homeCopy.photosTitle}</h2>
-        </div>
-        <a class="button secondary" href="/photography">
-          {homeCopy.photosCtaLabel}
-        </a>
-      </div>
-
-      <div class="section-grid section-grid--thirds">
+    <section class="home-section reveal">
+      <div class="home-panel">
         {
-          latestPhotos.map((photo) => (
-            <PhotoCard
-              href={`/photography/${photo.slug}`}
-              title={photo.data.title}
-              description={photo.data.description}
-              publishDate={photo.data.publishDate}
-              location={photo.data.location}
-              alt={getAlbumCoverAlt(photo.data)}
-              image={getAlbumCoverImage(photo.data)}
-              imageCount={getAlbumImageCount(photo.data)}
-            />
-          ))
+          latestPictures.length > 0 ? (
+            <div class="home-photo-grid">
+              {latestPictures.map((picture, index) => (
+                <a class="home-photo-tile" href={picture.href}>
+                  <OptimizedImage
+                    src={picture.image}
+                    alt={picture.alt}
+                    loading={index === 0 ? "eager" : "lazy"}
+                    fetchpriority={index === 0 ? "high" : "auto"}
+                    sizes="(min-width: 1120px) 260px, (min-width: 900px) 25vw, (min-width: 640px) 50vw, 100vw"
+                    widths={[240, 360, 520, 720]}
+                  />
+                  <span>
+                    <strong>{picture.title}</strong>
+                    <span>{picture.location}</span>
+                  </span>
+                </a>
+              ))}
+            </div>
+          ) : (
+            <p class="empty-state">{pageCopy.photography.emptyState}</p>
+          )
         }
       </div>
     </section>
 
-    <section class="section-block">
-      <div class="section-head">
-        <div>
-          <p class="eyebrow">{homeCopy.writingEyebrow}</p>
-          <h2>{homeCopy.writingTitle}</h2>
-        </div>
-        <a class="button secondary" href="/blog">
-          {homeCopy.writingCtaLabel}
-        </a>
-      </div>
-
-      <div class="home-blog-list">
-        {
-          latestWriting.map((post) => (
-            <a class="home-blog-card reveal" href={`/blog/${post.slug}`}>
-              <span class="meta">{formatDate(post.data.publishDate)}</span>
-              <div>
+    <section class="home-section reveal">
+      <div class="home-panel">
+        <div class="home-blog-list">
+          {
+            latestWriting.map((post) => (
+              <a class="home-blog-card" href={`/blog/${post.slug}`}>
+                <span class="meta">{formatDate(post.data.publishDate)}</span>
                 <h3>{post.data.title}</h3>
                 <p>{post.data.description}</p>
-                {post.data.tags.length > 0 && (
-                  <div
-                    class="pill-row"
-                    aria-label={pageCopy.shared.tagsAriaLabel}
-                  >
-                    {post.data.tags.slice(0, 3).map((tag) => (
-                      <span class="pill">{tag}</span>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </a>
-          ))
-        }
+              </a>
+            ))
+          }
+        </div>
       </div>
     </section>
 
-    <section class="section-block">
-      <div class="contact-cta reveal">
-        <p class="eyebrow">{homeCopy.contactEyebrow}</p>
-        <h2>{homeCopy.contactTitle}</h2>
-        <a class="button" href="/contact">{homeCopy.contactCtaLabel}</a>
-      </div>
+    <section class="home-contact reveal">
+      <p class="eyebrow">{homeCopy.contactTitle}</p>
+      <a class="button" href="/contact">{homeCopy.contactCtaLabel}</a>
     </section>
   </div>
 </Layout>
 
 <style>
+  .home-frame {
+    display: grid;
+    gap: clamp(1.35rem, 3vw, 2.25rem);
+  }
+
   .home-hero {
-    padding: 0.6rem 0 0.9rem;
+    display: grid;
+    padding-top: 0.35rem;
+    padding-bottom: clamp(0.35rem, 1vw, 0.75rem);
     border-bottom: 1px solid var(--line);
   }
 
   .home-hero h1 {
-    max-width: 100%;
+    max-width: 12ch;
     margin: 0;
-    font-size: clamp(2rem, 5vw, 4rem);
-    line-height: 1.05;
-    letter-spacing: 0;
+    font-size: clamp(2.45rem, 8vw, 5.8rem);
+    line-height: 0.98;
+  }
+
+  .home-hero__copy {
+    display: grid;
+    gap: 0.9rem;
+    max-width: 72rem;
+  }
+
+  .home-deck {
+    max-width: 62ch;
+    color: var(--muted);
+    font-size: clamp(1rem, 1.2vw, 1.12rem);
+  }
+
+  .home-panel {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .home-photo-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .home-photo-tile {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+    min-height: 0;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: var(--photo-media-bg);
+    text-decoration: none;
+  }
+
+  .home-photo-tile :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 220ms ease;
+  }
+
+  .home-photo-tile:hover :global(img),
+  .home-photo-tile:focus-visible :global(img) {
+    transform: scale(1.025);
+  }
+
+  .home-photo-tile > span {
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    display: grid;
+    gap: 0.1rem;
+    padding: 0.65rem;
+    color: #ffffff;
+    background: linear-gradient(
+      to top,
+      rgba(17, 17, 17, 0.72),
+      rgba(17, 17, 17, 0)
+    );
+  }
+
+  .home-photo-tile strong {
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    line-height: 1.1;
+  }
+
+  .home-photo-tile span span {
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 0.82rem;
   }
 
   .home-blog-list {
     display: grid;
-    border-top: 1px solid var(--line);
   }
 
   .home-blog-card {
     display: grid;
-    grid-template-columns: minmax(8rem, 0.28fr) minmax(0, 1fr);
-    gap: 1.25rem;
-    align-items: start;
+    gap: 0.4rem;
     padding: 1rem 0;
     text-decoration: none;
     border-bottom: 1px solid var(--line);
     transition:
       color 180ms ease,
-      padding-left 180ms ease;
+      border-color 180ms ease;
   }
 
-  .home-blog-card:hover {
+  .home-blog-card:hover,
+  .home-blog-card:focus-visible {
     color: var(--accent);
-    padding-left: 0.8rem;
+    border-color: var(--line-strong);
   }
 
   .home-blog-card h3 {
     max-width: 100%;
-    font-size: clamp(1.25rem, 2.2vw, 1.75rem);
+    font-size: 1.2rem;
   }
 
   .home-blog-card p {
     max-width: 72ch;
-    margin-top: 0.55rem;
     color: var(--muted);
   }
 
-  .home-blog-card .pill-row {
-    margin-top: 0.7rem;
-  }
-
-  .contact-cta {
+  .home-contact {
     display: grid;
-    gap: 0.6rem;
+    gap: 0.65rem;
     justify-items: center;
-    align-content: center;
-    padding: 1.1rem 1rem 0.75rem;
-    border-top: 1px solid var(--line);
+    padding-top: 0.25rem;
     text-align: center;
   }
 
-  .contact-cta h2 {
-    font-size: clamp(1.45rem, 2.7vw, 2.1rem);
+  .home-contact .eyebrow {
+    margin-bottom: 0;
   }
 
   @media (max-width: 900px) {
-    .home-blog-card {
+    .home-photo-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .home-frame {
+      gap: 1.2rem;
+    }
+
+    .home-photo-tile > span {
+      padding: 0.8rem;
+    }
+
+    .home-blog-card h3 {
+      font-size: 1.08rem;
+    }
+
+    .home-photo-grid {
       grid-template-columns: 1fr;
     }
   }

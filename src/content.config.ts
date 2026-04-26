@@ -1,11 +1,24 @@
 import { defineCollection, z } from "astro:content";
 
+const requiredString = z.string().trim().min(1);
+const optionalString = z.preprocess(
+  (value) =>
+    typeof value === "string" && value.trim() === "" ? undefined : value,
+  z.string().trim().optional(),
+);
+const optionalDate = z.preprocess(
+  (value) =>
+    typeof value === "string" && value.trim() === "" ? undefined : value,
+  z.coerce.date().optional(),
+);
+const stringList = z.array(requiredString).default([]);
+
 const writingSchema = z.object({
-  title: z.string(),
-  description: z.string(),
+  title: requiredString,
+  description: requiredString,
   publishDate: z.coerce.date(),
-  updatedDate: z.coerce.date().optional(),
-  tags: z.array(z.string()).default([]),
+  updatedDate: optionalDate,
+  tags: stringList,
   featured: z.boolean().default(false),
 });
 
@@ -17,14 +30,14 @@ const blog = defineCollection({
 const photos = defineCollection({
   type: "content",
   schema: z.object({
-    title: z.string(),
-    description: z.string(),
+    title: requiredString,
+    description: requiredString,
     publishDate: z.coerce.date(),
-    location: z.string(),
-    coverAlt: z.string().optional(),
-    coverImage: z.string().optional(),
-    gallery: z.array(z.string()).default([]),
-    tags: z.array(z.string()).default([]),
+    location: requiredString,
+    coverAlt: optionalString,
+    coverImage: optionalString,
+    gallery: stringList,
+    tags: stringList,
     featured: z.boolean().default(false),
   }),
 });

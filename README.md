@@ -9,10 +9,12 @@ An Astro portfolio and publishing site with:
 
 Add or edit content in these folders:
 
-- `src/content/blog` for writing, dev notes, lists, and other small posts
+- `src/content/blog` for blog posts, dev notes, lists, and other small posts
 - `src/content/photos`
 
-Use tags in frontmatter to describe what kind of writing it is.
+Use tags in frontmatter to describe what kind of entry it is. Keep titles,
+descriptions, dates, locations, and image alt text filled in; the content
+schemas now reject blank required fields so CMS mistakes fail early.
 
 ## Important Files
 
@@ -89,3 +91,5 @@ npm run type-check
 - Set `SITE_URL=https://theramalakazaam.com` in your environment before deploying.
 - Set `APP_ENV=production` when you want the site indexed.
 - The site already includes canonical tags, structured data, a sitemap, and robots handling.
+- Photo pages use their cover image for social previews when one is available.
+- Optional CMS fields can be left blank; blank optional dates and image fields are normalized during content validation.
