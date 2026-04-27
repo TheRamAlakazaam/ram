@@ -97,19 +97,23 @@ const homeDescription = `${heroSummary}. ${homeCopy.seoDescription}`;
           {
             latestWriting.map((post) => (
               <a class="home-blog-card" href={`/blog/${post.slug}`}>
-                <span class="meta">{formatDate(post.data.publishDate)}</span>
-                <h3>{post.data.title}</h3>
-                <p>{post.data.description}</p>
-                {post.data.tags.length > 0 && (
-                  <div
-                    class="pill-row"
-                    aria-label={pageCopy.shared.tagsAriaLabel}
-                  >
-                    {post.data.tags.slice(0, 3).map((tag) => (
-                      <span class="pill">{tag}</span>
-                    ))}
-                  </div>
-                )}
+                <span class="home-blog-card__date meta">
+                  {formatDate(post.data.publishDate)}
+                </span>
+                <div>
+                  <h3>{post.data.title}</h3>
+                  <p>{post.data.description}</p>
+                  {post.data.tags.length > 0 && (
+                    <div
+                      class="pill-row"
+                      aria-label={pageCopy.shared.tagsAriaLabel}
+                    >
+                      {post.data.tags.slice(0, 3).map((tag) => (
+                        <span class="pill">{tag}</span>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </a>
             ))
           }
@@ -257,24 +261,27 @@ const homeDescription = `${heroSummary}. ${homeCopy.seoDescription}`;
 
   .home-blog-list {
     display: grid;
-    gap: 0.75rem;
+    border-top: 1px solid var(--line);
   }
 
   .home-blog-card {
     display: grid;
-    gap: 0.4rem;
-    padding: 0.95rem 1rem;
+    grid-template-columns: minmax(8rem, 0.24fr) minmax(0, 1fr);
+    gap: 1.25rem;
+    align-items: start;
+    padding: 1rem 0;
     text-decoration: none;
-    border-radius: 8px;
-    background: var(--surface-strong);
+    border-bottom: 1px solid var(--line);
     transition:
       transform 180ms ease,
-      color 180ms ease;
+      color 180ms ease,
+      border-color 180ms ease;
   }
 
   .home-blog-card:hover,
   .home-blog-card:focus-visible {
     color: var(--accent);
+    border-color: var(--line-strong);
     transform: translateX(0.25rem);
   }
 
@@ -285,11 +292,12 @@ const homeDescription = `${heroSummary}. ${homeCopy.seoDescription}`;
 
   .home-blog-card p {
     max-width: 72ch;
+    margin-top: 0.55rem;
     color: var(--muted);
   }
 
   .home-blog-card .pill-row {
-    margin-top: 0.2rem;
+    margin-top: 0.7rem;
   }
 
   .home-contact {
@@ -326,6 +334,10 @@ const homeDescription = `${heroSummary}. ${homeCopy.seoDescription}`;
     .home-section__head {
       align-items: start;
       flex-direction: column;
+    }
+
+    .home-blog-card {
+      grid-template-columns: 1fr;
     }
 
     .home-blog-card h3 {
