@@ -234,11 +234,11 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
       "Inter", "Avenir Next", "Segoe UI", "Helvetica Neue", "Nimbus Sans",
       sans-serif;
     --font-main:
+      "SFMono-Regular", "SF Mono", "Roboto Mono", "Cascadia Code",
+      "IBM Plex Mono", "Fira Code", "Menlo", "Consolas", monospace;
+    --font-body:
       "Source Sans 3", "Aptos", "Segoe UI", "Inter", "Helvetica Neue", Arial,
       sans-serif;
-    --font-mono:
-      "SFMono-Regular", "SF Mono", "Roboto Mono", "Cascadia Code", Menlo,
-      Consolas, monospace;
   }
 
   :root[data-theme="dark"] {
@@ -277,7 +277,7 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
     margin: 0;
     min-height: 100vh;
     color: var(--ink);
-    font-family: var(--font-main);
+    font-family: var(--font-body);
     font-size: 1rem;
     line-height: 1.68;
     background: var(--bg);
@@ -309,7 +309,7 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
   h3,
   h4 {
     margin: 0;
-    font-family: var(--font-heading);
+    font-family: var(--font-main);
     font-weight: 600;
     line-height: 1.08;
     letter-spacing: 0;
@@ -401,7 +401,7 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
   }
 
   .brand__copy strong {
-    font-family: var(--font-heading);
+    font-family: var(--font-main);
     font-size: 1.05rem;
     letter-spacing: 0.03em;
   }
@@ -409,7 +409,7 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
   .brand__copy small,
   .meta {
     color: var(--muted);
-    font-family: var(--font-mono);
+    font-family: var(--font-main);
     font-size: 0.92rem;
   }
 
@@ -431,7 +431,7 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
     padding: 0.25rem 0;
     text-decoration: none;
     color: var(--muted);
-    font-family: var(--font-heading);
+    font-family: var(--font-main);
     font-size: 0.95rem;
     letter-spacing: 0.03em;
     transition:
@@ -535,7 +535,7 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
 
   .mobile-drawer__title {
     color: var(--ink);
-    font-family: var(--font-heading);
+    font-family: var(--font-main);
     font-size: clamp(1.25rem, 6vw, 1.75rem);
     font-weight: 600;
     letter-spacing: 0.03em;
@@ -555,7 +555,7 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
     min-height: 4.2rem;
     border-bottom: 1px solid var(--line);
     color: var(--ink);
-    font-family: var(--font-heading);
+    font-family: var(--font-main);
     font-size: clamp(1.05rem, 5vw, 1.35rem);
     letter-spacing: 0.03em;
     text-decoration: none;
@@ -640,6 +640,7 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
   .eyebrow {
     margin-bottom: 0.65rem;
     color: var(--accent);
+    font-family: var(--font-main);
     font-size: 0.8rem;
     font-weight: 700;
     letter-spacing: 0.14em;
@@ -649,6 +650,7 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
   .lede {
     max-width: 60ch;
     color: var(--muted);
+    font-family: var(--font-body);
     font-size: 1.08rem;
   }
 
@@ -670,6 +672,7 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
     border: 1px solid var(--ink);
     background: var(--ink);
     color: var(--ink-inverse);
+    font-family: var(--font-main);
     text-decoration: none;
     font-weight: 600;
     transition:
@@ -692,6 +695,7 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
     border-radius: 8px;
     background: var(--pill-bg);
     color: var(--moss);
+    font-family: var(--font-main);
     font-size: 0.84rem;
   }
 
@@ -891,6 +895,7 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
   .prose,
   .empty-state {
     color: var(--muted);
+    font-family: var(--font-body);
   }
 
   .entry-card,
@@ -988,7 +993,7 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
     padding: 1rem;
     color: var(--placeholder-ink);
     background: var(--placeholder-bg);
-    font-family: var(--font-heading);
+    font-family: var(--font-main);
     font-size: 1.1rem;
     letter-spacing: 0.03em;
   }
@@ -1064,7 +1069,7 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
     padding-left: 1rem;
     border-left: 3px solid var(--blockquote-line);
     color: var(--ink);
-    font-family: var(--font-heading);
+    font-family: var(--font-main);
     font-size: 1.08rem;
   }
 

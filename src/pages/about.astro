@@ -145,10 +145,17 @@ const hasSummary = siteConfig.summary.trim().length > 0;
   }
 
   .about-summary .lede,
-  .about-section .meta,
   .about-item p,
   .cv-item p {
-    font-family: var(--font-heading);
+    font-family: var(--font-body);
+    font-size: 0.98rem;
+    line-height: 1.7;
+    letter-spacing: 0.01em;
+  }
+
+  .about-section .meta,
+  .cv-item__year {
+    font-family: var(--font-main);
     font-size: 0.98rem;
     line-height: 1.7;
     letter-spacing: 0.01em;
@@ -205,7 +212,6 @@ const hasSummary = siteConfig.summary.trim().length > 0;
 
   .cv-item__year {
     color: var(--ink);
-    font-family: var(--font-heading);
     font-weight: 600;
     letter-spacing: 0.04em;
   }
