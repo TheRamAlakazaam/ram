@@ -46,6 +46,7 @@ const homeDescription = `${heroSummary}. ${homeCopy.seoDescription}`;
 
     <section class="home-section reveal">
       <div class="home-panel">
+        <h2>{homeCopy.photosTitle}</h2>
         {
           latestPictures.length > 0 ? (
             <div class="home-photo-grid">
@@ -75,6 +76,7 @@ const homeDescription = `${heroSummary}. ${homeCopy.seoDescription}`;
 
     <section class="home-section reveal">
       <div class="home-panel">
+        <h2>{homeCopy.writingTitle}</h2>
         <div class="home-blog-list">
           {
             latestWriting.map((post) => (
