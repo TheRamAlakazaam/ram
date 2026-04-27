@@ -40,7 +40,7 @@
     "tagsAriaLabel": "Tags"
   },
   "home": {
-    "seoDescription": "Houston-based web developer, creative strategist, and photographer Raul Martinez shares recent photography and blog posts.",
+    "seoDescription": "Explore recent photography, writing, projects, and exhibitions from Houston-based web developer, creative strategist, and photographer Raul Martinez.",
     "heroTitle": "Raul Martinez",
     "photosEyebrow": "Photography",
     "photosTitle": "Latest Photos",
@@ -54,10 +54,9 @@
   },
   "writing": {
     "seoTitle": "Blog",
-    "seoDescription": "Blog posts, dev notes, lists, and other entries from R. Martinez.",
+    "seoDescription": "Read blog posts, dev notes, lists, and other writing from Houston-based web developer and photographer Raul Martinez.",
     "indexEyebrow": "Blog",
     "indexTitle": "Blog",
-    "cardEyebrow": "Blog",
     "articleEyebrow": "Blog",
     "emptyState": "Add your first entry in src/content/blog and it will appear here.",
     "filters": {
@@ -70,7 +69,7 @@
   },
   "photography": {
     "seoTitle": "Photography",
-    "seoDescription": "Photography portfolio, visual notes, and quiet studies of light, texture, and motion.",
+    "seoDescription": "View photography albums and visual studies by Raul Martinez, focused on candid gestures, architecture, light, texture, and motion.",
     "indexEyebrow": "Photography",
     "indexTitle": "Photography",
     "articleEyebrow": "Photography",
@@ -85,7 +84,7 @@
   },
   "about": {
     "seoTitle": "About",
-    "seoDescription": "About R. Martinez, selected projects, and photography CV.",
+    "seoDescription": "Learn about Raul Martinez, his creative practice, selected projects, exhibitions, and current work.",
     "heroEyebrow": "About",
     "heroTitle": "About.",
     "summaryTitle": "Summary",
@@ -99,7 +98,7 @@
   },
   "contact": {
     "seoTitle": "Contact",
-    "seoDescription": "Contact R. Martinez.",
+    "seoDescription": "Contact Raul Martinez about web development, creative strategy, photography, projects, or collaborations.",
     "eyebrow": "Contact",
     "title": "Send a note.",
     "honeypotLabel": "Leave this empty",

@@ -1,4 +1,7 @@
 ---
+import type { ImageMetadata } from "astro";
+import { getImage } from "astro:assets";
+
 import SiteFooter from "@/components/SiteFooter.astro";
 import SiteHeader from "@/components/SiteHeader.astro";
 import { siteConfig } from "@/data/site";
@@ -9,6 +12,7 @@ interface Props {
   image?: string;
   keywords?: string[];
   pageType?: "website" | "article" | "profile";
+  structuredType?: "BlogPosting" | "ImageGallery";
   publishDate?: Date;
   updatedDate?: Date;
 }
@@ -26,9 +30,10 @@ const robotsContent = allowIndexing
 const {
   title,
   description = siteConfig.description,
-  image = "/og.svg",
+  image = siteConfig.defaultSocialImage || "/og.png",
   keywords = siteConfig.keywords,
   pageType = "website",
+  structuredType = "BlogPosting",
   publishDate,
   updatedDate,
 } = Astro.props;
@@ -37,9 +42,21 @@ const pageTitle = title
   ? `${title} | ${siteConfig.name}`
   : siteConfig.defaultTitle;
 const canonical = new URL(Astro.url.pathname, resolvedSiteUrl).toString();
-const socialImage = image.startsWith("http")
-  ? image
-  : new URL(image, resolvedSiteUrl).toString();
+const images = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/images/**/*.{avif,gif,jpeg,jpg,png,webp}",
+);
+const imageKey = image.startsWith("src/") ? `/${image}` : image;
+const imageImport = images[imageKey];
+const importedSocialImage = imageImport
+  ? (await imageImport()).default
+  : undefined;
+const optimizedSocialImage = importedSocialImage
+  ? await getImage({ src: importedSocialImage, width: 1200, format: "webp" })
+  : undefined;
+const socialImageSource = optimizedSocialImage?.src || image;
+const socialImage = socialImageSource.startsWith("http")
+  ? socialImageSource
+  : new URL(socialImageSource, resolvedSiteUrl).toString();
 const socialImageAlt = `${pageTitle} social preview`;
 const sameAs = [
   siteConfig.social.instagram,
@@ -85,7 +102,7 @@ const structuredData = {
     ...(pageType === "article" && title
       ? [
           {
-            "@type": "BlogPosting",
+            "@type": structuredType,
             "@id": `${canonical}#article`,
             headline: title,
             description,
@@ -127,7 +144,11 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
     <meta property="og:description" content={description} />
     <meta
       property="og:type"
-      content={pageType === "article" ? "article" : "website"}
+      content={pageType === "article"
+        ? "article"
+        : pageType === "profile"
+          ? "profile"
+          : "website"}
     />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={socialImage} />
@@ -284,6 +305,10 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
   }
 
   body[data-nav-open="true"] {
+    overflow: hidden;
+  }
+
+  body[data-spotlight-open="true"] {
     overflow: hidden;
   }
 

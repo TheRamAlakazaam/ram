@@ -1,0 +1,166 @@
+<div class="photo-spotlight" data-photo-spotlight hidden>
+  <button
+    class="photo-spotlight__backdrop"
+    type="button"
+    data-photo-spotlight-close
+    aria-label="Close image spotlight"
+  >
+  </button>
+  <div
+    class="photo-spotlight__dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Image spotlight"
+  >
+    <button
+      class="photo-spotlight__close"
+      type="button"
+      data-photo-spotlight-close
+      aria-label="Close image spotlight"
+    >
+      Close
+    </button>
+    <div class="photo-spotlight__image" data-photo-spotlight-image role="img">
+    </div>
+    <p class="photo-spotlight__caption meta" data-photo-spotlight-caption></p>
+  </div>
+</div>
+
+<script is:inline>
+  (() => {
+    const spotlight = document.querySelector("[data-photo-spotlight]");
+    const image = document.querySelector("[data-photo-spotlight-image]");
+    const caption = document.querySelector("[data-photo-spotlight-caption]");
+    const closeButtons = document.querySelectorAll(
+      "[data-photo-spotlight-close]",
+    );
+    const triggers = document.querySelectorAll("[data-spotlight-trigger]");
+
+    if (
+      !(spotlight instanceof HTMLElement) ||
+      !(image instanceof HTMLElement)
+    ) {
+      return;
+    }
+
+    let previousFocus = null;
+
+    const closeSpotlight = () => {
+      spotlight.hidden = true;
+      document.body.dataset.spotlightOpen = "false";
+      image.style.backgroundImage = "";
+      image.removeAttribute("aria-label");
+
+      if (caption instanceof HTMLElement) {
+        caption.textContent = "";
+      }
+
+      if (previousFocus instanceof HTMLElement) {
+        previousFocus.focus();
+      }
+    };
+
+    const openSpotlight = (trigger) => {
+      const picture = trigger.querySelector("img");
+
+      if (!(picture instanceof HTMLImageElement)) {
+        return;
+      }
+
+      previousFocus =
+        document.activeElement instanceof HTMLElement
+          ? document.activeElement
+          : null;
+      const imageUrl = picture.currentSrc || picture.src;
+      const imageAlt = picture.alt || trigger.dataset.spotlightLabel || "";
+
+      image.style.backgroundImage = `url("${imageUrl}")`;
+      image.setAttribute("aria-label", imageAlt);
+
+      if (caption instanceof HTMLElement) {
+        caption.textContent = imageAlt;
+      }
+
+      spotlight.hidden = false;
+      document.body.dataset.spotlightOpen = "true";
+      spotlight.querySelector(".photo-spotlight__close")?.focus();
+    };
+
+    triggers.forEach((trigger) => {
+      if (!(trigger instanceof HTMLElement)) {
+        return;
+      }
+
+      trigger.addEventListener("click", () => openSpotlight(trigger));
+    });
+
+    closeButtons.forEach((button) => {
+      button.addEventListener("click", closeSpotlight);
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !spotlight.hidden) {
+        closeSpotlight();
+      }
+    });
+  })();
+</script>
+
+<style>
+  .photo-spotlight[hidden] {
+    display: none;
+  }
+
+  .photo-spotlight {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: grid;
+    place-items: center;
+    padding: var(--page-gutter);
+  }
+
+  .photo-spotlight__backdrop {
+    position: absolute;
+    inset: 0;
+    border: 0;
+    background: rgba(17, 17, 17, 0.88);
+    cursor: zoom-out;
+  }
+
+  .photo-spotlight__dialog {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 0.75rem;
+    width: min(100%, 1120px);
+    max-height: calc(100svh - var(--page-gutter) - var(--page-gutter));
+  }
+
+  .photo-spotlight__close {
+    justify-self: end;
+    min-height: 2.3rem;
+    padding: 0.45rem 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 8px;
+    background: rgba(17, 17, 17, 0.72);
+    color: #ffffff;
+    cursor: pointer;
+    font: inherit;
+  }
+
+  .photo-spotlight__image {
+    min-height: min(74svh, 820px);
+    border-radius: 8px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+
+  .photo-spotlight__caption {
+    justify-self: center;
+    max-width: 72ch;
+    color: rgba(255, 255, 255, 0.78);
+    text-align: center;
+  }
+</style>

@@ -2,6 +2,7 @@
 import { getCollection, render } from "astro:content";
 
 import OptimizedImage from "@/components/OptimizedImage.astro";
+import PhotoSpotlight from "@/components/PhotoSpotlight.astro";
 import { pageCopy } from "@/data/site";
 import Layout from "@/layouts/Layout.astro";
 import { formatDate } from "@/utils/content";
@@ -37,6 +38,7 @@ const showHero = gallery.length <= 1;
   image={coverImage}
   keywords={photo.data.tags}
   pageType="article"
+  structuredType="ImageGallery"
   publishDate={photo.data.publishDate}
 >
   <article
@@ -57,14 +59,22 @@ const showHero = gallery.length <= 1;
       showHero && (
         <div class="photo-hero reveal">
           {coverImage ? (
-            <OptimizedImage
-              src={coverImage}
-              alt={coverAlt}
-              loading="eager"
-              fetchpriority="high"
-              sizes="(min-width: 900px) 860px, 100vw"
-              widths={[720, 960, 1200]}
-            />
+            <button
+              class="spotlight-trigger photo-hero__button"
+              type="button"
+              data-spotlight-trigger
+              data-spotlight-label={coverAlt}
+              aria-label={`Open ${coverAlt} in image spotlight`}
+            >
+              <OptimizedImage
+                src={coverImage}
+                alt={coverAlt}
+                loading="eager"
+                fetchpriority="high"
+                sizes="(min-width: 900px) 860px, 100vw"
+                widths={[720, 960, 1200]}
+              />
+            </button>
           ) : (
             <div class="photo-hero__placeholder">
               <span>{coverAlt}</span>
@@ -80,12 +90,20 @@ const showHero = gallery.length <= 1;
           <div class="album-gallery__grid">
             {gallery.map((image, index) => (
               <figure class="album-gallery__item">
-                <OptimizedImage
-                  src={image}
-                  alt={`${photo.data.title} photo ${index + 1}`}
-                  sizes="(min-width: 1200px) 280px, (min-width: 900px) 33vw, (min-width: 640px) 50vw, 100vw"
-                  widths={[360, 520, 720, 960]}
-                />
+                <button
+                  class="spotlight-trigger"
+                  type="button"
+                  data-spotlight-trigger
+                  data-spotlight-label={`${photo.data.title} photo ${index + 1}`}
+                  aria-label={`Open ${photo.data.title} photo ${index + 1} in image spotlight`}
+                >
+                  <OptimizedImage
+                    src={image}
+                    alt={`${photo.data.title} photo ${index + 1}`}
+                    sizes="(min-width: 1200px) 280px, (min-width: 900px) 33vw, (min-width: 640px) 50vw, 100vw"
+                    widths={[360, 520, 720, 960]}
+                  />
+                </button>
               </figure>
             ))}
           </div>
@@ -101,6 +119,8 @@ const showHero = gallery.length <= 1;
       )
     }
   </article>
+
+  <PhotoSpotlight />
 </Layout>
 
 <style>
@@ -115,8 +135,20 @@ const showHero = gallery.length <= 1;
     padding: 0;
   }
 
+  .spotlight-trigger {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    cursor: zoom-in;
+    font: inherit;
+  }
+
   .photo-hero :global(picture),
-  .photo-hero :global(img) {
+  .photo-hero :global(img),
+  .photo-hero__button {
     display: block;
     width: 100%;
   }
@@ -148,7 +180,8 @@ const showHero = gallery.length <= 1;
   }
 
   .album-gallery__item :global(picture),
-  .album-gallery__item :global(img) {
+  .album-gallery__item :global(img),
+  .album-gallery__item .spotlight-trigger {
     display: block;
     width: 100%;
   }

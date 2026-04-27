@@ -47,6 +47,8 @@ const themeToggleCopy = pageCopy.header.themeToggle;
         class="theme-toggle"
         type="button"
         data-theme-toggle
+        data-dark-label={themeToggleCopy.darkLabel}
+        data-light-label={themeToggleCopy.lightLabel}
         data-switch-to-dark-aria-label={themeToggleCopy.switchToDarkAriaLabel}
         data-switch-to-light-aria-label={themeToggleCopy.switchToLightAriaLabel}
         aria-label={themeToggleCopy.switchToDarkAriaLabel}
@@ -137,6 +139,8 @@ const themeToggleCopy = pageCopy.header.themeToggle;
         button?.dataset.switchToDarkAriaLabel || "Switch to dark mode";
       const switchToLightAriaLabel =
         button?.dataset.switchToLightAriaLabel || "Switch to light mode";
+      const darkLabel = button?.dataset.darkLabel || "Dark";
+      const lightLabel = button?.dataset.lightLabel || "Light";
       root.dataset.theme = theme;
       const isDark = theme === "dark";
       button?.setAttribute(
@@ -144,6 +148,7 @@ const themeToggleCopy = pageCopy.header.themeToggle;
         isDark ? switchToLightAriaLabel : switchToDarkAriaLabel,
       );
       button?.setAttribute("aria-pressed", String(isDark));
+      button?.setAttribute("title", isDark ? lightLabel : darkLabel);
     };
 
     const getInitialTheme = () => {

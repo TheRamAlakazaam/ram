@@ -23,6 +23,15 @@ content:
       - name: description
         label: Site description
         type: text
+      - name: defaultSocialImage
+        label: Default social image
+        type: image
+        required: false
+        options:
+          media: images
+          path: seo
+          rename: safe
+          extensions: [avif, jpg, jpeg, png, webp]
       - name: summary
         label: About summary
         type: text
@@ -83,6 +92,10 @@ content:
           - name: title
             label: Title
             type: string
+          - name: titleStyle
+            label: Title style (use "italic" if needed)
+            type: string
+            required: false
           - name: venue
             label: Venue
             type: string
@@ -209,9 +222,6 @@ content:
             type: string
           - name: indexTitle
             label: Index title
-            type: string
-          - name: cardEyebrow
-            label: Card eyebrow
             type: string
           - name: articleEyebrow
             label: Article eyebrow

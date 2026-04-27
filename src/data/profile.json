@@ -1,7 +1,8 @@
 {
   "name": "TheRamAlakazaam",
-  "defaultTitle": "Raul Martinez",
-  "description": "R. Martinez shares recent photographs and writing.",
+  "defaultTitle": "Raul Martinez | Web Developer, Creative Strategist, Photographer",
+  "description": "Raul Martinez is a Houston-based web developer, creative strategist, and photographer sharing recent photography, writing, selected projects, and exhibitions.",
+  "defaultSocialImage": "/og.png",
   "summary": "Raul Martinez is a Houston-based web developer, creative strategist, and photographer working across digital experiences, public art, and community storytelling. His photographic practice is rooted in observation and presence, moving through environments intuitively without staging or direction while attending to candid gestures, architecture, and landscapes where time feels expansive. Through subtle, minimally edited images, Martinez preserves quiet encounters with place and invites viewers to share in the experience of being present.",
   "location": "Houston, Texas",
   "roles": ["Web Developer", "Creative Strategist", "Photographer"],
@@ -14,7 +15,12 @@
     "Performance and accessibility reviews"
   ],
   "keywords": [
+    "Raul Martinez",
+    "TheRamAlakazaam",
     "portfolio",
+    "Houston web developer",
+    "Houston photographer",
+    "creative strategist",
     "photography",
     "developer blog",
     "personal blog",

@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 
+import { pageCopy } from "@/data/site";
 import Layout from "@/layouts/Layout.astro";
 import { formatDate } from "@/utils/content";
 
@@ -15,6 +16,7 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+const writingCopy = pageCopy.writing;
 ---
 
 <Layout
@@ -27,6 +29,7 @@ const { Content } = await render(post);
 >
   <article class="article-shell">
     <header class="article-header article-header--center panel reveal">
+      <p class="eyebrow">{writingCopy.articleEyebrow}</p>
       <h1>{post.data.title}</h1>
       <p class="lede">{post.data.description}</p>
       <div class="article-meta">

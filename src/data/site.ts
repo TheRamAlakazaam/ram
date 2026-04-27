@@ -5,6 +5,7 @@ type SiteProfile = {
   name: string;
   defaultTitle: string;
   description: string;
+  defaultSocialImage?: string;
   summary: string;
   location: string;
   roles: string[];
@@ -74,7 +75,6 @@ type PageCopy = {
     seoDescription: string;
     indexEyebrow: string;
     indexTitle: string;
-    cardEyebrow: string;
     articleEyebrow: string;
     emptyState: string;
     filters: {
@@ -146,6 +146,9 @@ const normalizedProfile: SiteProfile = {
   defaultTitle: profile.defaultTitle || "R. Martinez",
   description:
     profile.description || "R. Martinez shares recent photographs and writing.",
+  defaultSocialImage: hasText(profile.defaultSocialImage)
+    ? profile.defaultSocialImage
+    : undefined,
   summary: profile.summary || "",
   location: profile.location || "",
   roles: Array.isArray(profile.roles) ? profile.roles.filter(hasText) : [],

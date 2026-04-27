@@ -26,6 +26,7 @@ const hasSummary = siteConfig.summary.trim().length > 0;
     <section class="about-page reveal">
       <header class="about-hero">
         <p class="eyebrow">{aboutCopy.heroEyebrow}</p>
+        <h1>{aboutCopy.heroTitle}</h1>
       </header>
 
       <section class="about-section panel">
@@ -48,7 +49,10 @@ const hasSummary = siteConfig.summary.trim().length > 0;
 
       <section class="about-section panel">
         <div class="about-section__head">
-          <h2>{aboutCopy.projectsTitle}</h2>
+          <div>
+            <h2>{aboutCopy.projectsTitle}</h2>
+            <p class="meta">{aboutCopy.projectsMeta}</p>
+          </div>
         </div>
 
         {
@@ -74,7 +78,10 @@ const hasSummary = siteConfig.summary.trim().length > 0;
 
       <section class="about-section panel">
         <div class="about-section__head">
-          <h2>{aboutCopy.cvTitle}</h2>
+          <div>
+            <h2>{aboutCopy.cvTitle}</h2>
+            <p class="meta">{aboutCopy.cvMeta}</p>
+          </div>
         </div>
 
         {
@@ -116,12 +123,17 @@ const hasSummary = siteConfig.summary.trim().length > 0;
 
   .about-hero {
     display: grid;
+    gap: 0.65rem;
     padding-bottom: 0.9rem;
     border-bottom: 1px solid var(--line);
   }
 
   .about-hero .eyebrow {
     margin-bottom: 0;
+  }
+
+  .about-hero h1 {
+    font-size: clamp(1.85rem, 4vw, 2.65rem);
   }
 
   .about-section {
@@ -131,6 +143,7 @@ const hasSummary = siteConfig.summary.trim().length > 0;
 
   .about-section__head {
     display: grid;
+    gap: 0.35rem;
     padding-bottom: 0.85rem;
     border-bottom: 1px solid var(--line);
   }
