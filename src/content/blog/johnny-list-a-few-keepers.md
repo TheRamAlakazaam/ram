@@ -1,13 +1,17 @@
 ---
-title: Confession
-description: |
-  This website was made by AI, but don't worry I wrote this blog.
-publishDate: 2026-04-03
+title: Expectations
+description: "First blog detailing my plans for the website. "
+publishDate: 2026-04-27
 tags:
-  - AI
-  - Codex
-  - Web Dev
+  - Personal
 featured: true
 ---
-I didn't write a single line of code for this website. It was all made by Open AI's codex! It's not something I'm proud of, but I am happy to have been able to use it. It pretty much completed all the tasks I would've done in 10x less the time it would've taken me. Now I am able to have a much faster workflow for tasks that require my undivided attention. 
+Expectations, I'm setting them for myself, you don't have to care, but there will be a plethora of resources and insight in different industries for your enjoyment.   
+  
+It could be about how to write a resume, or simply list resources on how to write a resume. No matter what it is...it will be posted weekly.   
+  
+Another expectation for my blogs they will never be written with AI.   
+  
+Enjoy the run-on sentences, the lack of commas and all the information I have to share  
+
 
