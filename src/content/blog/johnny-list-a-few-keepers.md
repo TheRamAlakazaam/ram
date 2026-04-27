@@ -14,7 +14,7 @@ In short, I've simplified it to just mean don't gate-keep, and help your colleag
 
 *Gracious Professionalism is not a “thing”, but a habit or way of conducting one’s self. It encourages quality work, good ethics, respect for yourself and everyone else, and the ability to compete in a gracious manner. “GP” represents everything FIRST stands for. Competition with respect. Effective communication. Creative brainstorming. Gracious Professionalism.*
 
-In FIRST we often found ourselves helping our competition restore their robots in any way possible. Their code is faulty? Let's share our ideas. They need a specific tool? Lets give it to them. They need to restore their entire drive-train? All hands on deck.   
+In FIRST the robotics program I was in,  we often found ourselves helping our competition restore their robots in any way possible. Their code is faulty? Let's share our ideas. They need a specific tool? Lets give it to them. They need to restore their entire drive-train? All hands on deck.   
 
 ![](/src/assets/images/50373165598765792557925551788836409379185750n.jpg)
 
