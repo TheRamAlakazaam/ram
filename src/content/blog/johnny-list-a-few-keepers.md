@@ -16,7 +16,7 @@ In short, I've simplified it to just mean don't gate-keep, and help your colleag
 
 In FIRST we often found ourselves helping our competition restore their robots in any way possible. Their code is faulty? Let's share our ideas. They need a specific tool? Lets give it to them. They need to restore their entire drive-train? All hands on deck.   
 
-While we still saw each other as competitors we understood we were all aiming for the same objective, trying to learn engineering concepts, engineer excellent systems and prepare ourselves for college and beyond that.   
+While we still saw each other as competitors we understood we were all aiming for the same objective, trying to learn engineering concepts, engineer excellent systems and prepare ourselves for college and beyond. 
 
 So no matter your industry, have an open mind, be willing to share new ideas, and learn from others. That's the best way you can respect yourself and your craft, grow, advocate and maybe make a few friends along the way.   
 
