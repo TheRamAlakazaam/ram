@@ -71,7 +71,8 @@
         document.activeElement instanceof HTMLElement
           ? document.activeElement
           : null;
-      const imageUrl = picture.currentSrc || picture.src;
+      const imageUrl =
+        trigger.dataset.spotlightSrc || picture.currentSrc || picture.src;
       const imageAlt = picture.alt || trigger.dataset.spotlightLabel || "";
 
       image.style.backgroundImage = `url("${imageUrl}")`;

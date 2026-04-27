@@ -1,4 +1,6 @@
 ---
+import type { ImageMetadata } from "astro";
+import { getImage } from "astro:assets";
 import { getCollection, render } from "astro:content";
 
 import OptimizedImage from "@/components/OptimizedImage.astro";
@@ -30,6 +32,39 @@ const coverAlt = getAlbumCoverAlt(photo.data);
 const gallery = getAlbumGallery(photo.data);
 const hasBody = (photo.body || "").trim().length > 0;
 const showHero = gallery.length <= 1;
+const images = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/images/**/*.{avif,gif,jpeg,jpg,png,webp}",
+);
+
+async function getSpotlightSrc(src?: string) {
+  if (!src) {
+    return "";
+  }
+
+  const imageKey = src.startsWith("src/") ? `/${src}` : src;
+  const imageImport = images[imageKey];
+
+  if (!imageImport) {
+    return src;
+  }
+
+  const importedImage = (await imageImport()).default;
+  const spotlightImage = await getImage({
+    src: importedImage,
+    width: Math.min(1800, importedImage.width),
+    format: "webp",
+  });
+
+  return spotlightImage.src;
+}
+
+const coverSpotlightSrc = await getSpotlightSrc(coverImage);
+const gallerySpotlight = await Promise.all(
+  gallery.map(async (image) => ({
+    image,
+    spotlightSrc: await getSpotlightSrc(image),
+  })),
+);
 ---
 
 <Layout
@@ -63,6 +98,7 @@ const showHero = gallery.length <= 1;
               class="spotlight-trigger photo-hero__button"
               type="button"
               data-spotlight-trigger
+              data-spotlight-src={coverSpotlightSrc}
               data-spotlight-label={coverAlt}
               aria-label={`Open ${coverAlt} in image spotlight`}
             >
@@ -88,12 +124,13 @@ const showHero = gallery.length <= 1;
       gallery.length > 1 && (
         <section class="album-gallery panel reveal">
           <div class="album-gallery__grid">
-            {gallery.map((image, index) => (
+            {gallerySpotlight.map(({ image, spotlightSrc }, index) => (
               <figure class="album-gallery__item">
                 <button
                   class="spotlight-trigger"
                   type="button"
                   data-spotlight-trigger
+                  data-spotlight-src={spotlightSrc}
                   data-spotlight-label={`${photo.data.title} photo ${index + 1}`}
                   aria-label={`Open ${photo.data.title} photo ${index + 1} in image spotlight`}
                 >
