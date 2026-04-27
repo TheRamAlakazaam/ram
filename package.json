@@ -40,6 +40,7 @@
     "lint:fix": "eslint . --ext .js,.ts,.astro --fix",
     "format": "prettier --write . --ignore-unknown",
     "format:check": "prettier --check . --ignore-unknown",
+    "images:prep": "node scripts/prepare-images.mjs",
     "postinstall": "node scripts/patch-astro-font-runtime-export.mjs",
     "type-check": "astro check",
     "prepare": "husky"

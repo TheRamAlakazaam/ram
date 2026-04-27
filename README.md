@@ -33,6 +33,19 @@ Pages CMS uploads images to `src/assets/images`. Use image paths like
 `src/components/OptimizedImage.astro` can pass them through Astro's image
 pipeline.
 
+For larger photo batches, resize and dedupe exports locally before opening
+Pages CMS. This keeps the CMS media browser responsive and avoids one commit per
+full-size camera export:
+
+```bash
+npm run images:prep -- ~/Pictures/exports --album new-york-city-in-not-film
+```
+
+The command writes WebP files to `src/assets/images/photos/<album>`, limits the
+long edge to 1800px, skips exact duplicates, and prints ready-to-paste gallery
+paths. Use `--max 1600 --quality 72` for smaller CMS previews, or
+`--dry-run` to preview the work without writing files.
+
 ## Photography Albums
 
 Photography entries are album-first. Each item in `src/content/photos` can
