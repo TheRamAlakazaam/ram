@@ -1,16 +1,11 @@
 ---
 import { getCollection } from "astro:content";
 
-import PageIntro from "@/components/PageIntro.astro";
 import PhotoCard from "@/components/PhotoCard.astro";
 import { pageCopy } from "@/data/site";
 import Layout from "@/layouts/Layout.astro";
 import { sortByDateDesc } from "@/utils/content";
-import {
-  getAlbumCoverAlt,
-  getAlbumCoverImage,
-  getAlbumImageCount,
-} from "@/utils/photography";
+import { getAlbumCoverImage, getAlbumImageCount } from "@/utils/photography";
 
 const photos = sortByDateDesc(await getCollection("photos"));
 const photographyCopy = pageCopy.photography;
@@ -22,10 +17,9 @@ const photographyFilters = photographyCopy.filters;
   description={photographyCopy.seoDescription}
 >
   <div class="frame">
-    <PageIntro
-      eyebrow={photographyCopy.indexEyebrow}
-      title={photographyCopy.indexTitle}
-    />
+    <header class="page-kicker-header reveal">
+      <h1 class="eyebrow">{photographyCopy.indexTitle}</h1>
+    </header>
 
     <section class="section-block">
       {
@@ -72,7 +66,7 @@ const photographyFilters = photographyCopy.filters;
             </div>
 
             <div class="section-grid section-grid--quarters" data-filter-list>
-              {photos.map((photo) => (
+              {photos.map((photo, index) => (
                 <div
                   data-filter-item
                   data-filter-text={[
@@ -91,9 +85,11 @@ const photographyFilters = photographyCopy.filters;
                     description={photo.data.description}
                     publishDate={photo.data.publishDate}
                     location={photo.data.location}
-                    alt={getAlbumCoverAlt(photo.data)}
+                    alt=""
                     image={getAlbumCoverImage(photo.data)}
                     imageCount={getAlbumImageCount(photo.data)}
+                    loading={index === 0 ? "eager" : "lazy"}
+                    fetchpriority={index === 0 ? "high" : undefined}
                     showDescription={false}
                     showImageCount={false}
                     sizes="(min-width: 1120px) 260px, (min-width: 900px) 25vw, (min-width: 640px) 50vw, 100vw"

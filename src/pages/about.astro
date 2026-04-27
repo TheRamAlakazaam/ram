@@ -24,7 +24,7 @@ const hasSummary = siteConfig.summary.trim().length > 0;
 >
   <div class="frame">
     <section class="about-page reveal">
-      <header class="about-hero">
+      <header class="about-hero page-kicker-header">
         <p class="eyebrow">{aboutCopy.heroEyebrow}</p>
       </header>
 
@@ -114,26 +114,15 @@ const hasSummary = siteConfig.summary.trim().length > 0;
     gap: var(--section-gap);
   }
 
-  .about-hero {
-    display: grid;
-    gap: 0.65rem;
-    padding-bottom: 0.9rem;
-    border-bottom: 1px solid var(--line);
-  }
-
-  .about-hero .eyebrow {
-    margin-bottom: 0;
-  }
-
   .about-section {
     display: grid;
-    gap: 1rem;
+    gap: var(--content-gap);
   }
 
   .about-section__head {
     display: grid;
     gap: 0.35rem;
-    padding-bottom: 0.85rem;
+    padding-bottom: var(--divider-padding);
     border-bottom: 1px solid var(--line);
   }
 
@@ -176,8 +165,8 @@ const hasSummary = siteConfig.summary.trim().length > 0;
   .about-item,
   .cv-item {
     display: grid;
-    gap: 1rem;
-    padding: 1.1rem 0;
+    gap: var(--content-gap);
+    padding: var(--item-padding);
     border-bottom: 1px solid var(--line);
   }
 

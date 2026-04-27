@@ -251,6 +251,10 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
     --page-gutter: clamp(1rem, 3.5vw, 2.5rem);
     --section-gap: clamp(1.4rem, 3vw, 2.35rem);
     --panel-padding: clamp(1rem, 2vw, 1.5rem);
+    --content-gap: 1rem;
+    --divider-padding: 0.9rem;
+    --item-padding: 1rem 0;
+    --control-padding: 0.65rem 0.8rem;
     --font-heading:
       "Inter", "Avenir Next", "Segoe UI", "Helvetica Neue", "Nimbus Sans",
       sans-serif;
@@ -738,7 +742,7 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
   .page-intro,
   .callout {
     display: grid;
-    gap: 1rem;
+    gap: var(--content-gap);
   }
 
   .hero {
@@ -754,7 +758,7 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
   }
 
   .page-intro--minimal {
-    padding-bottom: 0.9rem;
+    padding-bottom: var(--divider-padding);
     border-bottom: 1px solid var(--line);
   }
 
@@ -764,7 +768,7 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
 
   .hero__copy {
     display: grid;
-    gap: 0.9rem;
+    gap: var(--content-gap);
   }
 
   .hero__aside,
@@ -772,7 +776,7 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
     display: grid;
     gap: 0.75rem;
     align-self: stretch;
-    padding: 1rem;
+    padding: var(--panel-padding);
     border-radius: 8px;
     background: var(--surface-strong);
     border: 1px solid var(--line);
@@ -801,9 +805,20 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
     margin-bottom: 0;
   }
 
+  .page-kicker-header {
+    display: grid;
+    gap: 0.65rem;
+    padding-bottom: var(--divider-padding);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .page-kicker-header .eyebrow {
+    margin-bottom: 0;
+  }
+
   .collection-root {
     display: grid;
-    gap: 1rem;
+    gap: var(--content-gap);
   }
 
   .collection-toolbar {
@@ -811,7 +826,7 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
     grid-template-columns: minmax(0, 1fr) auto;
     gap: 0.75rem;
     align-items: center;
-    padding: 0.7rem 0.8rem;
+    padding: var(--control-padding);
   }
 
   .collection-search {
@@ -1025,7 +1040,7 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
     width: 100%;
     height: 100%;
     min-height: inherit;
-    padding: 1rem;
+    padding: var(--panel-padding);
     color: var(--placeholder-ink);
     background: var(--placeholder-bg);
     font-family: var(--font-main);
@@ -1040,12 +1055,12 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
     );
     margin: 0 auto;
     display: grid;
-    gap: 0.85rem;
+    gap: var(--content-gap);
   }
 
   .article-header {
     display: grid;
-    gap: 0.85rem;
+    gap: var(--content-gap);
   }
 
   .article-header--center {
@@ -1069,12 +1084,12 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
   }
 
   .article-content {
-    padding: clamp(1rem, 1.6vw, 1.7rem);
+    padding: var(--panel-padding);
   }
 
   .prose {
     display: grid;
-    gap: 1rem;
+    gap: var(--content-gap);
     font-size: 1.06rem;
     line-height: 1.78;
   }

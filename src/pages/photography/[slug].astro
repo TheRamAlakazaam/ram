@@ -60,8 +60,9 @@ async function getSpotlightSrc(src?: string) {
 
 const coverSpotlightSrc = await getSpotlightSrc(coverImage);
 const gallerySpotlight = await Promise.all(
-  gallery.map(async (image) => ({
+  gallery.map(async (image, index) => ({
     image,
+    label: `${photo.data.title} ${index + 1}`,
     spotlightSrc: await getSpotlightSrc(image),
   })),
 );
@@ -124,19 +125,19 @@ const gallerySpotlight = await Promise.all(
       gallery.length > 1 && (
         <section class="album-gallery panel reveal">
           <div class="album-gallery__grid">
-            {gallerySpotlight.map(({ image, spotlightSrc }, index) => (
+            {gallerySpotlight.map(({ image, label, spotlightSrc }) => (
               <figure class="album-gallery__item">
                 <button
                   class="spotlight-trigger"
                   type="button"
                   data-spotlight-trigger
                   data-spotlight-src={spotlightSrc}
-                  data-spotlight-label={`${photo.data.title} photo ${index + 1}`}
-                  aria-label={`Open ${photo.data.title} photo ${index + 1} in image spotlight`}
+                  data-spotlight-label={label}
+                  aria-label={`Open ${label} in spotlight`}
                 >
                   <OptimizedImage
                     src={image}
-                    alt={`${photo.data.title} photo ${index + 1}`}
+                    alt={label}
                     sizes="(min-width: 1200px) 280px, (min-width: 900px) 33vw, (min-width: 640px) 50vw, 100vw"
                     widths={[360, 520, 720, 960]}
                   />
@@ -197,7 +198,7 @@ const gallerySpotlight = await Promise.all(
   }
 
   .album-gallery {
-    padding: clamp(0.8rem, 1.5vw, 1rem);
+    padding: var(--panel-padding);
   }
 
   .album-gallery__grid {

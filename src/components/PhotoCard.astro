@@ -14,6 +14,8 @@ interface Props {
   imageCount?: number;
   showDescription?: boolean;
   showImageCount?: boolean;
+  loading?: "eager" | "lazy";
+  fetchpriority?: "high" | "low" | "auto";
   sizes?: string;
 }
 
@@ -28,6 +30,8 @@ const {
   imageCount,
   showDescription = true,
   showImageCount = true,
+  loading = "lazy",
+  fetchpriority,
   sizes = "(min-width: 900px) 33vw, 100vw",
 } = Astro.props;
 
@@ -46,7 +50,13 @@ const shouldShowDescription = showDescription && description.trim().length > 0;
   <div class="photo-card__media">
     {
       image ? (
-        <OptimizedImage src={image} alt={alt} sizes={sizes} />
+        <OptimizedImage
+          src={image}
+          alt={alt}
+          loading={loading}
+          fetchpriority={fetchpriority}
+          sizes={sizes}
+        />
       ) : (
         <div class="photo-card__placeholder">
           <span>{location}</span>

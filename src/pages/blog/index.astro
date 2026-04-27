@@ -1,7 +1,6 @@
 ---
 import { getCollection } from "astro:content";
 
-import PageIntro from "@/components/PageIntro.astro";
 import { pageCopy } from "@/data/site";
 import Layout from "@/layouts/Layout.astro";
 import { formatDate, sortByDateDesc } from "@/utils/content";
@@ -13,10 +12,9 @@ const writingFilters = writingCopy.filters;
 
 <Layout title={writingCopy.seoTitle} description={writingCopy.seoDescription}>
   <div class="frame">
-    <PageIntro
-      eyebrow={writingCopy.indexEyebrow}
-      title={writingCopy.indexTitle}
-    />
+    <header class="page-kicker-header reveal">
+      <h1 class="eyebrow">{writingCopy.indexTitle}</h1>
+    </header>
 
     <section class="section-block">
       {
@@ -61,7 +59,7 @@ const writingFilters = writingCopy.filters;
             <div class="blog-list" data-filter-list>
               {posts.map((post) => (
                 <a
-                  class="blog-list-card reveal"
+                  class="blog-list-card"
                   href={`/blog/${post.slug}`}
                   data-filter-item
                   data-filter-text={[

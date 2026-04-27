@@ -5,20 +5,16 @@ import OptimizedImage from "@/components/OptimizedImage.astro";
 import { pageCopy, siteConfig } from "@/data/site";
 import Layout from "@/layouts/Layout.astro";
 import { formatDate, sortByDateDesc } from "@/utils/content";
-import { getAlbumCoverAlt, getAlbumGallery } from "@/utils/photography";
+import { getAlbumGallery } from "@/utils/photography";
 
 const writing = sortByDateDesc(await getCollection("blog"));
 const photos = sortByDateDesc(await getCollection("photos"));
 
 const latestPictures = photos
   .flatMap((photo) =>
-    getAlbumGallery(photo.data).map((image, index) => ({
+    getAlbumGallery(photo.data).map((image) => ({
       image,
       href: `/photography/${photo.slug}`,
-      alt:
-        index === 0
-          ? getAlbumCoverAlt(photo.data)
-          : `${photo.data.title} photograph ${index + 1}`,
       title: photo.data.title,
       location: photo.data.location,
     })),
@@ -38,7 +34,6 @@ const homeDescription = `${heroSummary}. ${homeCopy.seoDescription}`;
   <div class="frame home-frame">
     <section class="home-hero">
       <div class="home-hero__copy reveal">
-        <p class="eyebrow">{siteConfig.location}</p>
         <h1>{homeCopy.heroTitle}</h1>
         <p class="home-deck">{heroSummary}</p>
       </div>
@@ -61,9 +56,9 @@ const homeDescription = `${heroSummary}. ${homeCopy.seoDescription}`;
                 <a class="home-photo-tile" href={picture.href}>
                   <OptimizedImage
                     src={picture.image}
-                    alt={picture.alt}
+                    alt=""
                     loading={index === 0 ? "eager" : "lazy"}
-                    fetchpriority={index === 0 ? "high" : "auto"}
+                    fetchpriority={index === 0 ? "high" : undefined}
                     sizes="(min-width: 1120px) 260px, (min-width: 900px) 25vw, (min-width: 640px) 50vw, 100vw"
                     widths={[240, 360, 520, 720]}
                   />
@@ -129,26 +124,26 @@ const homeDescription = `${heroSummary}. ${homeCopy.seoDescription}`;
 <style>
   .home-frame {
     display: grid;
-    gap: clamp(1.35rem, 3vw, 2.25rem);
+    gap: var(--section-gap);
   }
 
   .home-hero {
     display: grid;
-    padding-top: 0.35rem;
-    padding-bottom: clamp(0.35rem, 1vw, 0.75rem);
+    padding-bottom: var(--divider-padding);
     border-bottom: 1px solid var(--line);
   }
 
   .home-hero h1 {
-    max-width: 12ch;
+    max-width: none;
     margin: 0;
-    font-size: clamp(2.45rem, 8vw, 5.8rem);
-    line-height: 0.98;
+    font-size: clamp(1.5rem, 4vw, 2.75rem);
+    line-height: 1.05;
+    white-space: nowrap;
   }
 
   .home-hero__copy {
     display: grid;
-    gap: 0.9rem;
+    gap: var(--content-gap);
     max-width: 72rem;
   }
 
@@ -160,11 +155,11 @@ const homeDescription = `${heroSummary}. ${homeCopy.seoDescription}`;
 
   .home-panel {
     display: grid;
-    gap: clamp(0.95rem, 2vw, 1.25rem);
+    gap: var(--content-gap);
   }
 
   .home-section {
-    padding: clamp(1rem, 2.4vw, 1.45rem);
+    padding: var(--panel-padding);
     border: 1px solid var(--line);
     border-radius: 8px;
     background: var(--surface);
@@ -176,11 +171,12 @@ const homeDescription = `${heroSummary}. ${homeCopy.seoDescription}`;
     gap: 1rem;
     justify-content: space-between;
     min-width: 0;
-    padding-bottom: 0.15rem;
+    padding-bottom: 0;
   }
 
   .home-section__head h2 {
-    font-size: clamp(1.35rem, 2.6vw, 2rem);
+    font-size: 1.02rem;
+    letter-spacing: 0.03em;
   }
 
   .home-section__link {
@@ -199,7 +195,9 @@ const homeDescription = `${heroSummary}. ${homeCopy.seoDescription}`;
   .home-photo-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 1rem;
+    gap: var(--content-gap);
+    padding-top: var(--divider-padding);
+    border-top: 1px solid var(--line);
   }
 
   .home-photo-tile {
@@ -262,7 +260,7 @@ const homeDescription = `${heroSummary}. ${homeCopy.seoDescription}`;
     grid-template-columns: minmax(8rem, 0.24fr) minmax(0, 1fr);
     gap: 1.25rem;
     align-items: start;
-    padding: 1rem 0;
+    padding: var(--item-padding);
     text-decoration: none;
     border-bottom: 1px solid var(--line);
     transition:

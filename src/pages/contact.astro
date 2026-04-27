@@ -11,7 +11,7 @@ const contactCopy = pageCopy.contact;
 <Layout title={contactCopy.seoTitle} description={contactCopy.seoDescription}>
   <div class="frame">
     <section class="contact-page reveal">
-      <header>
+      <header class="page-kicker-header">
         <p class="eyebrow">{contactCopy.eyebrow}</p>
       </header>
 
@@ -125,19 +125,15 @@ const contactCopy = pageCopy.contact;
 <style>
   .contact-page {
     display: grid;
-    gap: 1rem;
+    gap: var(--content-gap);
     width: min(560px, 100%);
     margin: 0 auto;
-  }
-
-  .contact-page .eyebrow {
-    margin-bottom: 0;
   }
 
   .contact-form {
     display: grid;
     gap: 0.8rem;
-    padding: 1rem;
+    padding: var(--panel-padding);
   }
 
   .contact-form label {
@@ -158,7 +154,7 @@ const contactCopy = pageCopy.contact;
     font: inherit;
     font-size: 0.95rem;
     line-height: 1.5;
-    padding: 0.7rem 0.8rem;
+    padding: var(--control-padding);
   }
 
   .contact-form textarea {
