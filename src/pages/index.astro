@@ -88,6 +88,16 @@ const homeDescription = `${heroSummary}. ${homeCopy.seoDescription}`;
                 <span class="meta">{formatDate(post.data.publishDate)}</span>
                 <h3>{post.data.title}</h3>
                 <p>{post.data.description}</p>
+                {post.data.tags.length > 0 && (
+                  <div
+                    class="pill-row"
+                    aria-label={pageCopy.shared.tagsAriaLabel}
+                  >
+                    {post.data.tags.slice(0, 3).map((tag) => (
+                      <span class="pill">{tag}</span>
+                    ))}
+                  </div>
+                )}
               </a>
             ))
           }
@@ -245,6 +255,10 @@ const homeDescription = `${heroSummary}. ${homeCopy.seoDescription}`;
   .home-blog-card p {
     max-width: 72ch;
     color: var(--muted);
+  }
+
+  .home-blog-card .pill-row {
+    margin-top: 0.2rem;
   }
 
   .home-contact {
