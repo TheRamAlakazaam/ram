@@ -20,7 +20,7 @@ While we still saw each other as competitors we understood we were all aiming fo
 
 So no matter your industry, have an open mind, be willing to share new ideas, and learn from others. That's the best way you can respect yourself and your craft, grow, advocate and maybe make a few friends along the way.   
 
-Every week I'll be sharing list of resources or opinions around this idea. Feel free to reach out if you have questions on specific topics. I'll do my best to find the best resources available for you.   
+Every week I'll be sharing list of resources or opinions with this idea in mind. Feel free to reach out if you have questions on specific topics. I'll do my best to find the best resources available for you.   
 
 Until next week!
 
