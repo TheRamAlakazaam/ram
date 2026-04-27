@@ -203,6 +203,7 @@ const writingFilters = writingCopy.filters;
     text-decoration: none;
     border-bottom: 1px solid var(--line);
     transition:
+      transform 180ms ease,
       color 180ms ease,
       border-color 180ms ease;
   }
@@ -211,6 +212,7 @@ const writingFilters = writingCopy.filters;
   .blog-list-card:focus-visible {
     color: var(--accent);
     border-color: var(--line-strong);
+    transform: translateX(0.25rem);
   }
 
   .blog-list-card h2 {
