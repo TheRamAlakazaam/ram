@@ -44,7 +44,7 @@ const homeDescription = `${heroSummary}. ${homeCopy.seoDescription}`;
       </div>
     </section>
 
-    <section class="home-section home-section--photos reveal">
+    <section class="home-section reveal">
       <div class="home-panel">
         <div class="home-section__head">
           <h2>{homeCopy.photosTitle}</h2>
@@ -76,7 +76,7 @@ const homeDescription = `${heroSummary}. ${homeCopy.seoDescription}`;
       </div>
     </section>
 
-    <section class="home-section home-section--writing reveal">
+    <section class="home-section reveal">
       <div class="home-panel">
         <div class="home-section__head">
           <h2>{homeCopy.writingTitle}</h2>
@@ -140,25 +140,8 @@ const homeDescription = `${heroSummary}. ${homeCopy.seoDescription}`;
   }
 
   .home-section {
-    position: relative;
-    padding: clamp(1rem, 2.4vw, 1.45rem);
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    background: var(--surface);
-    box-shadow: var(--shadow);
-  }
-
-  .home-section::before {
-    position: absolute;
-    inset: -1px auto -1px -1px;
-    width: 0.28rem;
-    border-radius: 8px 0 0 8px;
-    background: var(--accent-2);
-    content: "";
-  }
-
-  .home-section--writing::before {
-    background: var(--accent);
+    padding-top: clamp(1rem, 2.4vw, 1.45rem);
+    border-top: 1px solid var(--line);
   }
 
   .home-section__head {
@@ -166,8 +149,7 @@ const homeDescription = `${heroSummary}. ${homeCopy.seoDescription}`;
     align-items: end;
     justify-content: space-between;
     min-width: 0;
-    padding-bottom: 0.85rem;
-    border-bottom: 1px solid var(--line);
+    padding-bottom: 0.15rem;
   }
 
   .home-section__head h2 {
@@ -189,7 +171,6 @@ const homeDescription = `${heroSummary}. ${homeCopy.seoDescription}`;
     border-radius: 8px;
     border: 1px solid var(--line);
     background: var(--photo-media-bg);
-    box-shadow: 0 14px 34px rgba(65, 49, 38, 0.1);
     text-decoration: none;
   }
 
@@ -234,19 +215,15 @@ const homeDescription = `${heroSummary}. ${homeCopy.seoDescription}`;
 
   .home-blog-list {
     display: grid;
-    gap: 0.75rem;
+    border-top: 1px solid var(--line);
   }
 
   .home-blog-card {
     display: grid;
     gap: 0.4rem;
-    padding: 1rem;
+    padding: 1rem 0;
     text-decoration: none;
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    background:
-      linear-gradient(135deg, var(--accent-soft), transparent 54%),
-      var(--surface);
+    border-bottom: 1px solid var(--line);
     transition:
       transform 180ms ease,
       color 180ms ease,
@@ -257,7 +234,7 @@ const homeDescription = `${heroSummary}. ${homeCopy.seoDescription}`;
   .home-blog-card:focus-visible {
     color: var(--accent);
     border-color: var(--line-strong);
-    transform: translateY(-2px);
+    transform: translateX(0.25rem);
   }
 
   .home-blog-card h3 {
@@ -291,10 +268,6 @@ const homeDescription = `${heroSummary}. ${homeCopy.seoDescription}`;
   @media (max-width: 640px) {
     .home-frame {
       gap: 1.2rem;
-    }
-
-    .home-section {
-      padding: 1rem;
     }
 
     .home-photo-tile > span {

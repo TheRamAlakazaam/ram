@@ -207,27 +207,24 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
 <style is:global>
   :root {
     color-scheme: light;
-    --bg: #fbfaf7;
+    --bg: #ffffff;
     --surface: #ffffff;
-    --surface-strong: #f3f0ea;
-    --ink: #181512;
+    --surface-strong: #f6f6f6;
+    --ink: #111111;
     --ink-inverse: #ffffff;
-    --muted: #686057;
-    --line: rgba(65, 49, 38, 0.14);
-    --line-strong: rgba(65, 49, 38, 0.4);
-    --accent: #8f3d27;
-    --accent-2: #2f6f64;
-    --accent-soft: rgba(143, 61, 39, 0.1);
-    --accent-2-soft: rgba(47, 111, 100, 0.12);
-    --moss: #2f6f64;
-    --gold: #a9812a;
-    --header-bg: rgba(251, 250, 247, 0.94);
-    --pill-bg: rgba(47, 111, 100, 0.1);
-    --photo-media-bg: #eee9df;
-    --placeholder-bg: linear-gradient(135deg, #2f6f64, #8f3d27);
+    --muted: #666666;
+    --line: rgba(17, 17, 17, 0.14);
+    --line-strong: rgba(17, 17, 17, 0.42);
+    --accent: #111111;
+    --moss: #4d4d4d;
+    --gold: #777777;
+    --header-bg: rgba(255, 255, 255, 0.96);
+    --pill-bg: rgba(53, 89, 74, 0.08);
+    --photo-media-bg: #f0f0f0;
+    --placeholder-bg: linear-gradient(135deg, #171717, #4d4d4d);
     --placeholder-ink: rgba(255, 255, 255, 0.92);
-    --blockquote-line: rgba(143, 61, 39, 0.42);
-    --shadow: 0 18px 44px rgba(65, 49, 38, 0.08);
+    --blockquote-line: rgba(178, 76, 42, 0.35);
+    --shadow: none;
     --page-max: 1120px;
     --article-max: 860px;
     --page-gutter: clamp(1rem, 3.5vw, 2.5rem);
@@ -246,27 +243,23 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
 
   :root[data-theme="dark"] {
     color-scheme: dark;
-    --bg: #11100f;
-    --surface: #191817;
-    --surface-strong: #23211f;
-    --ink: #f4eee7;
-    --ink-inverse: #15120f;
-    --muted: #c0b7ad;
-    --line: rgba(244, 238, 231, 0.16);
-    --line-strong: rgba(244, 238, 231, 0.42);
-    --accent: #e48a67;
-    --accent-2: #83cabb;
-    --accent-soft: rgba(228, 138, 103, 0.13);
-    --accent-2-soft: rgba(131, 202, 187, 0.12);
-    --moss: #83cabb;
-    --gold: #e0c36f;
-    --header-bg: rgba(17, 16, 15, 0.94);
-    --pill-bg: rgba(131, 202, 187, 0.12);
-    --photo-media-bg: #23211f;
-    --placeholder-bg: linear-gradient(135deg, #244d47, #7e3929);
+    --bg: #111111;
+    --surface: #171717;
+    --surface-strong: #202020;
+    --ink: #f4f4f4;
+    --ink-inverse: #111111;
+    --muted: #b0b0b0;
+    --line: rgba(255, 255, 255, 0.16);
+    --line-strong: rgba(255, 255, 255, 0.42);
+    --accent: #ffffff;
+    --moss: #c7d8cf;
+    --gold: #d5c68d;
+    --header-bg: rgba(17, 17, 17, 0.96);
+    --pill-bg: rgba(199, 216, 207, 0.1);
+    --photo-media-bg: #202020;
+    --placeholder-bg: linear-gradient(135deg, #111111, #333333);
     --placeholder-ink: rgba(255, 255, 255, 0.92);
-    --blockquote-line: rgba(228, 138, 103, 0.48);
-    --shadow: 0 18px 48px rgba(0, 0, 0, 0.28);
+    --blockquote-line: rgba(255, 255, 255, 0.32);
   }
 
   * {
@@ -287,13 +280,7 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
     font-family: var(--font-main);
     font-size: 1rem;
     line-height: 1.68;
-    background:
-      radial-gradient(
-        circle at top left,
-        var(--accent-soft),
-        transparent 28rem
-      ),
-      linear-gradient(180deg, var(--bg), var(--surface-strong));
+    background: var(--bg);
   }
 
   body[data-nav-open="true"] {
@@ -647,7 +634,7 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
   .card:focus-visible {
     transform: translateY(-2px);
     border-color: var(--line-strong);
-    box-shadow: 0 22px 54px rgba(65, 49, 38, 0.12);
+    box-shadow: none;
   }
 
   .eyebrow {
@@ -681,7 +668,7 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
     padding: 0.65rem 0.95rem;
     border-radius: 8px;
     border: 1px solid var(--ink);
-    background: var(--accent);
+    background: var(--ink);
     color: var(--ink-inverse);
     text-decoration: none;
     font-weight: 600;
@@ -748,9 +735,7 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
     align-self: stretch;
     padding: 1rem;
     border-radius: 8px;
-    background:
-      linear-gradient(135deg, var(--accent-2-soft), transparent 58%),
-      var(--surface-strong);
+    background: var(--surface-strong);
     border: 1px solid var(--line);
   }
 
