@@ -1,6 +1,6 @@
 ---
 import type { ImageMetadata } from "astro";
-import { getImage } from "astro:assets";
+import { Image } from "astro:assets";
 
 interface Props {
   src: string;
@@ -27,7 +27,7 @@ const images = import.meta.glob<{ default: ImageMetadata }>(
 );
 const imageKey = src.startsWith("src/") ? `/${src}` : src;
 const imageImport = images[imageKey];
-const shouldRenderPlainImage = src.startsWith("/") || /^https?:\/\//.test(src);
+const shouldRenderStringImage = src.startsWith("/") || /^https?:\/\//.test(src);
 
 const importedImage = imageImport ? (await imageImport()).default : undefined;
 const sortedWidths = [...new Set(widths)]
@@ -39,48 +39,29 @@ const imageWidths =
     : sortedWidths;
 const responsiveWidths =
   importedImage && imageWidths.length > 0 ? imageWidths : sortedWidths;
-const generatedImages = importedImage
-  ? await Promise.all(
-      responsiveWidths.map((width) =>
-        getImage({ src: importedImage, width, format: "webp" }),
-      ),
-    )
-  : [];
-const fallbackImage = generatedImages.at(-1);
-const fallbackWidth =
-  fallbackImage && responsiveWidths.length > 0
-    ? responsiveWidths[responsiveWidths.length - 1]
-    : importedImage?.width;
-const fallbackHeight =
-  importedImage && fallbackWidth
-    ? Math.round((fallbackWidth / importedImage.width) * importedImage.height)
-    : importedImage?.height;
-const srcset = generatedImages
-  .map((image, index) => `${image.src} ${responsiveWidths[index]}w`)
-  .join(", ");
 ---
 
 {
-  fallbackImage ? (
-    <img
-      src={fallbackImage.src}
-      srcset={srcset}
+  importedImage ? (
+    <Image
+      src={importedImage}
+      widths={responsiveWidths}
       sizes={sizes}
-      width={fallbackWidth}
-      height={fallbackHeight}
+      format="webp"
       alt={alt}
       loading={loading}
       decoding={decoding}
       fetchpriority={fetchpriority}
     />
   ) : (
-    shouldRenderPlainImage && (
-      <img
+    shouldRenderStringImage && (
+      <Image
         src={src}
         alt={alt}
         loading={loading}
         decoding={decoding}
         fetchpriority={fetchpriority}
+        inferSize
       />
     )
   )
