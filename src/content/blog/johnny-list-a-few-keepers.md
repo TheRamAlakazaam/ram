@@ -4,6 +4,8 @@ description: "I describe the reason for the blog, and my ideas for the future. "
 publishDate: 2026-04-27
 tags:
   - Personal
+  - Gracious Professionalism
+  - Growth
 featured: true
 ---
 SInce, High School I've adopted the ethos of "Gracious Professionalism". This idea was shared by everyone in my robotics community and it's something I've carried until today.   
