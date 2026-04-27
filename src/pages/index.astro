@@ -150,8 +150,10 @@ const homeDescription = `${heroSummary}. ${homeCopy.seoDescription}`;
   }
 
   .home-section {
-    padding-top: clamp(1rem, 2.4vw, 1.45rem);
-    border-top: 1px solid var(--line);
+    padding: clamp(1rem, 2.4vw, 1.45rem);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--surface);
   }
 
   .home-section__head {
@@ -179,7 +181,6 @@ const homeDescription = `${heroSummary}. ${homeCopy.seoDescription}`;
     aspect-ratio: 1 / 1;
     min-height: 0;
     border-radius: 8px;
-    border: 1px solid var(--line);
     background: var(--photo-media-bg);
     text-decoration: none;
   }
@@ -225,25 +226,26 @@ const homeDescription = `${heroSummary}. ${homeCopy.seoDescription}`;
 
   .home-blog-list {
     display: grid;
-    border-top: 1px solid var(--line);
+    gap: 0.75rem;
   }
 
   .home-blog-card {
     display: grid;
     gap: 0.4rem;
-    padding: 1rem 0;
+    padding: 0.95rem 1rem;
     text-decoration: none;
-    border-bottom: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--surface-strong);
     transition:
       transform 180ms ease,
       color 180ms ease,
-      border-color 180ms ease;
+      background-color 180ms ease;
   }
 
   .home-blog-card:hover,
   .home-blog-card:focus-visible {
     color: var(--accent);
-    border-color: var(--line-strong);
+    background: var(--surface);
     transform: translateX(0.25rem);
   }
 
