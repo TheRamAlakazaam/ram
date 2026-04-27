@@ -28,3 +28,5 @@ Every week I'll be sharing list of resources or opinions with this idea in mind.
 
 Until next week!
 
+![](/src/assets/images/50480723598752335659271241640501049278273497n.jpg)
+
