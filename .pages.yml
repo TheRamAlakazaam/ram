@@ -180,26 +180,17 @@ content:
           - name: heroTitle
             label: Hero title
             type: string
-          - name: photosEyebrow
-            label: Photos eyebrow
-            type: string
           - name: photosTitle
             label: Photos section title
             type: string
           - name: photosCtaLabel
             label: Photos button label
             type: string
-          - name: writingEyebrow
-            label: Blog eyebrow
-            type: string
           - name: writingTitle
             label: Blog section title
             type: string
           - name: writingCtaLabel
             label: Blog button label
-            type: string
-          - name: contactEyebrow
-            label: Contact eyebrow
             type: string
           - name: contactTitle
             label: Contact section title
@@ -302,9 +293,6 @@ content:
           - name: heroEyebrow
             label: Hero eyebrow
             type: string
-          - name: heroTitle
-            label: Hero title
-            type: string
           - name: summaryTitle
             label: Summary title
             type: string
@@ -314,17 +302,11 @@ content:
           - name: projectsTitle
             label: Projects title
             type: string
-          - name: projectsMeta
-            label: Projects meta copy
-            type: string
           - name: projectsEmptyState
             label: Projects empty state
             type: text
           - name: cvTitle
             label: CV title
-            type: string
-          - name: cvMeta
-            label: CV meta copy
             type: string
           - name: cvEmptyState
             label: CV empty state
@@ -341,9 +323,6 @@ content:
             type: text
           - name: eyebrow
             label: Eyebrow
-            type: string
-          - name: title
-            label: Title
             type: string
           - name: honeypotLabel
             label: Honeypot label

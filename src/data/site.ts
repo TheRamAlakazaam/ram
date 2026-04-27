@@ -60,13 +60,10 @@ type PageCopy = {
   home: {
     seoDescription: string;
     heroTitle: string;
-    photosEyebrow: string;
     photosTitle: string;
     photosCtaLabel: string;
-    writingEyebrow: string;
     writingTitle: string;
     writingCtaLabel: string;
-    contactEyebrow: string;
     contactTitle: string;
     contactCtaLabel: string;
   };
@@ -104,21 +101,17 @@ type PageCopy = {
     seoTitle: string;
     seoDescription: string;
     heroEyebrow: string;
-    heroTitle: string;
     summaryTitle: string;
     summaryEmptyState: string;
     projectsTitle: string;
-    projectsMeta: string;
     projectsEmptyState: string;
     cvTitle: string;
-    cvMeta: string;
     cvEmptyState: string;
   };
   contact: {
     seoTitle: string;
     seoDescription: string;
     eyebrow: string;
-    title: string;
     honeypotLabel: string;
     nameLabel: string;
     emailLabel: string;
