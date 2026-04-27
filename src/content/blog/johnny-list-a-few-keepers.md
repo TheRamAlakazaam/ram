@@ -8,7 +8,7 @@ tags:
   - Growth
 featured: true
 ---
-SInce, High School I've adopted the ethos of "Gracious Professionalism". This idea was shared by everyone in my robotics community and it's something I've carried until today.   
+SInce, High School I've adopted the ethos of "**Gracious Professionalism**". This idea was shared by everyone in my robotics community and it's something I've carried until today.   
 
 In short, I've simplified it to just mean don't gate-keep, and help your colleagues. The idea is the following :  
 
