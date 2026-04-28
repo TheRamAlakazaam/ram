@@ -71,15 +71,17 @@ const writingFilters = writingCopy.filters;
                     .toLowerCase()}
                   data-sort-key={post.data.publishDate.getTime()}
                 >
-                  <span class="blog-list-card__date meta">
-                    {formatDate(post.data.publishDate)}
-                  </span>
+                  <div class="blog-list-card__meta">
+                    <span class="blog-list-card__date meta">
+                      {formatDate(post.data.publishDate)}
+                    </span>
+                  </div>
                   <div>
                     <h2>{post.data.title}</h2>
                     <p>{post.data.description}</p>
                     {post.data.tags.length > 0 && (
                       <div
-                        class="pill-row"
+                        class="blog-list-card__tags pill-row"
                         aria-label={pageCopy.shared.tagsAriaLabel}
                       >
                         {post.data.tags.slice(0, 3).map((tag) => (
@@ -221,14 +223,27 @@ const writingFilters = writingCopy.filters;
     font-size: 1.2rem;
   }
 
+  .blog-list-card__meta {
+    display: grid;
+    gap: 0.55rem;
+    justify-items: start;
+    align-content: start;
+  }
+
+  .blog-list-card__tags {
+    gap: 0.5rem;
+    margin-top: 0.7rem;
+  }
+
+  .blog-list-card__tags .pill {
+    border: 1px solid var(--line);
+    background: transparent;
+  }
+
   .blog-list-card p {
     max-width: 72ch;
     margin-top: 0.55rem;
     color: var(--muted);
-  }
-
-  .blog-list-card .pill-row {
-    margin-top: 0.7rem;
   }
 
   @media (max-width: 900px) {

@@ -70,7 +70,6 @@ const shouldShowDescription = showDescription && description.trim().length > 0;
       <h2>{title}</h2>
       <div class="photo-card__meta">
         <span class="meta">{location}</span>
-        <span class="meta">{formatDate(publishDate)}</span>
         {
           showImageCount &&
             typeof imageCount === "number" &&
@@ -82,5 +81,9 @@ const shouldShowDescription = showDescription && description.trim().length > 0;
     </div>
 
     {shouldShowDescription && <p>{description}</p>}
+
+    <div class="photo-card__footer">
+      <span class="photo-card__date meta">{formatDate(publishDate)}</span>
+    </div>
   </div>
 </a>

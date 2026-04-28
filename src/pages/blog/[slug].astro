@@ -29,12 +29,25 @@ const writingCopy = pageCopy.writing;
 >
   <article class="article-shell">
     <header class="article-header article-header--center panel reveal">
-      <p class="eyebrow">{writingCopy.articleEyebrow}</p>
+      <div class="article-kicker">
+        <p class="eyebrow">{writingCopy.articleEyebrow}</p>
+        {
+          post.data.tags.length > 0 && (
+            <div
+              class="article-kicker-tags pill-row"
+              aria-label={pageCopy.shared.tagsAriaLabel}
+            >
+              {post.data.tags.map((tag: string) => (
+                <span class="pill">{tag}</span>
+              ))}
+            </div>
+          )
+        }
+      </div>
       <h1>{post.data.title}</h1>
       <p class="lede">{post.data.description}</p>
       <div class="article-meta">
         <span class="meta">{formatDate(post.data.publishDate)}</span>
-        {post.data.tags.map((tag: string) => <span class="pill">{tag}</span>)}
       </div>
     </header>
 
@@ -47,6 +60,26 @@ const writingCopy = pageCopy.writing;
 <style>
   .article-header h1 {
     font-size: clamp(1.75rem, 4vw, 2.25rem);
+  }
+
+  .article-kicker {
+    display: grid;
+    gap: 0.45rem;
+    justify-items: center;
+  }
+
+  .article-kicker .eyebrow {
+    margin-bottom: 0;
+  }
+
+  .article-kicker-tags {
+    justify-content: center;
+    gap: 0.45rem;
+  }
+
+  .article-kicker-tags .pill {
+    border: 1px solid var(--line);
+    background: transparent;
   }
 
   @media (max-width: 640px) {

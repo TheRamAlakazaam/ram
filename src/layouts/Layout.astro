@@ -959,6 +959,7 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
   .photo-card {
     align-content: start;
     gap: 0;
+    grid-template-rows: auto minmax(0, 1fr);
     overflow: hidden;
     padding: 0;
   }
@@ -975,6 +976,9 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
   }
 
   .photo-card__body {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
     padding: 0.85rem 0.9rem 0.95rem;
   }
 
@@ -1007,7 +1011,17 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
     gap: 0.35rem 0.65rem;
   }
 
+  .photo-card__footer {
+    align-self: flex-start;
+    margin-top: auto;
+    padding-top: 0.75rem;
+  }
+
   .photo-card--compact .photo-card__meta .meta {
+    font-size: 0.84rem;
+  }
+
+  .photo-card--compact .photo-card__footer .meta {
     font-size: 0.84rem;
   }
 
