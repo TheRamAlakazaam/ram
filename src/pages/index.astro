@@ -14,7 +14,7 @@ const latestPictures = photos
   .flatMap((photo) =>
     getAlbumGallery(photo.data).map((image) => ({
       image,
-      href: `/photography/${photo.slug}`,
+      href: `/photography/${photo.id}`,
       title: photo.data.title,
       location: photo.data.location,
     })),
@@ -89,7 +89,7 @@ const homeDescription = `${heroSummary}. ${homeCopy.seoDescription}`;
         <div class="home-blog-list">
           {
             latestWriting.map((post) => (
-              <a class="home-blog-card" href={`/blog/${post.slug}`}>
+              <a class="home-blog-card" href={`/blog/${post.id}`}>
                 <div class="home-blog-card__meta">
                   <span class="home-blog-card__date meta">
                     {formatDate(post.data.publishDate)}

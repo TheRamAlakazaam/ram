@@ -5,6 +5,7 @@ import { Image } from "astro:assets";
 interface Props {
   src: string;
   alt: string;
+  title?: string;
   loading?: "eager" | "lazy";
   decoding?: "async" | "auto" | "sync";
   fetchpriority?: "high" | "low" | "auto";
@@ -15,6 +16,7 @@ interface Props {
 const {
   src,
   alt,
+  title,
   loading = "lazy",
   decoding = "async",
   fetchpriority,
@@ -25,9 +27,13 @@ const {
 const images = import.meta.glob<{ default: ImageMetadata }>(
   "/src/assets/images/**/*.{avif,gif,jpeg,jpg,png,webp}",
 );
-const imageKey = src.startsWith("src/") ? `/${src}` : src;
+const normalizedSrc = src.replace(/^\/?src\/assets\//, "/assets/");
+const imageKey = normalizedSrc.startsWith("/assets/")
+  ? normalizedSrc.replace(/^\/assets\//, "/src/assets/")
+  : normalizedSrc;
 const imageImport = images[imageKey];
-const shouldRenderStringImage = src.startsWith("/") || /^https?:\/\//.test(src);
+const shouldRenderStringImage =
+  normalizedSrc.startsWith("/") || /^https?:\/\//.test(normalizedSrc);
 
 const importedImage = imageImport ? (await imageImport()).default : undefined;
 const sortedWidths = [...new Set(widths)]
@@ -39,16 +45,25 @@ const imageWidths =
     : sortedWidths;
 const responsiveWidths =
   importedImage && imageWidths.length > 0 ? imageWidths : sortedWidths;
+const fallbackWidth =
+  importedImage && responsiveWidths.length > 0
+    ? Math.min(
+        responsiveWidths[responsiveWidths.length - 1],
+        importedImage.width,
+      )
+    : undefined;
 ---
 
 {
   importedImage ? (
     <Image
       src={importedImage}
+      width={fallbackWidth}
       widths={responsiveWidths}
       sizes={sizes}
       format="webp"
       alt={alt}
+      title={title}
       loading={loading}
       decoding={decoding}
       fetchpriority={fetchpriority}
@@ -56,8 +71,9 @@ const responsiveWidths =
   ) : (
     shouldRenderStringImage && (
       <Image
-        src={src}
+        src={normalizedSrc}
         alt={alt}
+        title={title}
         loading={loading}
         decoding={decoding}
         fetchpriority={fetchpriority}

@@ -19,7 +19,7 @@ export async function getStaticPaths() {
   const photos = await getCollection("photos");
 
   return photos.map((photo) => ({
-    params: { slug: photo.slug },
+    params: { slug: photo.id },
     props: { photo },
   }));
 }
@@ -41,17 +41,20 @@ async function getSpotlightSrc(src?: string) {
     return "";
   }
 
-  const imageKey = src.startsWith("src/") ? `/${src}` : src;
+  const normalizedSrc = src.replace(/^\/?src\/assets\//, "/assets/");
+  const imageKey = normalizedSrc.startsWith("/assets/")
+    ? normalizedSrc.replace(/^\/assets\//, "/src/assets/")
+    : normalizedSrc;
   const imageImport = images[imageKey];
 
   if (!imageImport) {
-    return src;
+    return normalizedSrc;
   }
 
   const importedImage = (await imageImport()).default;
   const spotlightImage = await getImage({
     src: importedImage,
-    width: Math.min(1800, importedImage.width),
+    width: Math.min(1200, importedImage.width),
     format: "webp",
   });
 

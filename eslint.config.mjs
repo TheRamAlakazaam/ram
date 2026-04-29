@@ -63,6 +63,6 @@ export default defineConfig([
   },
 
   {
-    ignores: ["dist/**", "**/*.d.ts", ".github/"],
+    ignores: ["dist/**", ".astro/**", "**/*.d.ts", ".github/"],
   },
 ]);

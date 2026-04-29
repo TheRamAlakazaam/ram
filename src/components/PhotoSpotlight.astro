@@ -20,7 +20,25 @@
     >
       Close
     </button>
-    <div class="photo-spotlight__image" data-photo-spotlight-image role="img">
+    <div class="photo-spotlight__stage" data-photo-spotlight-stage>
+      <button
+        class="photo-spotlight__nav photo-spotlight__nav--previous"
+        type="button"
+        data-photo-spotlight-previous
+        aria-label="Show previous image"
+        hidden
+      >
+      </button>
+      <div class="photo-spotlight__image" data-photo-spotlight-image role="img">
+      </div>
+      <button
+        class="photo-spotlight__nav photo-spotlight__nav--next"
+        type="button"
+        data-photo-spotlight-next
+        aria-label="Show next image"
+        hidden
+      >
+      </button>
     </div>
     <p class="photo-spotlight__caption meta" data-photo-spotlight-caption></p>
   </div>
@@ -30,24 +48,50 @@
   (() => {
     const spotlight = document.querySelector("[data-photo-spotlight]");
     const image = document.querySelector("[data-photo-spotlight-image]");
+    const stage = document.querySelector("[data-photo-spotlight-stage]");
     const caption = document.querySelector("[data-photo-spotlight-caption]");
+    const previousButton = document.querySelector(
+      "[data-photo-spotlight-previous]",
+    );
+    const nextButton = document.querySelector("[data-photo-spotlight-next]");
     const closeButtons = document.querySelectorAll(
       "[data-photo-spotlight-close]",
     );
-    const triggers = document.querySelectorAll("[data-spotlight-trigger]");
+    const triggers = Array.from(
+      document.querySelectorAll("[data-spotlight-trigger]"),
+    ).filter((trigger) => trigger instanceof HTMLElement);
 
     if (
       !(spotlight instanceof HTMLElement) ||
-      !(image instanceof HTMLElement)
+      !(image instanceof HTMLElement) ||
+      !(stage instanceof HTMLElement)
     ) {
       return;
     }
 
     let previousFocus = null;
+    let currentIndex = -1;
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchStartTime = 0;
+
+    const updateNavigationState = () => {
+      const hasMultipleImages = triggers.length > 1;
+
+      [previousButton, nextButton].forEach((button) => {
+        if (!(button instanceof HTMLButtonElement)) {
+          return;
+        }
+
+        button.hidden = !hasMultipleImages;
+        button.disabled = !hasMultipleImages;
+      });
+    };
 
     const closeSpotlight = () => {
       spotlight.hidden = true;
       document.body.dataset.spotlightOpen = "false";
+      currentIndex = -1;
       image.style.backgroundImage = "";
       image.removeAttribute("aria-label");
 
@@ -60,20 +104,21 @@
       }
     };
 
-    const openSpotlight = (trigger) => {
+    const renderSpotlightImage = (trigger) => {
       const picture = trigger.querySelector("img");
-
-      if (!(picture instanceof HTMLImageElement)) {
-        return;
-      }
-
-      previousFocus =
-        document.activeElement instanceof HTMLElement
-          ? document.activeElement
-          : null;
       const imageUrl =
-        trigger.dataset.spotlightSrc || picture.currentSrc || picture.src;
-      const imageAlt = picture.alt || trigger.dataset.spotlightLabel || "";
+        trigger.dataset.spotlightSrc ||
+        (picture instanceof HTMLImageElement
+          ? picture.currentSrc || picture.src
+          : "");
+      const imageAlt =
+        (picture instanceof HTMLImageElement ? picture.alt : "") ||
+        trigger.dataset.spotlightLabel ||
+        "Selected image";
+
+      if (!imageUrl) {
+        return false;
+      }
 
       image.style.backgroundImage = `url("${imageUrl}")`;
       image.setAttribute("aria-label", imageAlt);
@@ -82,16 +127,47 @@
         caption.textContent = imageAlt;
       }
 
+      return true;
+    };
+
+    const openSpotlight = (trigger) => {
+      const triggerIndex = triggers.indexOf(trigger);
+
+      if (triggerIndex < 0 || !renderSpotlightImage(trigger)) {
+        return;
+      }
+
+      previousFocus =
+        document.activeElement instanceof HTMLElement
+          ? document.activeElement
+          : null;
+      currentIndex = triggerIndex;
+      updateNavigationState();
       spotlight.hidden = false;
       document.body.dataset.spotlightOpen = "true";
       spotlight.querySelector(".photo-spotlight__close")?.focus();
     };
 
-    triggers.forEach((trigger) => {
-      if (!(trigger instanceof HTMLElement)) {
+    const showAdjacentImage = (direction) => {
+      if (spotlight.hidden || triggers.length < 2 || currentIndex < 0) {
         return;
       }
 
+      const nextIndex =
+        (currentIndex + direction + triggers.length) % triggers.length;
+
+      if (renderSpotlightImage(triggers[nextIndex])) {
+        currentIndex = nextIndex;
+      }
+    };
+
+    const resetTouch = () => {
+      touchStartX = 0;
+      touchStartY = 0;
+      touchStartTime = 0;
+    };
+
+    triggers.forEach((trigger) => {
       trigger.addEventListener("click", () => openSpotlight(trigger));
     });
 
@@ -99,9 +175,78 @@
       button.addEventListener("click", closeSpotlight);
     });
 
+    if (previousButton instanceof HTMLButtonElement) {
+      previousButton.addEventListener("click", () => showAdjacentImage(-1));
+    }
+
+    if (nextButton instanceof HTMLButtonElement) {
+      nextButton.addEventListener("click", () => showAdjacentImage(1));
+    }
+
+    stage.addEventListener(
+      "touchstart",
+      (event) => {
+        if (event.touches.length !== 1 || triggers.length < 2) {
+          resetTouch();
+          return;
+        }
+
+        const touch = event.touches[0];
+
+        touchStartX = touch.clientX;
+        touchStartY = touch.clientY;
+        touchStartTime = Date.now();
+      },
+      { passive: true },
+    );
+
+    stage.addEventListener(
+      "touchend",
+      (event) => {
+        if (!touchStartTime || event.changedTouches.length === 0) {
+          return;
+        }
+
+        const touch = event.changedTouches[0];
+        const deltaX = touch.clientX - touchStartX;
+        const deltaY = touch.clientY - touchStartY;
+        const elapsed = Date.now() - touchStartTime;
+        const isHorizontalSwipe =
+          Math.abs(deltaX) > 44 &&
+          Math.abs(deltaX) > Math.abs(deltaY) * 1.2 &&
+          elapsed < 900;
+
+        if (isHorizontalSwipe) {
+          event.preventDefault();
+          showAdjacentImage(deltaX < 0 ? 1 : -1);
+        }
+
+        resetTouch();
+      },
+      { passive: false },
+    );
+
+    stage.addEventListener("touchcancel", resetTouch);
+
     document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape" && !spotlight.hidden) {
+      if (spotlight.hidden) {
+        return;
+      }
+
+      if (event.key === "Escape") {
         closeSpotlight();
+        return;
+      }
+
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        showAdjacentImage(-1);
+        return;
+      }
+
+      if (event.key === "ArrowRight") {
+        event.preventDefault();
+        showAdjacentImage(1);
       }
     });
   })();
@@ -119,6 +264,7 @@
     display: grid;
     place-items: center;
     padding: var(--page-gutter);
+    overscroll-behavior: contain;
   }
 
   .photo-spotlight__backdrop {
@@ -150,6 +296,13 @@
     font: inherit;
   }
 
+  .photo-spotlight__stage {
+    position: relative;
+    display: grid;
+    touch-action: pan-y;
+    user-select: none;
+  }
+
   .photo-spotlight__image {
     min-height: min(74svh, 820px);
     border-radius: 8px;
@@ -158,10 +311,98 @@
     background-size: contain;
   }
 
+  .photo-spotlight__nav {
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+    display: grid;
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.32);
+    border-radius: 999px;
+    background: rgba(17, 17, 17, 0.38);
+    color: #ffffff;
+    cursor: pointer;
+    transform: translateY(-50%);
+  }
+
+  .photo-spotlight__nav[hidden] {
+    display: none;
+  }
+
+  .photo-spotlight__nav::before {
+    width: 0.68rem;
+    height: 0.68rem;
+    border-block-start: 1.5px solid currentColor;
+    border-inline-end: 1.5px solid currentColor;
+    content: "";
+  }
+
+  .photo-spotlight__nav--previous {
+    left: clamp(0.5rem, 2vw, 1.25rem);
+  }
+
+  .photo-spotlight__nav--previous::before {
+    margin-inline-start: 0.2rem;
+    transform: rotate(-135deg);
+  }
+
+  .photo-spotlight__nav--next {
+    right: clamp(0.5rem, 2vw, 1.25rem);
+  }
+
+  .photo-spotlight__nav--next::before {
+    margin-inline-end: 0.2rem;
+    transform: rotate(45deg);
+  }
+
+  .photo-spotlight__nav:hover {
+    background: rgba(17, 17, 17, 0.58);
+  }
+
   .photo-spotlight__caption {
     justify-self: center;
     max-width: 72ch;
     color: rgba(255, 255, 255, 0.78);
     text-align: center;
+  }
+
+  @media (max-width: 640px) {
+    .photo-spotlight {
+      padding: max(0.75rem, env(safe-area-inset-top))
+        max(0.75rem, env(safe-area-inset-right))
+        max(0.75rem, env(safe-area-inset-bottom))
+        max(0.75rem, env(safe-area-inset-left));
+    }
+
+    .photo-spotlight__dialog {
+      gap: 0.55rem;
+      max-height: calc(100svh - 1.5rem);
+    }
+
+    .photo-spotlight__close {
+      min-height: 2.75rem;
+      padding: 0.55rem 0.85rem;
+    }
+
+    .photo-spotlight__image {
+      min-height: min(68svh, 620px);
+    }
+
+    .photo-spotlight__nav {
+      width: 3rem;
+      height: 3rem;
+      background: rgba(17, 17, 17, 0.58);
+    }
+
+    .photo-spotlight__nav--previous {
+      left: 0.6rem;
+    }
+
+    .photo-spotlight__nav--next {
+      right: 0.6rem;
+    }
   }
 </style>

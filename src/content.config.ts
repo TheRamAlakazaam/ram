@@ -1,4 +1,6 @@
-import { defineCollection, z } from "astro:content";
+import { glob } from "astro/loaders";
+import { z } from "astro/zod";
+import { defineCollection } from "astro:content";
 
 const requiredString = z.string().trim().min(1);
 const optionalString = z.preprocess(
@@ -23,12 +25,12 @@ const writingSchema = z.object({
 });
 
 const blog = defineCollection({
-  type: "content",
+  loader: glob({ pattern: "**/[^_]*.{md,mdx}", base: "./src/content/blog" }),
   schema: writingSchema,
 });
 
 const photos = defineCollection({
-  type: "content",
+  loader: glob({ pattern: "**/[^_]*.{md,mdx}", base: "./src/content/photos" }),
   schema: z.object({
     title: requiredString,
     description: requiredString,
