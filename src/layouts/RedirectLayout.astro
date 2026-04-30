@@ -1,0 +1,43 @@
+---
+import { siteConfig } from "@/data/site";
+
+interface Props {
+  target: string;
+}
+
+const { target } = Astro.props;
+const resolvedSiteUrl =
+  Astro.site?.toString() ||
+  import.meta.env.SITE_URL ||
+  "https://theramalakazaam.com";
+const canonical = new URL(target, resolvedSiteUrl).toString();
+const title = `Redirecting to ${target}`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script
+      is:inline
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-ZFXWPJEYJ1"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-ZFXWPJEYJ1");
+    </script>
+    <meta charset="UTF-8" />
+    <meta http-equiv="refresh" content={`2;url=${target}`} />
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href={canonical} />
+    <title>{title} | {siteConfig.name}</title>
+  </head>
+  <body>
+    <a href={target}>Redirecting to <code>{target}</code></a>
+  </body>
+</html>

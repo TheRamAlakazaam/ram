@@ -65,4 +65,10 @@ export default defineConfig([
   {
     ignores: ["dist/**", ".astro/**", "**/*.d.ts", ".github/"],
   },
+
+  {
+    rules: {
+      "prefer-rest-params": "off",
+    },
+  },
 ]);
