@@ -5,7 +5,11 @@
   "defaultSocialImage": "/og.png",
   "summary": "Raul Martinez is a Houston-based web developer, creative strategist, and photographer working across digital experiences, public art, and community storytelling. His photographic practice is rooted in observation and presence, moving through environments intuitively without staging or direction while attending to candid gestures, architecture, and landscapes where time feels expansive. Through subtle, minimally edited images, Martinez preserves quiet encounters with place and invites viewers to share in the experience of being present.",
   "location": "Houston, Texas",
-  "roles": ["Web Developer", "Creative Strategist", "Photographer"],
+  "roles": [
+    "Web Developer",
+    "Creative Strategist",
+    "Photographer"
+  ],
   "tools": [
     "Astro",
     "TypeScript",
@@ -55,6 +59,14 @@
       "titleStyle": "italic",
       "venue": "Big Medium",
       "location": "Austin, Texas"
-    }
+    },
+    {
+      "year": "2024",
+      "title": "Aftermath - Short Film",
+      "titleStyle": "Italic",
+      "location": "Orlando, Florida",
+      "notes": "48 Hour Film Festival"
+    },
+    {}
   ]
 }
