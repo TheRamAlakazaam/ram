@@ -23,13 +23,28 @@ The first recommendation I have, for anyone who doesn’t rely heavily on Adobe 
 
 What makes Linux worth considering is the level of control it gives you. Instead of being locked into a system that decides how your computer should run, you decide what gets installed, what runs in the background, and how your system behaves. It’s a shift from being a “user of a product” to actually having ownership over your machine.
 
+![](/src/assets/images/hero-imagefitlimv1678673053.jpg)
+
 Performance is another major benefit. Linux tends to run lighter than most mainstream operating systems, which means older laptops and desktops often feel new again. Less background bloat, fewer forced processes, and more of your hardware actually being used for what you want it to do.
 
 From there, the next step is replacing the software you actually use day-to-day. You don’t have to switch everything at once just start with the tools that cause the most frustration or cost the most money.
 
 Here are a few that friends and I use on a daily basis:
 
-- **GIMP** - A powerful alternative to Photoshop for photo editing and design work.
-- **Blender** - A full 3D suite used for modeling, animation, and rendering.
-- **FreeCAD** - A full 3D suite used for modeling, animation, and rendering.
+- **Blender** - 3D modeling, animation, and rendering
+- **FreeCAD** - engineering and product design (SolidWorks alternative)
+- **Firefox** - privacy-focused web browser
+- **VLC media player** - plays almost any video/audio format
+- **LibreOffice** - Microsoft Office replacement (docs, spreadsheets, slides)
+- **OBS Studio** - recording, streaming, content creation
+- **Anki** - memorization and learning system
+- **Darktable** - Lightroom alternative for photography
+
+Here's a list of tools that aren't open-source, but move away from subscription models and give you ownership of the products once you purchase it. I'll let you guess who they're competing with. 
+
+- **Affinity Photo -** Photoshop Alternative
+- **Affinity Designer -** Illustrator Alternative
+- **Affinity Publisher -** InDesign Alternative 
+- **Calvary -** After Effects Alternative
+- **Davinci Resolve -** Premiere Pro Alternative
 
