@@ -1,8 +1,12 @@
 ---
-title: Free Yourself
+title: Freedom Over Convenience
+description: A look at the right to repair, tech ownership, and how open-source
+  tools like Linux give users more control over their devices and workflow.
 publishDate: 2026-05-04
 tags:
   - Open Source
+  - Linux
+  - Big Tech
 featured: true
 ---
 Do you ever scroll through your social media feed and see those yearly clickbait articles about how a meteor is 
