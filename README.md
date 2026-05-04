@@ -62,13 +62,14 @@ The `/photography` page lists albums, and each album page renders the gallery.
 
 The contact form posts directly to Web3Forms from the browser.
 
-The current access key is wired into the contact page, and you can override it
-at build time with:
+Set the access key at build time with:
 
 - `PUBLIC_WEB3FORMS_ACCESS_KEY`
 
-Use `.env.example` for Astro build variables. No Cloudflare Pages Function
-secrets are required for the current contact setup.
+The key is not hardcoded in source. If the variable is missing, the form renders
+in a disabled state instead of submitting a broken request. Use `.env.example`
+for Astro build variables. No Cloudflare Pages Function secrets are required for
+the current contact setup.
 
 ## Cloudflare Pages
 
@@ -78,6 +79,7 @@ Cloudflare Pages build settings:
 - Build output directory: `dist`
 - Functions directory: not required for the current site
 - Package manager: npm, using `package-lock.json`
+- Static security headers: `public/_headers`
 
 Local Cloudflare preview:
 

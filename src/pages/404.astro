@@ -1,0 +1,100 @@
+---
+import Layout from "@/layouts/Layout.astro";
+---
+
+<Layout
+  title="404"
+  description="The requested page could not be found."
+  noindex
+>
+  <section class="not-found frame reveal">
+    <div class="not-found__panel">
+      <p class="eyebrow">404</p>
+      <pre
+        class="not-found__code"
+        aria-label="Sad 404 code face"><code>{`const page = await find("/missing");
+
+if (!page) {
+  console.error("404 :(");
+}`}</code></pre>
+      <div class="not-found__copy">
+        <h1>Page not found</h1>
+        <p>That route is not here anymore, or it never made it past compile.</p>
+      </div>
+      <div class="not-found__actions">
+        <a class="button" href="/">Home</a>
+        <a class="not-found__link" href="/blog">Blog</a>
+        <a class="not-found__link" href="/photography">Photography</a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .not-found {
+    display: grid;
+    place-items: center;
+    min-height: min(64svh, 42rem);
+  }
+
+  .not-found__panel {
+    display: grid;
+    gap: var(--content-gap);
+    width: min(680px, 100%);
+    padding: clamp(1.25rem, 4vw, 2.5rem);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--surface);
+  }
+
+  .not-found__code {
+    overflow-x: auto;
+    margin: 0;
+    padding: 1rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--surface-strong);
+    color: var(--ink);
+    font-family:
+      ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+    font-size: clamp(0.82rem, 2.2vw, 0.95rem);
+    line-height: 1.6;
+  }
+
+  .not-found__copy {
+    display: grid;
+    gap: 0.55rem;
+  }
+
+  .not-found__copy h1 {
+    margin: 0;
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+  }
+
+  .not-found__copy p {
+    max-width: 48ch;
+    color: var(--muted);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .not-found__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  .not-found__link {
+    color: var(--muted);
+    font-family: var(--font-main);
+    font-size: 0.9rem;
+    text-decoration: none;
+  }
+
+  .not-found__link:hover,
+  .not-found__link:focus-visible {
+    color: var(--ink);
+  }
+</style>
