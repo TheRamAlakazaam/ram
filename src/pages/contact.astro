@@ -3,10 +3,8 @@ import { pageCopy, siteConfig } from "@/data/site";
 import Layout from "@/layouts/Layout.astro";
 
 const web3FormsAccessKey =
-  typeof import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY === "string"
-    ? import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY.trim()
-    : "";
-const isContactConfigured = web3FormsAccessKey.length > 0;
+  import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY ||
+  "8bb517fb-676d-4f01-9abf-e78ede972044";
 const contactCopy = pageCopy.contact;
 ---
 
@@ -24,16 +22,10 @@ const contactCopy = pageCopy.contact;
         data-sending-message={contactCopy.sendingMessage}
         data-success-message={contactCopy.successMessage}
         data-error-message={contactCopy.errorMessage}
-        data-configuration-message={contactCopy.configurationMessage}
-        data-configured={String(isContactConfigured)}
         name="contact"
         method="post"
       >
-        {
-          isContactConfigured && (
-            <input type="hidden" name="access_key" value={web3FormsAccessKey} />
-          )
-        }
+        <input type="hidden" name="access_key" value={web3FormsAccessKey} />
         <input
           type="hidden"
           name="subject"
@@ -66,12 +58,9 @@ const contactCopy = pageCopy.contact;
         </label>
 
         <div class="contact-form__actions">
-          <button class="button" type="submit" disabled={!isContactConfigured}>
-            {contactCopy.submitLabel}
-          </button>
-          <p class="form-status meta" data-form-status aria-live="polite">
-            {!isContactConfigured ? contactCopy.configurationMessage : ""}
-          </p>
+          <button class="button" type="submit">{contactCopy.submitLabel}</button
+          >
+          <p class="form-status meta" data-form-status aria-live="polite"></p>
         </div>
       </form>
     </section>
@@ -91,21 +80,11 @@ const contactCopy = pageCopy.contact;
       form.dataset.successMessage || "Thanks, your note was sent.";
     const errorMessage =
       form.dataset.errorMessage || "Could not send that message.";
-    const configurationMessage =
-      form.dataset.configurationMessage ||
-      "Contact form is not configured yet.";
 
     if (
       !(form instanceof HTMLFormElement) ||
       !(submitButton instanceof HTMLButtonElement)
     ) {
-      return;
-    }
-
-    if (form.dataset.configured !== "true") {
-      if (status instanceof HTMLElement) {
-        status.textContent = configurationMessage;
-      }
       return;
     }
 

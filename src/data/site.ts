@@ -120,7 +120,6 @@ type PageCopy = {
     sendingMessage: string;
     successMessage: string;
     errorMessage: string;
-    configurationMessage: string;
   };
 };
 

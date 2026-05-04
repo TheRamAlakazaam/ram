@@ -101,7 +101,6 @@
     "submitLabel": "Send",
     "sendingMessage": "Sending.",
     "successMessage": "Thanks, your note was sent.",
-    "errorMessage": "Could not send that message.",
-    "configurationMessage": "Contact form is not configured yet."
+    "errorMessage": "Could not send that message."
   }
 }
