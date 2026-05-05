@@ -11,7 +11,7 @@ featured: true
 ---
 Do you ever scroll through your social media feed and see those yearly clickbait articles about how a meteor is going to “nearly miss” Earth? It’s almost like the recurring debate about the blue and gold dress.
 
-Mixed in with that annual noise, though, are more serious conversations like the growing discussion around the *[right to repair*](https://www.nytimes.com/wirecutter/blog/what-is-right-to-repair/) and what it really means to truly “own” the products you buy. 
+Mixed in with that annual noise, though, are more serious conversations like the growing discussion around the *[right to repair](https://www.nytimes.com/wirecutter/blog/what-is-right-to-repair/)* and what it really means to truly “own” the products you buy. 
 
 It feels like every new piece of technology is designed to lock you into an ecosystem. The device you purchase keeps you attached for about five years through software updates, and after that, support drops off. Once that happens, repairs become expensive or impractical, leaving users stuck replacing products instead of fixing them.
 
@@ -37,7 +37,7 @@ Here are a few that friends and I use on a daily basis:
 - **[VLC media player](https://www.videolan.org/vlc/)** - plays almost any video/audio format
 - **[LibreOffice](https://www.libreoffice.org/)** - Microsoft Office replacement (docs, spreadsheets, slides)
 - **[OBS Studio](https://obsproject.com/)** - recording, streaming, content creation
-- **[Anki**](https://apps.ankiweb.net/) - memorization and learning system
+- **[Anki](https://apps.ankiweb.net/)** - memorization and learning system
 - **[Darktable](https://www.darktable.org/install/)** - Lightroom alternative for photography
 
 Here's a list of tools that aren't open-source, but move away from subscription models and give you ownership of the products once you purchase it. I'll let you guess who they're competing with. 
