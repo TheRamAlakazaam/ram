@@ -208,6 +208,18 @@ const hasSummary = siteConfig.summary.trim().length > 0;
   }
 
   @media (max-width: 640px) {
+    .about-page,
+    .about-section__head,
+    .about-item,
+    .cv-item {
+      justify-items: center;
+      text-align: center;
+    }
+
+    .about-summary .lede {
+      margin-inline: auto;
+    }
+
     .about-item,
     .cv-item {
       grid-template-columns: 1fr;

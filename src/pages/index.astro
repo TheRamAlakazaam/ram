@@ -334,21 +334,48 @@ const homeDescription = `${heroSummary}. ${homeCopy.seoDescription}`;
       gap: 1.2rem;
     }
 
+    .home-hero,
+    .home-hero__copy {
+      justify-items: center;
+      text-align: center;
+    }
+
+    .home-deck {
+      margin-inline: auto;
+    }
+
     .home-photo-tile > span {
+      justify-items: center;
       padding: 0.8rem;
+      text-align: center;
     }
 
     .home-section__head {
-      align-items: start;
+      align-items: center;
       flex-direction: column;
+      text-align: center;
     }
 
     .home-blog-card {
       grid-template-columns: 1fr;
+      justify-items: center;
+      text-align: center;
     }
 
     .home-blog-card h3 {
       font-size: 1.08rem;
+    }
+
+    .home-blog-card__meta {
+      justify-items: center;
+    }
+
+    .home-blog-card__tags {
+      justify-content: center;
+    }
+
+    .home-blog-card p {
+      margin-inline: auto;
     }
 
     .home-photo-grid {

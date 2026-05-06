@@ -253,8 +253,25 @@ const writingFilters = writingCopy.filters;
   }
 
   @media (max-width: 640px) {
+    .blog-list-card {
+      justify-items: center;
+      text-align: center;
+    }
+
     .blog-list-card h2 {
       font-size: 1.08rem;
+    }
+
+    .blog-list-card__meta {
+      justify-items: center;
+    }
+
+    .blog-list-card__tags {
+      justify-content: center;
+    }
+
+    .blog-list-card p {
+      margin-inline: auto;
     }
   }
 </style>

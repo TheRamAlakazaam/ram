@@ -239,6 +239,23 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
       </main>
       <SiteFooter />
     </div>
+    <script
+      is:inline
+      src="https://storage.ko-fi.com/cdn/scripts/overlay-widget.js"></script>
+    <script is:inline>
+      window.addEventListener("load", () => {
+        if (!window.kofiWidgetOverlay) {
+          return;
+        }
+
+        window.kofiWidgetOverlay.draw("theramalakazaam", {
+          type: "floating-chat",
+          "floating-chat.donateButton.text": "Support me",
+          "floating-chat.donateButton.background-color": "#323842",
+          "floating-chat.donateButton.text-color": "#fff",
+        });
+      });
+    </script>
   </body>
 </html>
 
@@ -1339,6 +1356,50 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
       font-size: 1rem;
     }
 
+    .hero,
+    .hero__copy,
+    .page-intro,
+    .page-kicker-header,
+    .section-head {
+      align-items: center;
+      justify-items: center;
+      text-align: center;
+    }
+
+    .lede {
+      margin-inline: auto;
+    }
+
+    .button-row,
+    .pill-row,
+    .article-meta,
+    .article-tags {
+      justify-content: center;
+    }
+
+    .entry-card,
+    .photo-card__body,
+    .empty-state {
+      justify-items: center;
+      text-align: center;
+    }
+
+    .entry-card__footer {
+      justify-items: center;
+    }
+
+    .photo-card__body {
+      align-items: center;
+    }
+
+    .photo-card__meta {
+      justify-content: center;
+    }
+
+    .photo-card__footer {
+      align-self: center;
+    }
+
     .article-content {
       padding: 0.85rem;
     }
@@ -1363,6 +1424,10 @@ const serializedStructuredData = JSON.stringify(structuredData).replace(
 
     .site-footer__inner {
       gap: 0.65rem;
+    }
+
+    .footer-meta {
+      text-align: center;
     }
 
     .site-header__inner {
